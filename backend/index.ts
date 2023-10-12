@@ -31,7 +31,7 @@ const io =  new Server(server, {
     }
 })
 
-app.io = io;
+// app.io = io; //do we really need this for req.app.io.emit in routes? we can just do io.emit from the io server.
 
 
 app.use(fileUpload());
@@ -179,7 +179,7 @@ app.post('/api', (req: any, res: any) => {
             } else {
                 if (mcNum > 0) {
                     for (let i = lastGeneratedType; i < lastGeneratedType + mcNum; i++) {
-                        req.app.io.emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
+                        io.emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
                         const questions = await generateQuestions('multiple choice', listOfTranscriptSlices[i]);
                         setupQuestionsReturn(questions)
                     }
@@ -189,7 +189,7 @@ app.post('/api', (req: any, res: any) => {
 
                 if (saNum > 0) {
                     for (let i = lastGeneratedType; i < lastGeneratedType + saNum; i++) {
-                        req.app.io.emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
+                        io.emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
                         const questions = await generateQuestions('short answer', listOfTranscriptSlices[i]);
                         setupQuestionsReturn(questions)
                     }
@@ -199,7 +199,7 @@ app.post('/api', (req: any, res: any) => {
 
                 if (tfNum > 0) {
                     for (let i = lastGeneratedType; i < lastGeneratedType + tfNum; i++) {
-                        req.app.io.emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
+                        io.emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
                         const questions = await generateQuestions('true or false', listOfTranscriptSlices[i]);
                         setupQuestionsReturn(questions)
                     }
