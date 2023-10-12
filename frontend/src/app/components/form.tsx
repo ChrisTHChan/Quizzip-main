@@ -261,7 +261,7 @@ const Form = () => {
                 {questions.length
                 ? <> 
                 <SimpleCheckbox onChange={handleCheckboxChange} checkedState={checkboxState.provideAnswers} name="provideAnswers" label="Provide me answers as well." extra_classes="py-2 border-b text-sm mb-4 border-slate-500"/>
-                {questions.map((question) => <Question question={question} showAnswers={checkboxState.provideAnswers}/>)} 
+                {questions.map((question, i) => <Question key={i} question={question} showAnswers={checkboxState.provideAnswers}/>)} 
                 </> :
                 <div className="h-80 lg:h-full w-full flex items-center rounded-lg justify-center bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-800 via-slate-900 to-slate-900">
                     <p className="italic text-sm font-semibold">Your questions will show up here</p>

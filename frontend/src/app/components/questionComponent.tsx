@@ -17,7 +17,7 @@ const question = ({question, showAnswers}: props) => {
                 question.choices
                 ?
                 question.choices.map((choice:string, i) => {
-                    return <p className="ml-4"><span>{i+1}. </span>{choice}</p>
+                    return <p className="ml-4" key={i}><span>{i+1}. </span>{choice}</p>
                 })
                 :
                 null 
