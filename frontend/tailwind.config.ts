@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+const plugin = require('tailwindcss/plugin')
 
 const config: Config = {
   content: [
@@ -15,6 +16,22 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function({ addUtilities }: any) {
+      addUtilities({
+        '.no-scrollbar::-webkit-scrollbar': {
+          'display': 'none',
+          'scroll-behavior': 'smooth'
+        },
+        'input::-webkit-outer-spin-button, input::-webkit-inner-spin-button': {
+          '-webkit-appearance': 'none',
+          'margin': '0',
+        },
+        'input[type=number]': {
+          '-moz-appearance': 'textfield',
+        }
+      })
+    })
+  ],
 }
 export default config
