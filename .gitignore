@@ -1,0 +1,10 @@
+backend/node_modules
+frontend/node_modules
+backend/Dockerfile
+frontend/Dockerfile
+frontend/*.env
+backend/*.env
+frontend/build
+
+backend/config/default.json
+backend/Procfile
