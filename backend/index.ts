@@ -17,6 +17,7 @@ type contentFormatState = 'youtubeURL' | 'text' | 'pdf' | 'doc' | 'ppt'
 
 //server dependencies
 const express = require('express');
+const mongoose = require('mongoose');
 require('dotenv').config()
 const app = express();
 const fileUpload = require("express-fileupload");
@@ -56,6 +57,13 @@ const openai = new openAI({
 // io.on('connection', (socket:any) => {
 //     console.log('yay')
 // })
+
+//setup mongodb connection
+
+mongoose.connect(process.env.MONGO_URL);
+mongoose.connection.on('error', (error:any) => {
+    console.log(error);
+})
 
 //fix req, res type any
 app.post('/api', (req: any, res: any) => {
