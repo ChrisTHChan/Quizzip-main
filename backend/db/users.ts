@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true},
     email: {type: String, required: true},
@@ -13,25 +15,25 @@ export const UserModel = mongoose.model('User', UserSchema)
 //actions to query users
 
 export const getUsers = () => {
-    UserModel.find()
+    return UserModel.find()
 }
 
 export const getUserByEmail = (email: String) => {
-    UserModel.findOne({email})
+    return UserModel.findOne({email})
 }
 
 export const getUserBySessionToken = (sessionToken: String) => {
-    UserModel.findOne({
+    return UserModel.findOne({
         'authentication.sessionToken': sessionToken
     })
 }
 
 export const getUserById = (id: String) => {
-    UserModel.findOne(id)
+    return UserModel.findOne(id)
 }
 
 export const createUser = (values: Record<string, any>) => {
-    new UserModel(values).save().then(
+    return new UserModel(values).save().then(
         (user: Record<string, any>) => {
             user.toObject();
         } 
@@ -39,9 +41,9 @@ export const createUser = (values: Record<string, any>) => {
 }
 
 export const deleteUserById = (id: String) => {
-    UserModel.findOneAndDelete({_id: id})
+    return UserModel.findOneAndDelete({_id: id})
 }
 
 export const updateUserById = (id: String, values: Record<string, any>) => {
-    UserModel.findByIdAndUpdate(id, values)
+    return UserModel.findByIdAndUpdate(id, values)
 }

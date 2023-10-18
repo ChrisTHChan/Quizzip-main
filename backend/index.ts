@@ -16,15 +16,15 @@ type question = {
 type contentFormatState = 'youtubeURL' | 'text' | 'pdf' | 'doc' | 'ppt'
 
 //server dependencies
-const express = require('express');
-const mongoose = require('mongoose');
+import express from 'express';
+import fileUpload, { UploadedFile } from 'express-fileupload';
+import mongoose from 'mongoose';
 require('dotenv').config()
+import http from 'http';
+import {Server} from 'socket.io'
+import cors from 'cors'
 const app = express();
-const fileUpload = require("express-fileupload");
-const http = require("http");
-const { Server } =  require('socket.io');
 const server = http.createServer(app)
-const cors = require('cors');
 const io =  new Server(server, {
     cors: {
         origin: "http://localhost:3000",
@@ -44,12 +44,12 @@ server.listen(9000, () => {
 })
 
 //server libraries required to do actual stuff
-const fs = require('fs');
-const openAI = require('openai');
-const pdfParse = require('pdf-parse');
-const officeParser = require('officeparser');
-const helperFunctions = require('./helper-functions')
-const { YoutubeTranscript } = require('youtube-transcript')
+import openAI from 'openai'
+import { splitString } from './helpers/helper-functions';
+import officeParser from 'officeparser'
+import pdfParse from 'pdf-parse'
+import { YoutubeTranscript } from 'youtube-transcript'
+
 const openai = new openAI({
     apiKey: process.env.OPEN_AI_KEY,
 });
@@ -59,14 +59,14 @@ const openai = new openAI({
 // })
 
 //setup mongodb connection
-
-mongoose.connect(process.env.MONGO_URL);
+let mongoUrl = process.env.MONGO_URL as string
+mongoose.connect(mongoUrl);
 mongoose.connection.on('error', (error:any) => {
     console.log(error);
 })
 
 //fix req, res type any
-app.post('/api', (req: any, res: any) => {
+app.post('/api', (req: express.Request, res: express.Response) => {
 
     const inputType:contentFormatState = req.body.contentInputType;
     const contentInput:string | undefined = req.body.contentInput;
@@ -74,9 +74,10 @@ app.post('/api', (req: any, res: any) => {
     const mcNum:number = parseInt(req.body.mcNum);
     const saNum:number = parseInt(req.body.saNum);
     const tfNum:number = parseInt(req.body.tfNum);
-    let fileUploadBuffer: string;
+    let fileUploadBuffer: Buffer;
     if (req.files) {
-        fileUploadBuffer = req.files.fileUpload.data;
+        const upload = req.files.fileUpload as UploadedFile;
+        fileUploadBuffer = upload.data
     }
 
     const fetchTranscript = async (videoUrl: string) => {
@@ -135,7 +136,7 @@ app.post('/api', (req: any, res: any) => {
             model: "gpt-3.5-turbo",
         });
 
-        let questions: string = completion.choices[0].message.content;
+        let questions: string = completion.choices[0].message.content as string;
         
         return questions;
     }
@@ -153,7 +154,7 @@ app.post('/api', (req: any, res: any) => {
         }
 
         try {
-            let transcript
+            let transcript: string = '';
             if (inputType === 'youtubeURL') {
                 transcript = await fetchTranscript(contentInput as string);
             } else if (inputType === 'text') {
@@ -179,7 +180,7 @@ app.post('/api', (req: any, res: any) => {
             }
 
             const totalNumQuestions:number = mcNum + saNum + tfNum;
-            const listOfTranscriptSlices:string[] = helperFunctions.splitString(transcript, totalNumQuestions)
+            const listOfTranscriptSlices:string[] = splitString(transcript, totalNumQuestions)
             let lastGeneratedType:number = 0
 
             if (mcNum === 0 && saNum === 0 && tfNum === 0) {
