@@ -51,6 +51,11 @@ mongoose.connection.on('error', (error:any) => {
     console.log(error);
 })
 
+//io websocket methods
+export const emit = (i: number, totalNumQuestions: number) => {
+    io.emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
+}
+
 //setup routes
 app.use('/', router())
 
