@@ -1,20 +1,6 @@
 //TODO EVENTUALLY
 //add mp3 file upload
 
-type transcriptPiece = {
-    text: string,
-    duration: number,
-    offset: number
-}
-
-type question = {
-        question: string,
-        answer: string,
-        choices?: string[]
-}
-
-type contentFormatState = 'youtubeURL' | 'text' | 'pdf' | 'doc' | 'ppt'
-
 //server dependencies
 import express from 'express';
 import fileUpload, { UploadedFile } from 'express-fileupload';
@@ -25,14 +11,17 @@ import {Server} from 'socket.io'
 import cors from 'cors'
 
 //server libraries required to do actual stuff
-import openAI from 'openai'
-import { splitString } from './helpers/helper-functions';
+import { splitString, fetchTranscript, generateQuestions } from './helpers/helper-functions';
 import officeParser from 'officeparser'
 import pdfParse from 'pdf-parse'
-import { YoutubeTranscript } from 'youtube-transcript'
 
 //importing routes
 import router from './router'
+
+//importing types
+import { 
+    contentFormatState, 
+    question } from './types';
 
 //server setup
 const app = express();
@@ -55,11 +44,6 @@ server.listen(9000, () => {
 //     console.log('yay')
 // })
 
-//setup chatgpt connection
-const openai = new openAI({
-    apiKey: process.env.OPEN_AI_KEY,
-});
-
 //setup mongodb connection
 let mongoUrl = process.env.MONGO_URL as string
 mongoose.connect(mongoUrl);
@@ -73,84 +57,22 @@ app.use('/', router())
 //main question getter
 app.post('/api', (req: express.Request, res: express.Response) => {
 
-    const inputType:contentFormatState = req.body.contentInputType;
-    const contentInput:string | undefined = req.body.contentInput;
-    const difficultyLevel: string =  req.body.difficultyLevel;
-    const mcNum:number = parseInt(req.body.mcNum);
-    const saNum:number = parseInt(req.body.saNum);
-    const tfNum:number = parseInt(req.body.tfNum);
-    let fileUploadBuffer: Buffer;
-    if (req.files) {
-        const upload = req.files.fileUpload as UploadedFile;
-        fileUploadBuffer = upload.data
-    }
-
-    const fetchTranscript = async (videoUrl: string) => {
-        let transcriptString: string = '';
-        const transcript = await YoutubeTranscript.fetchTranscript(videoUrl)
-        
-        transcript.forEach((transcriptPiece: transcriptPiece) => {
-            transcriptString += ` ${transcriptPiece.text}`;
-        })
-
-        return transcriptString;
-    }
-
-    const generateQuestions = async (questionType: 'multiple choice' | 'short answer' | 'true or false', transcript: string) => {    
-
-        const systemSetting = `
-            You are assigned to write questions.
-
-            You must use the following JSON format to create the question:
-            [
-                {
-                    "question": "the question", 
-                    "answer": "the answer to the question"
-                }
-            ]
-
-            For multiple choice questions, use the following JSON format:
-            [
-                {
-                    "question": "the first question", 
-                    "choices": [
-                        "first choice",
-                        "second choice",
-                        "third choice",
-                        "fourth choice"
-                    ],
-                    "answer": "the correct choice"
-                }
-            ]
-        `.trim()
-
-        const completionString = `
-            create one ${difficultyLevel} level question in ${questionType} format.
-            The question should be thought provoking.
-            The question should allow the person answering to apply their knowledge.
-            Multiple choice questions should have multiple plausible answers.
-            Provide detailed answers for short answer questions.
-        `.trim();
-        
-        const completion = await openai.chat.completions.create({
-            messages: [
-                { role: "system", content: systemSetting },
-                { role: "user", content: `Use the following information: ${transcript}.` },
-                { role: "user", content: completionString }
-            ],
-            model: "gpt-3.5-turbo",
-        });
-
-        let questions: string = completion.choices[0].message.content as string;
-        
-        return questions;
-    }
-
     const runGeneration = async () => {
 
         console.log('starting generation ###################################')
 
         const questionsList:question[] = [];
+        const inputType:contentFormatState = req.body.contentInputType;
+        const contentInput:string | undefined = req.body.contentInput;
+        const difficultyLevel: string =  req.body.difficultyLevel;
+        const mcNum:number = parseInt(req.body.mcNum);
+        const saNum:number = parseInt(req.body.saNum);
+        const tfNum:number = parseInt(req.body.tfNum);
+        let fileUploadBuffer!: Buffer;
+        if (req.files) {
+            const upload = req.files.fileUpload as UploadedFile;
+            fileUploadBuffer = upload.data
+        }
 
         const setupQuestionsReturn = (questions: string) => {
             const dataObject = JSON.parse(questions);
@@ -194,7 +116,7 @@ app.post('/api', (req: express.Request, res: express.Response) => {
                 if (mcNum > 0) {
                     for (let i = lastGeneratedType; i < lastGeneratedType + mcNum; i++) {
                         io.emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
-                        const questions = await generateQuestions('multiple choice', listOfTranscriptSlices[i]);
+                        const questions = await generateQuestions('multiple choice', listOfTranscriptSlices[i], difficultyLevel);
                         setupQuestionsReturn(questions)
                     }
 
@@ -204,7 +126,7 @@ app.post('/api', (req: express.Request, res: express.Response) => {
                 if (saNum > 0) {
                     for (let i = lastGeneratedType; i < lastGeneratedType + saNum; i++) {
                         io.emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
-                        const questions = await generateQuestions('short answer', listOfTranscriptSlices[i]);
+                        const questions = await generateQuestions('short answer', listOfTranscriptSlices[i], difficultyLevel);
                         setupQuestionsReturn(questions)
                     }
 
@@ -214,7 +136,7 @@ app.post('/api', (req: express.Request, res: express.Response) => {
                 if (tfNum > 0) {
                     for (let i = lastGeneratedType; i < lastGeneratedType + tfNum; i++) {
                         io.emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
-                        const questions = await generateQuestions('true or false', listOfTranscriptSlices[i]);
+                        const questions = await generateQuestions('true or false', listOfTranscriptSlices[i], difficultyLevel);
                         setupQuestionsReturn(questions)
                     }
 
