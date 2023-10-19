@@ -51,9 +51,9 @@ export const generateQuestions = async (questionType: 'multiple choice' | 'short
        model: "gpt-3.5-turbo",
    });
 
-   let questions: string = completion.choices[0].message.content as string;
+   let question: string = completion.choices[0].message.content as string;
    
-   return questions;
+   return question;
 }
 
 export const splitString = (str: string, num: number) => {

@@ -95,10 +95,10 @@ export default async (req: express.Request, res: express.Response) => {
             }
         }
 
-        res.json({
+        res.status(200).json({
             requestStatus: 'success!',
             questions: questionsList,
-        });
+        }).end();
 
     } catch (error: any) {
         console.log(error)
@@ -111,9 +111,9 @@ export default async (req: express.Request, res: express.Response) => {
             errorString = error.message
         }
 
-        res.json({
+        res.status(400).json({
             requestStatus: `Request failed: ${errorString}`,
             questions: []
-        });
+        }).end();
     }
 }

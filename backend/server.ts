@@ -29,11 +29,6 @@ server.listen(9000, () => {
     console.log('server is running')
 })
 
-// app.io = io; //do we really need this for req.app.io.emit in routes? we can just do io.emit from the io server.
-// io.on('connection', (socket:any) => {
-//     console.log('yay')
-// })
-
 //setup mongodb connection
 let mongoUrl = process.env.MONGO_URL as string
 mongoose.connect(mongoUrl);
@@ -42,6 +37,11 @@ mongoose.connection.on('error', (error:any) => {
 })
 
 //io websocket methods
+
+// app.io = io; //do we really need this for req.app.io.emit in routes? we can just do io.emit from the io server.
+// io.on('connection', (socket:any) => {
+//     console.log('yay')
+// })
 export const emitQuestionGenState = (i: number, totalNumQuestions: number) => {
     io.emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
 }
