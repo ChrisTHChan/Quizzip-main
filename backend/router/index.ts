@@ -1,9 +1,11 @@
 import express from 'express';
-import authRegister from './authentication';
+import authRegisterRoute from './authentication';
+import questionGenerationRoute from './question-generator'
 
 const router = express.Router();
 
 export default ():express.Router => {
-    authRegister(router);
+    authRegisterRoute(router);
+    questionGenerationRoute(router);
     return router;
 }
