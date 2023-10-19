@@ -1,4 +1,4 @@
-//hide essential api keys
+//TODO EVENTUALLY
 //add mp3 file upload
 
 type transcriptPiece = {
@@ -23,25 +23,6 @@ require('dotenv').config()
 import http from 'http';
 import {Server} from 'socket.io'
 import cors from 'cors'
-const app = express();
-const server = http.createServer(app)
-const io =  new Server(server, {
-    cors: {
-        origin: "http://localhost:3000",
-        methods: ['GET', 'POST', 'PUT', 'DELETE']
-    }
-})
-
-// app.io = io; //do we really need this for req.app.io.emit in routes? we can just do io.emit from the io server.
-
-
-app.use(fileUpload());
-app.use(cors());
-app.use(express.json({limit: '1mb'}));
-
-server.listen(9000, () => {
-    console.log('server is running')
-})
 
 //server libraries required to do actual stuff
 import openAI from 'openai'
@@ -50,13 +31,34 @@ import officeParser from 'officeparser'
 import pdfParse from 'pdf-parse'
 import { YoutubeTranscript } from 'youtube-transcript'
 
-const openai = new openAI({
-    apiKey: process.env.OPEN_AI_KEY,
-});
+//importing routes
+import router from './router'
 
+//server setup
+const app = express();
+const server = http.createServer(app)
+const io =  new Server(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ['GET', 'POST', 'PUT', 'DELETE']
+    }
+})
+app.use(fileUpload());
+app.use(cors());
+app.use(express.json({limit: '1mb'}));
+server.listen(9000, () => {
+    console.log('server is running')
+})
+
+// app.io = io; //do we really need this for req.app.io.emit in routes? we can just do io.emit from the io server.
 // io.on('connection', (socket:any) => {
 //     console.log('yay')
 // })
+
+//setup chatgpt connection
+const openai = new openAI({
+    apiKey: process.env.OPEN_AI_KEY,
+});
 
 //setup mongodb connection
 let mongoUrl = process.env.MONGO_URL as string
@@ -65,7 +67,10 @@ mongoose.connection.on('error', (error:any) => {
     console.log(error);
 })
 
-//fix req, res type any
+//setup routes
+app.use('/', router())
+
+//main question getter
 app.post('/api', (req: express.Request, res: express.Response) => {
 
     const inputType:contentFormatState = req.body.contentInputType;
