@@ -19,6 +19,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.1",
+    "lodash": "^4.17.21",
     "mongodb": "^6.1.0",
     "mongoose": "^7.6.2",
     "officeparser": "^3.3.0",
@@ -29,6 +30,7 @@
     "youtube-transcript": "^1.0.6"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.200",
     "@types/node": "^20.8.4",
     "nodemon": "^3.0.1"
   }

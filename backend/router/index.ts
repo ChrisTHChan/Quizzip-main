@@ -1,11 +1,13 @@
 import express from 'express';
-import authRegisterRoute from './authentication';
+import authentication from './authentication';
 import questionGenerationRoute from './question-generator'
+import getAllUsers from './users'
 
 const router = express.Router();
 
 export default ():express.Router => {
-    authRegisterRoute(router);
+    authentication(router);
     questionGenerationRoute(router);
+    getAllUsers(router);
     return router;
 }
