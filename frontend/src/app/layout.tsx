@@ -3,9 +3,9 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Image from 'next/image';
 import logo from '../../public/images/logo.png';
-import PrimaryButton from './components/primaryButton';
+import PrimaryButton from '../components/primaryButton';
 import Link from 'next/link';
-import SecondaryButton from './components/secondaryButton';
+import SecondaryButton from '../components/secondaryButton';
 
 const inter = Inter({ subsets: ['latin'] })
 

@@ -6,7 +6,7 @@ type props = {
     headerClasses?: string
 }
 
-import PrimaryButton from "../components/primaryButton"
+import PrimaryButton from "../../components/primaryButton"
 
 const Card = ({header, price, includeButton, listItems, headerClasses}: props) => {
     return (

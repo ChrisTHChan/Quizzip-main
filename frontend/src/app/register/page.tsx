@@ -1,6 +1,6 @@
 'use client'
 
-import SimpleInput from "../components/simpleInput"
+import SimpleInput from "../../components/simpleInput"
 import { useState } from "react";
 
 export default function Register() {
