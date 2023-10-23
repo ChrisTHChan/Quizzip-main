@@ -186,7 +186,7 @@ const Form = () => {
         contentInput = (
             <>
                 <p className="mb-2">Please enter the youtube video URL you wish to use:</p>
-                <SimpleInput name="youtubeUrl" onChange={handleInputChange} label="Youtube Url" placeholder="Enter Youtube url here" value={inputState.youtubeUrl} isNumber={false}/>
+                <SimpleInput name="youtubeUrl" onChange={handleInputChange} label="Youtube Url" placeholder="Enter Youtube url here" value={inputState.youtubeUrl}/>
             </>
         ) 
     } else if (contentFormatState === 'text') {
@@ -248,9 +248,9 @@ const Form = () => {
                 <SimpleCheckbox onChange={handleCheckboxChange} checkedState={checkboxState.multipleChoiceCheckbox} name="multipleChoiceCheckbox" label="Multiple Choice" extra_classes="mb-2"/>
                 <SimpleCheckbox onChange={handleCheckboxChange} checkedState={checkboxState.shortAnswerCheckbox} name="shortAnswerCheckbox" label="Short Answer" extra_classes="mb-2"/>
                 <SimpleCheckbox onChange={handleCheckboxChange} checkedState={checkboxState.trueOrFalseCheckbox} name="trueOrFalseCheckbox" label="True or False" extra_classes="mb-2"/>
-                {checkboxState.multipleChoiceCheckbox ? <SimpleInput isNumber={true} name="multipleChoiceNumber" onChange={handleInputChange} label="Please enter the # of Multiple Choice Questions you want (max 15):" placeholder="Enter # here" value={inputState.multipleChoiceNumber}/> : null}
-                {checkboxState.shortAnswerCheckbox ? <SimpleInput isNumber={true} name="shortAnswerNumber" onChange={handleInputChange} label="Please enter the # of Short Answer Questions you want (max 15):" placeholder="Enter # here" value={inputState.shortAnswerNumber}/> : null}
-                {checkboxState.trueOrFalseCheckbox ? <SimpleInput isNumber={true} name="trueOrFalseNumber" onChange={handleInputChange} label="Please enter the # of True or False Questions you want (max 15):" placeholder="Enter # here" value={inputState.trueOrFalseNumber}/> : null}
+                {checkboxState.multipleChoiceCheckbox ? <SimpleInput type="number" name="multipleChoiceNumber" onChange={handleInputChange} label="Please enter the # of Multiple Choice Questions you want (max 15):" placeholder="Enter # here" value={inputState.multipleChoiceNumber}/> : null}
+                {checkboxState.shortAnswerCheckbox ? <SimpleInput type="number" name="shortAnswerNumber" onChange={handleInputChange} label="Please enter the # of Short Answer Questions you want (max 15):" placeholder="Enter # here" value={inputState.shortAnswerNumber}/> : null}
+                {checkboxState.trueOrFalseCheckbox ? <SimpleInput type="number" name="trueOrFalseNumber" onChange={handleInputChange} label="Please enter the # of True or False Questions you want (max 15):" placeholder="Enter # here" value={inputState.trueOrFalseNumber}/> : null}
                 <div className="flex flex-wrap mt-5">
                     <PrimaryButton extra_classes="mr-4 mb-2" onClick={getData} disabled={getQuestionsButtonState.buttonDisabled}>{getQuestionsButtonState.buttonText}</PrimaryButton>
                     <SecondaryButton extra_classes="mb-2" onClick={clearFormInput}>Clear All Parameters</SecondaryButton>
