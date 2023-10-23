@@ -9,6 +9,8 @@ require('dotenv').config()
 import http from 'http';
 import {Server} from 'socket.io'
 import cors from 'cors'
+import compression from 'compression'
+import cookieParser from 'cookie-parser';
 
 //importing routes
 import router from './router'
@@ -23,6 +25,8 @@ const io =  new Server(server, {
     }
 })
 app.use(fileUpload());
+app.use(compression());
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json({limit: '1mb'}));
 server.listen(9000, () => {

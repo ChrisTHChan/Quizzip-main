@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, getUserByEmail, getUserById, updateUserById } from '../db/users';
+import { createUser, getUserByEmail, getUserById } from '../db/users';
 import { random, authentication } from '../helpers/auth-helpers';
 
 export const logout = async (req: express.Request, res: express.Response) => {
@@ -13,11 +13,13 @@ export const logout = async (req: express.Request, res: express.Response) => {
             return res.sendStatus(400);
         }
 
-        user.authentication!.sessionToken = ''
+        user.authentication!.sessionToken = authentication(random(), user._id.toString())
 
         await user.save()
 
-        res.cookie('QUIZZIP-AUTH', null)
+        res.cookie('QUIZZIP-AUTH', authentication(random(), user._id.toString()))
+
+        res.json(user);
 
     } catch (error) {
         console.log(error)
@@ -65,6 +67,8 @@ export const register = async (req: express.Request, res: express.Response) => {
     try {
         const {email, password, username} = req.body
 
+        console.log(req.body);
+
         if (!email || !password || !username) {
             return res.sendStatus(400)
         }
@@ -86,7 +90,7 @@ export const register = async (req: express.Request, res: express.Response) => {
 
         })
 
-        return res.status(200).json(user).end();
+        return res.json(user).end();
 
     } catch (error) {
         console.log(error)
