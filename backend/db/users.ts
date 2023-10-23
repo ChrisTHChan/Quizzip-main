@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
     authentication: {
         password: {type: String, required: true, select: false},
         salt: {type: String, select: false},
-        sessionToken: {type: String, select: false},
+        sessionToken: {type: String , select: false},
     }
 })
 
@@ -45,5 +45,5 @@ export const deleteUserById = (id: String) => {
 }
 
 export const updateUserById = (id: String, values: Record<string, any>) => {
-    return UserModel.findByIdAndUpdate(id, values)
+    return UserModel.findByIdAndUpdate({_id: id}, values)
 }

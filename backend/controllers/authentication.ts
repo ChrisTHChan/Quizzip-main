@@ -1,6 +1,29 @@
 import express from 'express';
-import { createUser, getUserByEmail } from '../db/users';
+import { createUser, getUserByEmail, getUserById, updateUserById } from '../db/users';
 import { random, authentication } from '../helpers/auth-helpers';
+
+export const logout = async (req: express.Request, res: express.Response) => {
+    try {
+
+        const { id } =  req.params;
+
+        const user = await getUserById(id);
+
+        if (!user) {
+            return res.sendStatus(400);
+        }
+
+        user.authentication!.sessionToken = ''
+
+        await user.save()
+
+        res.cookie('QUIZZIP-AUTH', null)
+
+    } catch (error) {
+        console.log(error)
+        return res.sendStatus(400);
+    }
+}
 
 export const login = async (req: express.Request, res: express.Response) => {
     try {
