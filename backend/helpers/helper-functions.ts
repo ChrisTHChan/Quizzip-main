@@ -56,6 +56,11 @@ export const generateQuestions = async (questionType: 'multiple choice' | 'short
    return question;
 }
 
+export const validateEmail = (email: string) => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+}
+
 export const splitString = (str: string, num: number) => {
     const len = str.length / num;
     const creds = str.split("").reduce((acc: any, val) => {

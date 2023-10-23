@@ -1,6 +1,7 @@
 import express from 'express';
 import { createUser, getUserByEmail, getUserById } from '../db/users';
 import { random, authentication } from '../helpers/auth-helpers';
+import { validateEmail } from '../helpers/helper-functions';
 
 export const logout = async (req: express.Request, res: express.Response) => {
     try {
@@ -70,13 +71,17 @@ export const register = async (req: express.Request, res: express.Response) => {
         console.log(req.body);
 
         if (!email || !password || !username) {
-            return res.sendStatus(400)
+            throw new Error("Please make sure all fields are filled in.") 
+        }
+
+        if (!validateEmail(email)) {
+            throw new Error("Please use a valid email.") 
         }
 
         const existingUser = await getUserByEmail(email);
 
         if (existingUser) {
-            return res.sendStatus(400);
+            throw new Error("This user already exists.") 
         }
 
         const salt = random()
@@ -87,13 +92,16 @@ export const register = async (req: express.Request, res: express.Response) => {
                 salt,
                 password: authentication(salt, password),
             },
-
         })
 
-        return res.json(user).end();
+        return res.status(200).json({
+            registrationStatus: `Registration successful. Please login through the login page now.`
+        });
 
-    } catch (error) {
+    } catch (error: any) {
         console.log(error)
-        return res.sendStatus(400);
+        return res.status(400).json({
+            registrationStatus: `Registration failed: ${error.message}`
+        });
     }
 }
