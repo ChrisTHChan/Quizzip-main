@@ -14,11 +14,11 @@ export const logout = async (req: express.Request, res: express.Response) => {
             return res.sendStatus(400);
         }
 
-        user.authentication!.sessionToken = authentication(random(), user._id.toString())
+        user.authentication!.sessionToken = ''
 
         await user.save()
 
-        res.cookie('QUIZZIP-AUTH', authentication(random(), user._id.toString()))
+        res.clearCookie("QUIZZIP-AUTH", { domain: 'localhost', path: '/'});
 
         res.json(user);
 
@@ -33,19 +33,19 @@ export const login = async (req: express.Request, res: express.Response) => {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return res.sendStatus(400);
+            throw new Error("Please make sure all fields are filled in.") 
         }
 
         const user = await getUserByEmail(email).select('+authentication.salt +authentication.password')
 
         if (!user) {
-            return res.sendStatus(400);
+            throw new Error("This user doesn't exist, please check your email or password.") 
         }
 
         const expectedHash = authentication(user.authentication!.salt as string, password)
 
         if (user.authentication!.password !== expectedHash) {
-            return res.sendStatus(403);
+            throw new Error("This user doesn't exist, please check your email or password. fjdkaljfdklajfklad") 
         } 
 
         const salt = random()
@@ -54,21 +54,23 @@ export const login = async (req: express.Request, res: express.Response) => {
 
         await user.save()
 
-        res.cookie('QUIZZIP-AUTH', user.authentication!.sessionToken, { domain: 'localhost', path: '/'})
+        res.cookie('QUIZZIP-AUTH', user.authentication!.sessionToken, { domain: 'localhost', path: '/'});
 
-        return res.status(200).json(user).end();
+        return res.status(200).json({
+            signInStatus: `Sign in successful.`
+        });
 
-    } catch (error) {
-        console.log(error);
-        return res.sendStatus(400);
+    } catch (error: any) {
+        console.log(error)
+        return res.status(400).json({
+            signInStatus: `Sign in failed: ${error.message}`
+        });
     }
 }
 
 export const register = async (req: express.Request, res: express.Response) => {
     try {
         const {email, password, username} = req.body
-
-        console.log(req.body);
 
         if (!email || !password || !username) {
             throw new Error("Please make sure all fields are filled in.") 

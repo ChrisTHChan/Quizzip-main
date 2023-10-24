@@ -21,13 +21,13 @@ const server = http.createServer(app)
 const io =  new Server(server, {
     cors: {
         origin: "http://localhost:3000",
-        methods: ['GET', 'POST', 'PUT', 'DELETE']
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
     }
 })
 app.use(fileUpload());
 app.use(compression());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(express.json({limit: '1mb'}));
 server.listen(9000, () => {
     console.log('server is running')

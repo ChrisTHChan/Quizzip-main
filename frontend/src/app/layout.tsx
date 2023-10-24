@@ -6,6 +6,7 @@ import logo from '../../public/images/logo.png';
 import PrimaryButton from '../components/primaryButton';
 import Link from 'next/link';
 import SecondaryButton from '../components/secondaryButton';
+import HeaderProfile from '@/components/headerProfile';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -34,8 +35,7 @@ export default function RootLayout({
             <div>
               <Link className="mr-4 text-sm font-semibold hover:underline underline-offset-8" href="/contact">Contact</Link>
               <Link className="mr-4 text-sm font-semibold hover:underline underline-offset-8" href="/pricing">Pricing</Link>
-              <Link href='register'><SecondaryButton extra_classes="px-4 mr-4 ">Register</SecondaryButton></Link>
-              <Link href='sign-in'><PrimaryButton extra_classes="px-4">Sign In</PrimaryButton></Link>
+              <HeaderProfile/>
             </div>
           </div>
         </header>
