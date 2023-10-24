@@ -1,30 +1,34 @@
 import express from 'express';
-import { createUser, getUserByEmail, getUserById } from '../db/users';
+import { createUser, getUserByEmail, getUserBySessionToken } from '../db/users';
 import { random, authentication } from '../helpers/auth-helpers';
 import { validateEmail } from '../helpers/helper-functions';
 
 export const logout = async (req: express.Request, res: express.Response) => {
     try {
 
-        const { id } =  req.params;
+        console.log('logging out');
 
-        const user = await getUserById(id);
+        const { sessionId } =  req.params;
+
+        const user = await getUserBySessionToken(sessionId);
 
         if (!user) {
-            return res.sendStatus(400);
+            throw new Error("You are not logged in.") 
         }
 
         user.authentication!.sessionToken = ''
 
         await user.save()
 
-        res.clearCookie("QUIZZIP-AUTH", { domain: 'localhost', path: '/'});
+        res.clearCookie("QUIZZIP-AUTH");
 
-        res.json(user);
+        return res.status(200).json(user);
 
-    } catch (error) {
+    } catch (error: any) {
         console.log(error)
-        return res.sendStatus(400);
+        return res.status(400).json({
+            signInStatus: `Logout failed: ${error.message}`
+        });
     }
 }
 
@@ -54,7 +58,7 @@ export const login = async (req: express.Request, res: express.Response) => {
 
         await user.save()
 
-        res.cookie('QUIZZIP-AUTH', user.authentication!.sessionToken, { domain: 'localhost', path: '/'});
+        res.cookie('QUIZZIP-AUTH', user.authentication!.sessionToken);
 
         return res.status(200).json({
             signInStatus: `Sign in successful.`

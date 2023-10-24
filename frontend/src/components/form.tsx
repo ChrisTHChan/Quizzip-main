@@ -100,13 +100,11 @@ const Form = () => {
             if (tabBar.current.scrollLeft > 0) {
                 setTabBarState('right');
             } 
-            console.log(tabBar.current.scrollLeft);
         } else {
             tabBar.current.scrollLeft -= 1000;
             if (tabBar.current.scrollLeft === 0) {
                 setTabBarState('left');
             } 
-            console.log(tabBar.current.scrollLeft);
         }
     }
 

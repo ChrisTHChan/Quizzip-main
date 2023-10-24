@@ -4,16 +4,15 @@ import { getUserBySessionToken } from '../db/users';
 
 export const isOwner = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
-        
-        const { id } = req.params;
+        const { sessionId } = req.params;
 
-        const currentUserId = get(req, 'identity._id') as unknown as string;
+        const currentSessionToken = get(req, 'identity.authentication.sessionToken') as unknown as string
 
-        if (!currentUserId) {
+        if (!currentSessionToken) {
             return res.sendStatus(403)
         }
 
-        if (currentUserId.toString() !== id) {
+        if (currentSessionToken.toString() !== sessionId) {
             return res.sendStatus(403);
         }
 
@@ -27,13 +26,13 @@ export const isOwner = async (req: express.Request, res: express.Response, next:
 
 export const isAuthenticated = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
-        const sessionToken =  req.cookies['QUIZZIP-AUTH'];
+        const sessionToken =  req.params.sessionId;
 
         if (!sessionToken) {
             return res.sendStatus(403);
         }
 
-        const existingUser = await getUserBySessionToken(sessionToken);
+        const existingUser = await getUserBySessionToken(sessionToken).select('+authentication.sessionToken')
 
         if (!existingUser) {
             return res.sendStatus(403);
