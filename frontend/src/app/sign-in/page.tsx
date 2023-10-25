@@ -2,11 +2,13 @@
 
 import SimpleInput from "@/components/simpleInput"
 import PrimaryButton from "@/components/primaryButton"
-import Cookies from 'js-cookie';
 import {useState} from 'react'
 import { validateEmail } from "@/util-functions/helper-functions"
+import { useRouter } from 'next/navigation'
 
 export default function SignIn() {
+
+  const router = useRouter();
 
   //state
 
@@ -42,7 +44,11 @@ export default function SignIn() {
           credentials: 'include',
       })
       .then((res) => {
-          return res.json();
+          if (res.status === 200) {
+            location.href = "/";
+          }
+
+          return res.json()
       })
       .then((res) => {
           setSignInStatus(res.signInStatus);
@@ -59,23 +65,6 @@ export default function SignIn() {
     }
   }
 
-  const logout = () => {
-    const sessionId = Cookies.get('QUIZZIP-AUTH')
-
-    fetch(`http://localhost:9000/auth/logout/${sessionId}`, {
-        method: 'POST',
-        credentials: 'include',
-    })
-    .then(() => {
-        return
-    })
-    .catch((err) => {
-        setSignInStatus('Something went wrong, please try signing out again.');
-        console.log(err);
-        return
-    })
-  }
-
   return (
     <>
       <div className="py-10 flex justify-center items-center">
@@ -88,7 +77,6 @@ export default function SignIn() {
                         <SimpleInput type="email" extra_classes="w-full" name="email" onChange={handleInputChange} placeholder="Enter Email" label="E-mail" value={inputState.email}/>
                         <SimpleInput type="password" extra_classes="w-full" name="password" onChange={handleInputChange} placeholder="Enter Password" label="Password" value={inputState.password}/>
                         <PrimaryButton onClick={submitSignIn} extra_classes="mt-2 mb-2">Sign In</PrimaryButton>
-                        <PrimaryButton onClick={logout} extra_classes="mt-2 mb-2">Sign Out</PrimaryButton>
                         <p className="text-xs mb-8">{signInStatus}</p> 
                     </div>
                 </div>

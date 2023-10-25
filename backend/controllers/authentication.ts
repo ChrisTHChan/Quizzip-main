@@ -3,6 +3,25 @@ import { createUser, getUserByEmail, getUserBySessionToken } from '../db/users';
 import { random, authentication } from '../helpers/auth-helpers';
 import { validateEmail } from '../helpers/helper-functions';
 
+export const checkUserSessionToken = async (req: express.Request, res: express.Response) => {
+    try {
+        
+        const { sessionId } =  req.params;
+
+        const user = await getUserBySessionToken(sessionId);
+
+        if (!user) {
+            throw new Error("No such user.") 
+        }
+
+        return res.status(200).end();
+
+    } catch (error: any) {
+        console.log(error)
+        return res.status(403).end()
+    }
+}
+
 export const logout = async (req: express.Request, res: express.Response) => {
     try {
 
@@ -22,7 +41,7 @@ export const logout = async (req: express.Request, res: express.Response) => {
 
         res.clearCookie("QUIZZIP-AUTH");
 
-        return res.status(200).json(user);
+        return res.status(200).end();
 
     } catch (error: any) {
         console.log(error)
@@ -34,16 +53,23 @@ export const logout = async (req: express.Request, res: express.Response) => {
 
 export const login = async (req: express.Request, res: express.Response) => {
     try {
+
         const { email, password } = req.body;
+
+        const currentCookie = req.cookies['QUIZZIP-AUTH'];
 
         if (!email || !password) {
             throw new Error("Please make sure all fields are filled in.") 
         }
 
-        const user = await getUserByEmail(email).select('+authentication.salt +authentication.password')
+        const user = await getUserByEmail(email).select('+authentication.salt +authentication.password +authentication.sessionToken')
 
         if (!user) {
             throw new Error("This user doesn't exist, please check your email or password.") 
+        }
+
+        if (user.authentication!.sessionToken === currentCookie) {
+            throw new Error("You are already logged in.")
         }
 
         const expectedHash = authentication(user.authentication!.salt as string, password)
