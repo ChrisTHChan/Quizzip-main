@@ -21,8 +21,13 @@ import Question from './questionComponent'
 import io from 'socket.io-client'
 import PrimaryButton from './primaryButton';
 import SecondaryButton from './secondaryButton';
+import useAuthStore from '@/store/store';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const Form = () => {
+    //zustand global state references ###########################################################################################################################################
+    const { auth } = useAuthStore();
 
     //refs ###########################################################################################################################################
     const tabBar = useRef<any>(null)
@@ -179,6 +184,7 @@ const Form = () => {
     }
 
     let contentInput
+    let submitSection
 
     if (contentFormatState === 'youtubeURL') {
         contentInput = (
@@ -221,6 +227,24 @@ const Form = () => {
         )
     }
 
+    if (auth === 'auth') {
+        submitSection = (
+            <div className="flex flex-wrap mt-5">
+                <PrimaryButton extra_classes="mr-4 mb-2" onClick={getData} disabled={getQuestionsButtonState.buttonDisabled}>{getQuestionsButtonState.buttonText}</PrimaryButton>
+                <SecondaryButton extra_classes="mb-2" onClick={clearFormInput}>Clear All Parameters</SecondaryButton>
+            </div>
+        )
+    } else if (auth === 'not-auth') {
+        submitSection = (
+            <div className="flex flex-wrap mt-5">
+                <PrimaryButton extra_classes="mr-4 mb-2" onClick={getData} disabled={true}>Please sign in first to start!</PrimaryButton>
+                <SecondaryButton extra_classes="mb-2" onClick={clearFormInput}>Clear All Parameters</SecondaryButton>
+            </div>
+        )
+    } else {
+        <Skeleton className="!w-20" baseColor="#0f172a" highlightColor="#334155"/>
+    }
+
     return (
         <div className="w-full px-4 flex flex-col lg:flex-row justify-between">
             <div className="w-full lg:w-1/2 lg:pr-4 border-0 lg:border-r border-slate-800">
@@ -249,10 +273,11 @@ const Form = () => {
                 {checkboxState.multipleChoiceCheckbox ? <SimpleInput type="number" name="multipleChoiceNumber" onChange={handleInputChange} label="Please enter the # of Multiple Choice Questions you want (max 15):" placeholder="Enter # here" value={inputState.multipleChoiceNumber}/> : null}
                 {checkboxState.shortAnswerCheckbox ? <SimpleInput type="number" name="shortAnswerNumber" onChange={handleInputChange} label="Please enter the # of Short Answer Questions you want (max 15):" placeholder="Enter # here" value={inputState.shortAnswerNumber}/> : null}
                 {checkboxState.trueOrFalseCheckbox ? <SimpleInput type="number" name="trueOrFalseNumber" onChange={handleInputChange} label="Please enter the # of True or False Questions you want (max 15):" placeholder="Enter # here" value={inputState.trueOrFalseNumber}/> : null}
-                <div className="flex flex-wrap mt-5">
+                {submitSection}
+                {/* <div className="flex flex-wrap mt-5">
                     <PrimaryButton extra_classes="mr-4 mb-2" onClick={getData} disabled={getQuestionsButtonState.buttonDisabled}>{getQuestionsButtonState.buttonText}</PrimaryButton>
                     <SecondaryButton extra_classes="mb-2" onClick={clearFormInput}>Clear All Parameters</SecondaryButton>
-                </div>
+                </div> */}
                 <p className="text-xs mb-8">{requestStatus}</p> 
             </div>
             <div className="w-full lg:w-1/2 lg:pl-4"> 
