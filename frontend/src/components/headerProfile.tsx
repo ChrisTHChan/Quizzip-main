@@ -4,20 +4,28 @@ import Link from 'next/link';
 import PrimaryButton from './primaryButton';
 import SecondaryButton from './secondaryButton';
 import Cookies from 'js-cookie';
-import {useState, useLayoutEffect} from 'react'
+import {useState, useEffect} from 'react'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const HeaderProfile = () => {
-
-    //effect
-
-    useLayoutEffect(() => {
-        checkUserSession()
-    }, [])
 
     //state 
 
     const [userAuthenticated, setUserAuthenticated] = useState<'auth' | 'not-auth' | null>(null)
     const [sessionId] = useState(Cookies.get('QUIZZIP-AUTH'))
+
+    //effect
+
+    useEffect(() => {
+
+        if (!sessionId) {
+            setUserAuthenticated('not-auth');
+            return
+        }
+        
+        checkUserSession();
+    }, [])
 
     //handlers
 
@@ -76,7 +84,7 @@ const HeaderProfile = () => {
         authComponent = null
     }
 
-    return authComponent
+    return authComponent || <Skeleton className="!w-20" baseColor="#eff6ff" highlightColor="#3b82f6"/>
 }
 
 export default HeaderProfile

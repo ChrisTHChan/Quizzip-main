@@ -27,7 +27,10 @@ export default function SignIn() {
     });
   }
 
-  const submitSignIn = (e:React.FormEvent<HTMLInputElement>) => {
+  const submitSignIn = (e:React.FormEvent<HTMLFormElement>) => {
+
+    e.preventDefault()
+
     const emailValid = validateEmail(inputState.email)
 
     if (emailValid && inputState.email && inputState.password) {
@@ -74,9 +77,11 @@ export default function SignIn() {
                 {/* <h3 className="text-center mb-4 text-slate-500">Free users get <span className="font-extrabold">access to limited features</span>. Upgrade your account to a monthly subscription to get more features!</h3> */}
                 <div className="flex w-full justify-center">
                     <div className="w-1/2">
-                        <SimpleInput type="email" extra_classes="w-full" name="email" onChange={handleInputChange} placeholder="Enter Email" label="E-mail" value={inputState.email}/>
-                        <SimpleInput type="password" extra_classes="w-full" name="password" onChange={handleInputChange} placeholder="Enter Password" label="Password" value={inputState.password}/>
-                        <PrimaryButton onClick={submitSignIn} extra_classes="mt-2 mb-2">Sign In</PrimaryButton>
+                        <form onSubmit={submitSignIn}>
+                          <SimpleInput type="email" extra_classes="w-full" name="email" onChange={handleInputChange} placeholder="Enter Email" label="E-mail" value={inputState.email}/>
+                          <SimpleInput type="password" extra_classes="w-full" name="password" onChange={handleInputChange} placeholder="Enter Password" label="Password" value={inputState.password}/>
+                          <PrimaryButton type="submit" extra_classes="mt-2 mb-2">Sign In</PrimaryButton>
+                        </form>
                         <p className="text-xs mb-8">{signInStatus}</p> 
                     </div>
                 </div>
