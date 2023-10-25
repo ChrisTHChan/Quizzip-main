@@ -84,7 +84,7 @@ const HeaderProfile = () => {
         authComponent = null
     }
 
-    return authComponent || <Skeleton className="!w-20" baseColor="#eff6ff" highlightColor="#3b82f6"/>
+    return authComponent || <Skeleton className="!w-20" baseColor="#0f172a" highlightColor="#334155"/>
 }
 
 export default HeaderProfile
