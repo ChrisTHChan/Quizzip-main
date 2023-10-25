@@ -7,24 +7,23 @@ import Cookies from 'js-cookie';
 import {useState, useEffect} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import useAuthStore from '@/store/store';
 
 const HeaderProfile = () => {
 
+    const {auth, setAuthTrue, setAuthFalse} = useAuthStore();
+    
     //state 
-
-    const [userAuthenticated, setUserAuthenticated] = useState<'auth' | 'not-auth' | null>(null)
     const [sessionId] = useState(Cookies.get('QUIZZIP-AUTH'))
 
-    //effect
-
     useEffect(() => {
-
         if (!sessionId) {
-            setUserAuthenticated('not-auth');
-            return
+            console.log('hello')
+            setAuthFalse()
+        } else {
+            checkUserSession();
+            console.log('world')
         }
-        
-        checkUserSession();
     }, [])
 
     //handlers
@@ -53,9 +52,9 @@ const HeaderProfile = () => {
         })
         .then((res) => {
             if (res.status === 200) {
-                setUserAuthenticated('auth');
+                setAuthTrue()
             } else {
-                setUserAuthenticated('not-auth');
+                setAuthFalse()
             }
         })
         .catch((err) => {
@@ -66,14 +65,14 @@ const HeaderProfile = () => {
 
     let authComponent
 
-    if (userAuthenticated === 'auth') {
+    if (auth === 'auth') {
         authComponent = (
             <>
                 <SecondaryButton onClick={logout} extra_classes="mt-2 mb-2 mr-4">Sign Out</SecondaryButton>
                 <PrimaryButton>Profile</PrimaryButton>
             </>
         )
-    } else if (userAuthenticated === 'not-auth') {
+    } else if (auth === 'not-auth') {
         authComponent = (
             <>
                 <Link href='register'><SecondaryButton extra_classes="px-4 mr-4 ">Register</SecondaryButton></Link>
