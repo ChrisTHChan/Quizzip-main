@@ -24,6 +24,7 @@ import SecondaryButton from './secondaryButton';
 import useAuthStore from '@/store/store';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import Cookies from 'js-cookie';
 
 const Form = () => {
     //zustand global state references ###########################################################################################################################################
@@ -39,6 +40,7 @@ const Form = () => {
         buttonText: 'Get Questions',
         buttonDisabled: false,
     });
+    const [saveButtonText, setSaveButtonText] = useState('Save to Library')
     const [tabBarState, setTabBarState] = useState<'right' | 'left'>('left')
     const [contentFormatState, setContentFormatState] = useState<contentFormatState>('youtubeURL')
     const [fileUpload, setFileUpload] = useState<null | File>(null)
@@ -184,6 +186,31 @@ const Form = () => {
         })
     }
 
+    const saveTest = () => {
+
+        const test = {
+            testLabel: inputState.questionsLabel,
+            test: questions
+        }
+
+        console.log(JSON.stringify(test));
+
+        fetch(`http://localhost:9000/users/lib/save/${Cookies.get('QUIZZIP-AUTH')}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(test),
+        })
+        .then(res => res.json())
+        .then((res) => {
+            setSaveButtonText(res.saveRequestStatus);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    } 
+
     let contentInput
     let submitSection
 
@@ -293,7 +320,7 @@ const Form = () => {
                 <SimpleCheckbox onChange={handleCheckboxChange} checkedState={checkboxState.provideAnswers} name="provideAnswers" label="Provide me answers as well." extra_classes="py-2 border-b text-sm mb-4 border-slate-500"/>
                 <div className="flex gap-0 sm:gap-3 flex-col sm:flex-row">
                     <SimpleInput extra_classes="mr-0 w-full sm:w-80 " name="questionsLabel" onChange={handleInputChange} placeholder="Enter a name for this assessment" value={inputState.questionsLabel}></SimpleInput>
-                    <PrimaryButton extra_classes="mb-4">Save to Library</PrimaryButton>
+                    <PrimaryButton onClick={saveTest} extra_classes="mb-4" disabled={inputState.questionsLabel.length ? false : true}>{saveButtonText}</PrimaryButton>
                 </div>
                 <div className="overflow-y-hidden mb-6">
                     {questions.map((question, i) => <Question key={i} question={question} showAnswers={checkboxState.provideAnswers}/>)}
