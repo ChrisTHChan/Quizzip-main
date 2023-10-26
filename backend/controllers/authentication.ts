@@ -66,14 +66,14 @@ export const login = async (req: express.Request, res: express.Response) => {
             throw new Error("This user doesn't exist, please check your email or password.") 
         }
 
-        if (user.authentication!.sessionToken === currentCookie) {
+        if (user.authentication!.sessionToken && user.authentication!.sessionToken === currentCookie) {
             throw new Error("You are already logged in.")
         }
 
         const expectedHash = authentication(user.authentication!.salt as string, password)
 
         if (user.authentication!.password !== expectedHash) {
-            throw new Error("This user doesn't exist, please check your email or password. fjdkaljfdklajfklad") 
+            throw new Error("This user doesn't exist, please check your email or password.") 
         } 
 
         const salt = random()

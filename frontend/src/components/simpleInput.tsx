@@ -3,7 +3,7 @@ interface props {
     //fix onchange any
     onChange: any,
     placeholder: string,
-    label: string,
+    label?: string,
     value: string | number,
     type?: string,
     extra_classes?: string
