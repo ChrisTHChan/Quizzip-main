@@ -14,10 +14,8 @@ const UserSchema = new mongoose.Schema({
             test: [
                 {
                     question: String,
+                    choices: [String],
                     answer: String,
-                    choices: [
-                        {choice: String}
-                    ]
                 }
             ]
         }
