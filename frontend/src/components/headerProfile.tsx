@@ -18,11 +18,9 @@ const HeaderProfile = () => {
 
     useEffect(() => {
         if (!sessionId) {
-            console.log('hello')
             setAuthFalse()
         } else {
             checkUserSession();
-            console.log('world')
         }
     }, [])
 

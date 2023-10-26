@@ -25,8 +25,6 @@ export const checkUserSessionToken = async (req: express.Request, res: express.R
 export const logout = async (req: express.Request, res: express.Response) => {
     try {
 
-        console.log('logging out');
-
         const { sessionId } =  req.params;
 
         const user = await getUserBySessionToken(sessionId);
