@@ -16,8 +16,8 @@ export const saveTestToLib = async (req: express.Request, res: express.Response)
         }
 
         user.testsLibrary.push({
-            testLabel: req.body.testLabel, 
-            test: req.body.test,
+            testLabel: body.testLabel, 
+            test: body.test,
         })
 
         await user.save()
