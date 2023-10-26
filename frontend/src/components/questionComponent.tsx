@@ -11,7 +11,7 @@ type props = {
 
 const question = ({question, showAnswers}: props) => {
     return (
-        <div className="mb-5 bg-gray-800 rounded-lg p-4">
+        <div className="last:mb-0 mb-3 bg-gray-800 rounded-lg p-4">
             <p className="mb-2">{question.question}</p>
             {
                 question.choices

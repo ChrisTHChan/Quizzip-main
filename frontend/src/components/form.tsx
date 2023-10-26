@@ -49,6 +49,7 @@ const Form = () => {
         shortAnswerNumber: '0',
         trueOrFalseNumber: '0',
         plainTextInput: '',
+        questionsLabel: '',
     });
     const [checkboxState, setCheckboxState] = useState({
         multipleChoiceCheckbox: false,
@@ -247,11 +248,14 @@ const Form = () => {
 
     return (
         <div className="w-full px-4 flex flex-col lg:flex-row justify-between">
+
             <div className="w-full lg:w-1/2 lg:pr-4 border-0 lg:border-r border-slate-800">
+
                 <div className="relative w-full top-1.5">
                     {tabBarState === 'right' ? <button id="scrollLeft" onClick={scrollTabBar} className="absolute left-0 pl-2 pr-8 bg-gradient-to-r from-slate-900 via-slate-900 to-100%"> - </button> : null}
                     {tabBarState === 'left' ? <button id="scrollRight" onClick={scrollTabBar} className="absolute right-0 pr-2 pl-8 bg-gradient-to-r from-transparent via-slate-900 to-slate-900"> + </button> : null}
                 </div>
+
                 <div className="flex mb-4 overflow-x-scroll no-scrollbar" ref={tabBar}>
                     <button value="youtubeURL" onClick={handleContentFormatState} className={`whitespace-nowrap border-b ${contentFormatState === 'youtubeURL' ? 'font-bold' : ''} border-slate-500 p-2 block text-sm hover:font-bold`}>Use Youtube URL</button>
                     <button value="text" onClick={handleContentFormatState} className={`whitespace-nowrap border-b ${contentFormatState === 'text' ? 'font-bold' : ''} border-slate-500 p-2 block text-sm hover:font-bold`}>Use Text Content</button>
@@ -259,39 +263,49 @@ const Form = () => {
                     <button value="doc" onClick={handleContentFormatState} className={`whitespace-nowrap border-b ${contentFormatState === 'doc' ? 'font-bold' : ''} border-slate-500 p-2 block text-sm hover:font-bold`}>Upload Word Document File</button>
                     <button value="ppt" onClick={handleContentFormatState} className={`whitespace-nowrap border-b ${contentFormatState === 'ppt' ? 'font-bold' : ''} border-slate-500 p-2 block text-sm hover:font-bold`}>Upload Powerpoint Document File</button>
                 </div>
+
                 {contentInput}
+
                 <p className="mb-2">Please set the difficulty level:</p>
                 <label htmlFor="difficultyLevel" className="text-xs">Difficulty Level</label>
                 <select onChange={handleInputChange} name="difficultyLevel" className="mr-5 border-slate-500 p-2 border-2 rounded block mb-4 bg-slate-900">
                     <option value="easy">Easy</option>
                     <option value="advanced">Advanced</option>
                 </select>
+
                 <p className="mb-2">Please choose the types of questions you would like to use: </p>
                 <SimpleCheckbox onChange={handleCheckboxChange} checkedState={checkboxState.multipleChoiceCheckbox} name="multipleChoiceCheckbox" label="Multiple Choice" extra_classes="mb-2"/>
                 <SimpleCheckbox onChange={handleCheckboxChange} checkedState={checkboxState.shortAnswerCheckbox} name="shortAnswerCheckbox" label="Short Answer" extra_classes="mb-2"/>
                 <SimpleCheckbox onChange={handleCheckboxChange} checkedState={checkboxState.trueOrFalseCheckbox} name="trueOrFalseCheckbox" label="True or False" extra_classes="mb-2"/>
+                
                 {checkboxState.multipleChoiceCheckbox ? <SimpleInput type="number" name="multipleChoiceNumber" onChange={handleInputChange} label="Please enter the # of Multiple Choice Questions you want (max 15):" placeholder="Enter # here" value={inputState.multipleChoiceNumber}/> : null}
                 {checkboxState.shortAnswerCheckbox ? <SimpleInput type="number" name="shortAnswerNumber" onChange={handleInputChange} label="Please enter the # of Short Answer Questions you want (max 15):" placeholder="Enter # here" value={inputState.shortAnswerNumber}/> : null}
                 {checkboxState.trueOrFalseCheckbox ? <SimpleInput type="number" name="trueOrFalseNumber" onChange={handleInputChange} label="Please enter the # of True or False Questions you want (max 15):" placeholder="Enter # here" value={inputState.trueOrFalseNumber}/> : null}
+                
                 {submitSection}
-                {/* <div className="flex flex-wrap mt-5">
-                    <PrimaryButton extra_classes="mr-4 mb-2" onClick={getData} disabled={getQuestionsButtonState.buttonDisabled}>{getQuestionsButtonState.buttonText}</PrimaryButton>
-                    <SecondaryButton extra_classes="mb-2" onClick={clearFormInput}>Clear All Parameters</SecondaryButton>
-                </div> */}
                 <p className="text-xs mb-8">{requestStatus}</p> 
+
             </div>
+            
             <div className="w-full lg:w-1/2 lg:pl-4"> 
                 {questions.length
                 ? <> 
                 <SimpleCheckbox onChange={handleCheckboxChange} checkedState={checkboxState.provideAnswers} name="provideAnswers" label="Provide me answers as well." extra_classes="py-2 border-b text-sm mb-4 border-slate-500"/>
-                {questions.map((question, i) => <Question key={i} question={question} showAnswers={checkboxState.provideAnswers}/>)} 
+                <div className="flex gap-0 sm:gap-3 flex-col sm:flex-row">
+                    <SimpleInput extra_classes="mr-0 w-full sm:w-80 " name="questionsLabel" onChange={handleInputChange} placeholder="Enter a name for this assessment" value={inputState.questionsLabel}></SimpleInput>
+                    <PrimaryButton extra_classes="mb-4">Save to Library</PrimaryButton>
+                </div>
+                <div className="overflow-y-hidden mb-6">
+                    {questions.map((question, i) => <Question key={i} question={question} showAnswers={checkboxState.provideAnswers}/>)}
+                </div>
                 </> :
                 <div className="h-80 lg:h-full w-full flex items-center rounded-lg justify-center bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-800 via-slate-900 to-slate-900">
                     <p className="italic text-sm font-semibold">Your questions will show up here</p>
                 </div>
                 }
+
             </div>
-            {/* <a className="mr-5 mt-5 border-slate-500 p-2 border-2 rounded block mb-2" href="http://localhost:9000/download">Download Questions PDF</a> */}
+
         </div>
     )
 }
