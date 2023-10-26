@@ -66,7 +66,7 @@ export const login = async (req: express.Request, res: express.Response) => {
             throw new Error("This user doesn't exist, please check your email or password.") 
         }
 
-        if (user.authentication!.sessionToken === currentCookie) {
+        if (user.authentication!.sessionToken && user.authentication!.sessionToken === currentCookie) {
             throw new Error("You are already logged in.")
         }
 
