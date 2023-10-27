@@ -1,4 +1,4 @@
-//add search, show answers
+//add search
 
 'use client'
 
@@ -21,25 +21,17 @@ import Accordion from "@/components/Accordion"
 import PrimaryButton from "@/components/primaryButton"
 import SecondaryButton from "@/components/secondaryButton"
 import {useState} from 'react'
-import SimpleCheckbox from "@/components/simpleCheckbox"
 
 const Test = ({test}: props) => {
 
     //state
 
-    const [checkboxState, setCheckboxState] = useState({
-        showAnswers: false,
-    })
+    const [showAnswers, setShowAnswers] = useState(false);
 
     //handlers
 
-    const handleCheckboxChange = (e: React.FormEvent<HTMLInputElement>) => {
-        const value = (e.target as HTMLInputElement).checked;
-        setCheckboxState({
-          ...checkboxState,
-          [(e.target as HTMLInputElement).name]: value
-        });
-        console.log(checkboxState);
+    const toggleAnswers = () => {
+        setShowAnswers(!showAnswers);
     }
 
     const {testLabel, _id} = test
@@ -48,7 +40,7 @@ const Test = ({test}: props) => {
     const initialContent = (
         <div className='hover:underline'>
             <h2 className='text-xl font-semibold text-left'>{testLabel}</h2>
-            <p className="text-left">Test ID: {_id}</p>
+            <p className="text-left text-sm">Assessment ID: {_id}</p>
         </div>
     )
 
@@ -59,16 +51,16 @@ const Test = ({test}: props) => {
                 questions.map((question, i: number) => {
                     return (
                         <div className="mt-4" key={i}>
-                            <Question question={question} showAnswers={checkboxState.showAnswers}/>
+                            <Question question={question} showAnswers={showAnswers}/>
                         </div>
                     )
                 })
             }
             </Accordion>
             <div>
-                <PrimaryButton extra_classes="mr-2">Export</PrimaryButton>
-                <SecondaryButton>Delete</SecondaryButton>
-                <SimpleCheckbox onChange={handleCheckboxChange} checkedState={checkboxState.showAnswers} name="showAnswers" label="Provide me answers as well." extra_classes="text-sm mb-4"/>
+                <button onClick={toggleAnswers} className="px-4 hover:underline text-sm font-semibold">Toggle Answers</button>
+                <PrimaryButton extra_classes="mr-2 py-3">Export</PrimaryButton>
+                <SecondaryButton extra_classes="py-3">Delete</SecondaryButton>
             </div>
         </div>
     )
