@@ -1,7 +1,7 @@
 'use client'
 
 import SecureNotAuth from "@/components/secureNotAuth"
-import RegisterComponent from "./register"
+import RegisterComponent from "./_components/register"
 import useAuthStore from "@/store/store"
 
 const Register = () => {

@@ -1,7 +1,7 @@
 'use client'
 
 import SecureNotAuth from "@/components/secureNotAuth"
-import SignInComponent from "./sign-in"
+import SignInComponent from "./_components/sign-in"
 import useAuthStore from "@/store/store"
 
 const SignIn = () => {
