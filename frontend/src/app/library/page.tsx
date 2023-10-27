@@ -11,6 +11,7 @@ type test = {
 }
 
 import { cookies } from 'next/headers';
+import Test from './_components/Test'
 
 const getLibraryData = async () => {
 
@@ -39,7 +40,7 @@ const Library = async () => {
                     {
                         tests.length ?
                         tests.map((test: test, i: number) => {
-                            return <h2 key={i} className="text-xl font-semibold">testName: {test.testLabel}, id: {test._id}</h2>
+                            return <Test key={i} test={test}/>
                         })
                         :
                         <div>you have no tests.</div>

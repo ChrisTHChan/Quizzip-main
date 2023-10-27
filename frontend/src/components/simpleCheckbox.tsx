@@ -10,7 +10,7 @@ interface props {
 const SimpleCheckbox = ({onChange, checkedState, name, label, extra_classes}: props) => {
     return (
         <div className={extra_classes}>
-            <input className="mr-1" id={name} onChange={onChange} checked={checkedState} type="checkbox" name={name} value="multiple choice"/>
+            <input className="mr-1" id={name} onChange={onChange} checked={checkedState} type="checkbox" name={name}/>
             <label htmlFor={name}>{label}</label>
         </div>
     )

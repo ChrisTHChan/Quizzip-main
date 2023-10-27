@@ -1,8 +1,3 @@
-//mobile changes
-//pricing page
-//quick faq page
-//footer?
-
 type contentFormatState = 'youtubeURL' | 'text' | 'pdf' | 'doc' | 'ppt'
 
 type question = {
@@ -93,7 +88,7 @@ const Form = () => {
         console.log(inputState);
     };
 
-    const handleCheckboxChange = (e: React.FormEvent<HTMLInputElement> ) => {
+    const handleCheckboxChange = (e: React.FormEvent<HTMLInputElement>) => {
         const value = (e.target as HTMLInputElement).checked;
         setCheckboxState({
           ...checkboxState,
