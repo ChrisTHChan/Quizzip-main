@@ -32,6 +32,7 @@ const Library = async () => {
     const data = await getLibraryData();
 
     const tests = data.testLibrary.testsLibrary;
+    console.log('hello')
 
     return (
         <div className="flex justify-center items-center">

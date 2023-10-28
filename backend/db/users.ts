@@ -1,5 +1,20 @@
 import mongoose from 'mongoose';
 
+const testSchema = new mongoose.Schema({
+    testLabel: String, 
+    test: [
+        {
+            question: String,
+            choices: [String],
+            answer: String,
+        }
+    ],
+})
+
+testSchema.virtual('id').get(function() {
+    return this._id;
+});
+
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true},
     email: {type: String, required: true},
@@ -8,18 +23,7 @@ const UserSchema = new mongoose.Schema({
         salt: {type: String, select: false},
         sessionToken: {type: String , select: false},
     },
-    testsLibrary: [
-        {
-            testLabel: String, 
-            test: [
-                {
-                    question: String,
-                    choices: [String],
-                    answer: String,
-                }
-            ]
-        }
-    ]
+    testsLibrary: [testSchema]
 })
 
 export const UserModel = mongoose.model('User', UserSchema)
@@ -51,9 +55,6 @@ export const createUser = (values: Record<string, any>) => {
         } 
     )
 }
-
-// export const deleteTestfromUserLibrary = () => {
-// }
 
 export const deleteUserById = (id: String) => {
     return UserModel.findOneAndDelete({_id: id})

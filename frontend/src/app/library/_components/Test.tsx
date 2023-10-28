@@ -57,7 +57,7 @@ const Test = ({test}: props) => {
         })
         .then(res => res.json())
         .then((res) => {
-            console.log(res);
+            location.reload();
         })
         .catch((err) => {
             console.log(err);
@@ -69,11 +69,7 @@ const Test = ({test}: props) => {
             <Accordion initialContent={initialContent} extra_classes="grow">
             {
                 questions.map((question, i: number) => {
-                    return (
-                        <div className="mt-4" key={i}>
-                            <Question question={question} showAnswers={showAnswers}/>
-                        </div>
-                    )
+                    return <div className="mt-4" key={i}><Question question={question} showAnswers={showAnswers}/></div>
                 })
             }
             </Accordion>

@@ -20,10 +20,17 @@ export const deleteTestFromLibrary = async (req: express.Request, res: express.R
             throw new Error("No such user.") 
         }
 
-        console.log('testing this delete route cause its so fucking annoying.')
-        console.log(testId, sessionId)
+        const index = user.testsLibrary.findIndex((element) => {
+            return element.id === testId
+        })
 
-        
+        user.testsLibrary.splice(index, 1)  
+
+        console.log(user.testsLibrary);
+
+        await user.save()
+
+        returnTestLibrary(sessionId, res)
 
     } catch (error: any) {
         console.log(error)
