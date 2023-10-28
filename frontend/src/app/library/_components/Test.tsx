@@ -21,6 +21,7 @@ import Accordion from "@/components/Accordion"
 import PrimaryButton from "@/components/primaryButton"
 import SecondaryButton from "@/components/secondaryButton"
 import {useState} from 'react'
+import Cookies from 'js-cookie'
 
 const Test = ({test}: props) => {
 
@@ -44,6 +45,25 @@ const Test = ({test}: props) => {
         </div>
     )
 
+    const deleteTest = () => {
+        fetch(`http://localhost:9000/users/lib/${Cookies.get('QUIZZIP-AUTH')}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                testId: _id
+            })
+        })
+        .then(res => res.json())
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
     return (
         <div className="mb-10 border-b-2 border-slate-700 pb-10 flex items-start justify-between gap-2">
             <Accordion initialContent={initialContent} extra_classes="grow">
@@ -60,7 +80,7 @@ const Test = ({test}: props) => {
             <div>
                 <button onClick={toggleAnswers} className="px-4 hover:underline text-sm font-semibold">Toggle Answers</button>
                 <PrimaryButton extra_classes="mr-2 py-3">Export</PrimaryButton>
-                <SecondaryButton extra_classes="py-3">Delete</SecondaryButton>
+                <SecondaryButton onClick={deleteTest} extra_classes="py-3">Delete</SecondaryButton>
             </div>
         </div>
     )

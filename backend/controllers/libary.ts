@@ -20,11 +20,10 @@ export const deleteTestFromLibrary = async (req: express.Request, res: express.R
             throw new Error("No such user.") 
         }
 
-        // user.testsLibrary.deleteOne();
+        console.log('testing this delete route cause its so fucking annoying.')
+        console.log(testId, sessionId)
 
-        // await user.save();
-
-        // returnTestLibrary(sessionId, res);
+        
 
     } catch (error: any) {
         console.log(error)
