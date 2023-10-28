@@ -1,6 +1,37 @@
 import express from 'express';
 import { getUserBySessionToken } from '../db/users';
 
+const returnTestLibrary = async (sessionId: string, res: express.Response) => {
+    const testLibrary = await getUserBySessionToken(sessionId).select('testsLibrary')
+
+    res.status(200).json({
+        testLibrary: testLibrary
+    })
+} 
+
+export const deleteTestFromLibrary = async (req: express.Request, res: express.Response) => {
+    try {
+        const sessionId = req.params.sessionId;
+        const testId = req.body.testId;
+
+        const user = await getUserBySessionToken(sessionId);
+
+        if (!user) {
+            throw new Error("No such user.") 
+        }
+
+        // user.testsLibrary.deleteOne();
+
+        // await user.save();
+
+        // returnTestLibrary(sessionId, res);
+
+    } catch (error: any) {
+        console.log(error)
+        return res.status(400).end()
+    }
+}
+
 export const getTestLibraryData = async (req: express.Request, res: express.Response) => {
     try {
 
@@ -12,11 +43,7 @@ export const getTestLibraryData = async (req: express.Request, res: express.Resp
             throw new Error("No such user.") 
         }
 
-        const testLibrary = await getUserBySessionToken(sessionId).select('testsLibrary')
-
-        res.status(200).json({
-            testLibrary: testLibrary
-        })
+        returnTestLibrary(sessionId, res)
 
     } catch (error: any) {
         console.log(error)
@@ -28,7 +55,7 @@ export const saveTestToLib = async (req: express.Request, res: express.Response)
     try {
 
         const sessionId = req.params.sessionId
-        const body = req.body.test
+        const body = req.body
 
         console.log(body);
 

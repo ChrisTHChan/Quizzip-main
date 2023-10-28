@@ -119,6 +119,7 @@ const Form = () => {
             multipleChoiceNumber: '0',
             shortAnswerNumber: '0',
             trueOrFalseNumber: '0',
+            questionsLabel: '',
         });
     }
 
@@ -155,6 +156,7 @@ const Form = () => {
             buttonDisabled: true,
             buttonText: 'Loading your questions... Please wait...',
         })
+        setSaveButtonText('Save to Library')
         setRequestStatus('');
         setQuestions([]);
         
