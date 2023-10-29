@@ -64,6 +64,10 @@ const Form = () => {
         socket.on('questionGenerated', (msg) => {
             setRequestStatus(msg);
         })
+
+        return () => {
+            socket.removeAllListeners()
+        }
     }, [])
 
     //functions and handlers ##############################################################################################################################################

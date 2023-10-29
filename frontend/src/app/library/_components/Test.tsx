@@ -78,7 +78,7 @@ const Test = ({test}: props) => {
         })
     }
 
-    const modalStyle = { borderRadius: '4px', backgroundColor: '#e5e7eb' };
+    const modalStyle = { borderRadius: '4px', backgroundColor: '#1F2937', border: "1px solid #1F2937" };
 
     return (
         <div className="mb-10 border-b-2 border-slate-700 pb-10 flex items-start justify-between gap-2 md:flex-row flex-col">
@@ -100,7 +100,7 @@ const Test = ({test}: props) => {
                 onClose={closeModal}
                 contentStyle={modalStyle}
             >
-                <p className="text-slate-900 text-center p-4 font-semibold">
+                <p className="text-slate-200 text-center p-4 font-semibold">
                     Are you sure you want to delete the assessment "{testLabel}"?
                 </p>
                 <div className="flex justify-center w-full"> 
