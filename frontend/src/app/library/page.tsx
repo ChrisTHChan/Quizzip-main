@@ -17,13 +17,14 @@ import Test from './_components/Test'
 
 export const revalidate = 0
 export const dynamic = 'auto'
+export const fetchCache = 'force-no-store';
 
 const getLibraryData = async () => {
 
     const nextCookies = cookies();
     const token = nextCookies.get('QUIZZIP-AUTH')!.value;
 
-    const res = await fetch(`http://localhost:9000/users/lib/${token}`, { cache: 'no-store' })
+    const res = await fetch(`http://localhost:9000/users/lib/${token}`)
 
     if (!res.ok) {
         throw new Error('Failed to fetch data')

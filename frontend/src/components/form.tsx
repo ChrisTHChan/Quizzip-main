@@ -190,8 +190,6 @@ const Form = () => {
             test: questions
         }
 
-        console.log(JSON.stringify(test));
-
         fetch(`http://localhost:9000/users/lib/save/${Cookies.get('QUIZZIP-AUTH')}`, {
             method: 'POST',
             headers: {

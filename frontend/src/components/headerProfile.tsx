@@ -8,8 +8,11 @@ import {useState, useEffect} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import useAuthStore from '@/store/store';
+import { useRouter } from 'next/navigation'
 
 const HeaderProfile = () => {
+
+    const router = useRouter();
 
     const {auth, setAuthTrue, setAuthFalse} = useAuthStore();
     
@@ -25,6 +28,11 @@ const HeaderProfile = () => {
     }, [])
 
     //handlers
+
+    const goToLib = () => {
+        router.replace("/library")
+        router.refresh();
+    }
 
     const logout = () => {
 
@@ -67,7 +75,7 @@ const HeaderProfile = () => {
         authComponent = (
             <>
                 <SecondaryButton onClick={logout} extra_classes="mt-2 mb-2 mr-4 px-4">Sign Out</SecondaryButton>
-                <Link href="library"><PrimaryButton extra_classes='px-4'>Library</PrimaryButton></Link>
+                <PrimaryButton onClick={goToLib} extra_classes='px-4'>Library</PrimaryButton>
             </>
         )
     } else if (auth === 'not-auth') {

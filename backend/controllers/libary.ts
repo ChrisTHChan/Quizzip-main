@@ -63,8 +63,6 @@ export const saveTestToLib = async (req: express.Request, res: express.Response)
         const sessionId = req.params.sessionId
         const body = req.body
 
-        console.log(body);
-
         const user = await getUserBySessionToken(sessionId);
 
         if (!user) {

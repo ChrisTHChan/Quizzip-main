@@ -22,8 +22,14 @@ import PrimaryButton from "@/components/primaryButton"
 import SecondaryButton from "@/components/secondaryButton"
 import {useState} from 'react'
 import Cookies from 'js-cookie'
+import { useRouter } from 'next/navigation'
+
+export const revalidate = 0
+export const dynamic = 'auto'
 
 const Test = ({test}: props) => {
+
+    const router = useRouter();
 
     //state
 
@@ -47,6 +53,7 @@ const Test = ({test}: props) => {
 
     const deleteTest = () => {
         fetch(`http://localhost:9000/users/lib/${Cookies.get('QUIZZIP-AUTH')}`, {
+            cache: 'no-cache',
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/json",
@@ -57,7 +64,7 @@ const Test = ({test}: props) => {
         })
         .then(res => res.json())
         .then((res) => {
-            location.reload();
+            router.refresh()
         })
         .catch((err) => {
             console.log(err);
