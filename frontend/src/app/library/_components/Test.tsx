@@ -23,6 +23,8 @@ import SecondaryButton from "@/components/secondaryButton"
 import {useState} from 'react'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 export const revalidate = 0
 export const dynamic = 'auto'
@@ -34,6 +36,7 @@ const Test = ({test}: props) => {
     //state
 
     const [showAnswers, setShowAnswers] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     //handlers
 
@@ -51,7 +54,11 @@ const Test = ({test}: props) => {
         </div>
     )
 
+    const closeModal = () => setIsDeleteModalOpen(false);
+    const openModal = () => setIsDeleteModalOpen(true)
+
     const deleteTest = () => {
+        closeModal()
         fetch(`http://localhost:9000/users/lib/${Cookies.get('QUIZZIP-AUTH')}`, {
             cache: 'no-cache',
             method: 'DELETE',
@@ -64,12 +71,14 @@ const Test = ({test}: props) => {
         })
         .then(res => res.json())
         .then((res) => {
-            router.refresh()
+            window.location.reload()
         })
         .catch((err) => {
             console.log(err);
         })
     }
+
+    const modalStyle = { borderRadius: '4px', backgroundColor: '#e5e7eb' };
 
     return (
         <div className="mb-10 border-b-2 border-slate-700 pb-10 flex items-start justify-between gap-2 md:flex-row flex-col">
@@ -83,8 +92,21 @@ const Test = ({test}: props) => {
             <div className="min-w-[261px] flex flex-row-reverse md:flex-row mt-2 md:mt-0">
                 <button onClick={toggleAnswers} className="px-4 hover:underline text-sm font-semibold block">Answers</button>
                 <PrimaryButton extra_classes="mr-2 py-3 block">Export</PrimaryButton>
-                <SecondaryButton onClick={deleteTest} extra_classes="py-3 block mr-2 md:mr-0">Delete</SecondaryButton>
+                <SecondaryButton onClick={openModal} extra_classes="py-3 block mr-2 md:mr-0">Delete</SecondaryButton>
             </div>
+            <Popup 
+                open={isDeleteModalOpen} 
+                closeOnDocumentClick 
+                onClose={closeModal}
+                contentStyle={modalStyle}
+            >
+                <p className="text-slate-900 text-center p-4 font-semibold">
+                    Are you sure you want to delete the assessment "{testLabel}"?
+                </p>
+                <div className="flex justify-center w-full"> 
+                    <PrimaryButton extra_classes="mb-4" onClick={deleteTest}>Delete Assessment</PrimaryButton>
+                </div>
+            </Popup>
         </div>
     )
 }

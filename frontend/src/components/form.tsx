@@ -158,7 +158,7 @@ const Form = () => {
             buttonText: 'Loading your questions... Please wait...',
         })
         setSaveButtonStatus({
-            ...saveButtonStatus,
+            status: false,
             text: ''
         })
         setRequestStatus('');
@@ -330,7 +330,7 @@ const Form = () => {
                     saveButtonStatus.status ?
                     null :
                     <div className="flex gap-0 sm:gap-3 flex-col sm:flex-row mb-2">
-                        <SimpleInput extra_classes="mr-0 w-full sm:w-80 mb-0" name="questionsLabel" onChange={handleInputChange} placeholder="Enter a name for this assessment" value={inputState.questionsLabel}></SimpleInput>
+                        <SimpleInput extra_classes="mr-0 w-full sm:w-80 !mb-0" name="questionsLabel" onChange={handleInputChange} placeholder="Enter a name for this assessment" value={inputState.questionsLabel}></SimpleInput>
                         <PrimaryButton onClick={saveTest} disabled={inputState.questionsLabel.length ? false : true}>Save to Library</PrimaryButton>
                     </div>
                 }
