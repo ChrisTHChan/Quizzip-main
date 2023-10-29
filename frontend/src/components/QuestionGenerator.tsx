@@ -21,7 +21,7 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Cookies from 'js-cookie';
 
-const Form = () => {
+const QuestionGenerator = () => {
     //zustand global state references ###########################################################################################################################################
     const { auth } = useAuthStore();
 
@@ -361,4 +361,4 @@ const Form = () => {
     )
 }
 
-export default Form
+export default QuestionGenerator

@@ -1,4 +1,4 @@
-import Form from '../components/form';
+import QuestionGenerator from '../components/QuestionGenerator';
 
 export default function Home() {
 
@@ -11,7 +11,7 @@ export default function Home() {
             <h3 className="text-6xl font-extrabold text-center mb-4">Get back <span className="text-blue-500">hours of your day.</span></h3>
             <h4 className="text-center mb-4 text-slate-500">Quizzip is a tool that accurately and intelligently creates learning assessments based on the educational content you feed it.</h4>
           </div>
-          <Form/>
+          <QuestionGenerator/>
         </div>
       </div>
     </>
