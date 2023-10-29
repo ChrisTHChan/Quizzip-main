@@ -26,8 +26,6 @@ export const deleteTestFromLibrary = async (req: express.Request, res: express.R
 
         user.testsLibrary.splice(index, 1)  
 
-        console.log(user.testsLibrary);
-
         await user.save()
 
         returnTestLibrary(sessionId, res)
@@ -76,14 +74,10 @@ export const saveTestToLib = async (req: express.Request, res: express.Response)
 
         await user.save()
 
-        return res.status(200).json({
-            saveRequestStatus: 'Test saved successfully!',
-        });
+        return res.status(200).end();
 
     } catch (error: any) {
         console.log(error)
-        return res.status(400).json({
-            saveRequestStatus: "Test failed to save. Please try again."
-        })
+        return res.status(400).end();
     }
 }

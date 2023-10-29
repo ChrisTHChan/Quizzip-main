@@ -35,7 +35,10 @@ const Form = () => {
         buttonText: 'Get Questions',
         buttonDisabled: false,
     });
-    const [saveButtonText, setSaveButtonText] = useState('Save to Library')
+    const [saveButtonStatus, setSaveButtonStatus] = useState({
+        status: false,
+        text: '',
+    })
     const [tabBarState, setTabBarState] = useState<'right' | 'left'>('left')
     const [contentFormatState, setContentFormatState] = useState<contentFormatState>('youtubeURL')
     const [fileUpload, setFileUpload] = useState<null | File>(null)
@@ -85,7 +88,6 @@ const Form = () => {
             ...inputState,
             [(e.target as HTMLInputElement).name]: value,
         });
-        console.log(inputState);
     };
 
     const handleCheckboxChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -94,7 +96,6 @@ const Form = () => {
           ...checkboxState,
           [(e.target as HTMLInputElement).name]: value
         });
-        console.log(checkboxState);
     };
 
     const scrollTabBar = (e:React.MouseEvent<HTMLButtonElement>) => {
@@ -156,7 +157,10 @@ const Form = () => {
             buttonDisabled: true,
             buttonText: 'Loading your questions... Please wait...',
         })
-        setSaveButtonText('Save to Library')
+        setSaveButtonStatus({
+            ...saveButtonStatus,
+            text: ''
+        })
         setRequestStatus('');
         setQuestions([]);
         
@@ -197,9 +201,18 @@ const Form = () => {
             },
             body: JSON.stringify(test),
         })
-        .then(res => res.json())
         .then((res) => {
-            setSaveButtonText(res.saveRequestStatus);
+            if (res.ok) {
+                setSaveButtonStatus({
+                    status: true,
+                    text: 'Save success!'
+                });
+            } else {
+                setSaveButtonStatus({
+                    status: false,
+                    text: 'Save didn\'t work, please try again.'
+                });
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -313,10 +326,15 @@ const Form = () => {
                 {questions.length
                 ? <> 
                 <SimpleCheckbox onChange={handleCheckboxChange} checkedState={checkboxState.provideAnswers} name="provideAnswers" label="Provide me answers as well." extra_classes="py-2 border-b text-sm mb-4 border-slate-500"/>
-                <div className="flex gap-0 sm:gap-3 flex-col sm:flex-row">
-                    <SimpleInput extra_classes="mr-0 w-full sm:w-80 " name="questionsLabel" onChange={handleInputChange} placeholder="Enter a name for this assessment" value={inputState.questionsLabel}></SimpleInput>
-                    <PrimaryButton onClick={saveTest} extra_classes="mb-4" disabled={inputState.questionsLabel.length ? false : true}>{saveButtonText}</PrimaryButton>
-                </div>
+                {
+                    saveButtonStatus.status ?
+                    null :
+                    <div className="flex gap-0 sm:gap-3 flex-col sm:flex-row mb-2">
+                        <SimpleInput extra_classes="mr-0 w-full sm:w-80 mb-0" name="questionsLabel" onChange={handleInputChange} placeholder="Enter a name for this assessment" value={inputState.questionsLabel}></SimpleInput>
+                        <PrimaryButton onClick={saveTest} disabled={inputState.questionsLabel.length ? false : true}>Save to Library</PrimaryButton>
+                    </div>
+                }
+                <p className="text-xs mb-4">{saveButtonStatus.text}</p> 
                 <div className="overflow-y-hidden mb-6">
                     {questions.map((question, i) => <Question key={i} question={question} showAnswers={checkboxState.provideAnswers}/>)}
                 </div>

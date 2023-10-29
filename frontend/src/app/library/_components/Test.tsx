@@ -72,7 +72,7 @@ const Test = ({test}: props) => {
     }
 
     return (
-        <div className="mb-10 border-b-2 border-slate-700 pb-10 flex items-start justify-between gap-2">
+        <div className="mb-10 border-b-2 border-slate-700 pb-10 flex items-start justify-between gap-2 md:flex-row flex-col">
             <Accordion initialContent={initialContent} extra_classes="grow">
             {
                 questions.map((question, i: number) => {
@@ -80,10 +80,10 @@ const Test = ({test}: props) => {
                 })
             }
             </Accordion>
-            <div>
-                <button onClick={toggleAnswers} className="px-4 hover:underline text-sm font-semibold">Toggle Answers</button>
-                <PrimaryButton extra_classes="mr-2 py-3">Export</PrimaryButton>
-                <SecondaryButton onClick={deleteTest} extra_classes="py-3">Delete</SecondaryButton>
+            <div className="min-w-[261px] flex flex-row-reverse md:flex-row mt-2 md:mt-0">
+                <button onClick={toggleAnswers} className="px-4 hover:underline text-sm font-semibold block">Answers</button>
+                <PrimaryButton extra_classes="mr-2 py-3 block">Export</PrimaryButton>
+                <SecondaryButton onClick={deleteTest} extra_classes="py-3 block mr-2 md:mr-0">Delete</SecondaryButton>
             </div>
         </div>
     )

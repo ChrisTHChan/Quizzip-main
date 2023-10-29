@@ -41,7 +41,7 @@ const Library = async () => {
 
     return (
         <div className="flex justify-center items-center">  
-            <div className="container">
+            <div className="container mx-4">
                 <div className="w-full">
                     {
                         tests.length ?
