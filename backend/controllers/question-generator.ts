@@ -19,6 +19,7 @@ export default async (req: express.Request, res: express.Response) => {
     const mcNum:number = parseInt(req.body.mcNum);
     const saNum:number = parseInt(req.body.saNum);
     const tfNum:number = parseInt(req.body.tfNum);
+    const clientSocketId = req.body.clientSocketId;
     let fileUploadBuffer!: Buffer;
     if (req.files) {
         const upload = req.files.fileUpload as UploadedFile;
@@ -66,7 +67,7 @@ export default async (req: express.Request, res: express.Response) => {
         } else {
             if (mcNum > 0) {
                 for (let i = lastGeneratedType; i < lastGeneratedType + mcNum; i++) {
-                    emitQuestionGenState(i, totalNumQuestions);
+                    emitQuestionGenState(i, totalNumQuestions, clientSocketId);
                     const questions = await generateQuestions('multiple choice', listOfTranscriptSlices[i], difficultyLevel);
                     setupQuestionsReturn(questions)
                 }
@@ -76,7 +77,7 @@ export default async (req: express.Request, res: express.Response) => {
 
             if (saNum > 0) {
                 for (let i = lastGeneratedType; i < lastGeneratedType + saNum; i++) {
-                    emitQuestionGenState(i, totalNumQuestions);
+                    emitQuestionGenState(i, totalNumQuestions, clientSocketId);
                     const questions = await generateQuestions('short answer', listOfTranscriptSlices[i], difficultyLevel);
                     setupQuestionsReturn(questions)
                 }
@@ -86,7 +87,7 @@ export default async (req: express.Request, res: express.Response) => {
 
             if (tfNum > 0) {
                 for (let i = lastGeneratedType; i < lastGeneratedType + tfNum; i++) {
-                    emitQuestionGenState(i, totalNumQuestions);
+                    emitQuestionGenState(i, totalNumQuestions, clientSocketId);
                     const questions = await generateQuestions('true or false', listOfTranscriptSlices[i], difficultyLevel);
                     setupQuestionsReturn(questions)
                 }

@@ -29,6 +29,7 @@ const Form = () => {
     const tabBar = useRef<any>(null)
 
     //state ###############################################################################################################################################
+    const [clientSocketId, setClientSocketId] = useState('')
     const [requestStatus, setRequestStatus] = useState('');
     const [questions, setQuestions] = useState<question[]>([]);
     const [getQuestionsButtonState, setGetQuestionsButtonState] = useState({
@@ -61,6 +62,11 @@ const Form = () => {
     //side effect handlers ##############################################################################################################################################
     useEffect(() => {
         const socket = io('http://localhost:9000')
+
+        socket.on('connect', () => {
+            setClientSocketId(socket.id);
+        })
+
         socket.on('questionGenerated', (msg) => {
             setRequestStatus(msg);
         })
@@ -150,6 +156,7 @@ const Form = () => {
         formData.append("mcNum", inputState.multipleChoiceNumber);
         formData.append("saNum", inputState.shortAnswerNumber);
         formData.append("tfNum", inputState.trueOrFalseNumber);
+        formData.append("clientSocketId", clientSocketId);
         if (contentFormatState === 'youtubeURL') {
             formData.append("contentInput", inputState.youtubeUrl)
         } else if (contentFormatState === 'text') {

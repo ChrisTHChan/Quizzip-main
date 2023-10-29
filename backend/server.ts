@@ -43,11 +43,8 @@ mongoose.connection.on('error', (error:any) => {
 //io websocket methods
 
 // app.io = io; //do we really need this for req.app.io.emit in routes? we can just do io.emit from the io server.
-// io.on('connection', (socket:any) => {
-//     console.log('yay')
-// })
-export const emitQuestionGenState = (i: number, totalNumQuestions: number) => {
-    io.emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
+export const emitQuestionGenState = (i: number, totalNumQuestions: number, socketId: string) => {
+    io.to(socketId).emit('questionGenerated', `Generating question ${i + 1} of ${totalNumQuestions}...`);
 }
 
 //setup routes
