@@ -1,19 +1,7 @@
 //not refreshing all the time when i hit this route????
 
-type test = {
-    testLabel: string, 
-    test: [
-        {
-            question: string,
-            choices?: string[],
-            answer: string,
-        }
-    ]
-    _id: string
-}
-
 import { cookies } from 'next/headers';
-import Test from './_components/Test'
+import TestList from './_components/TestList';
 
 export const revalidate = 0
 export const dynamic = 'auto'
@@ -45,10 +33,7 @@ const Library = async () => {
                 <div className="w-full">
                     {
                         tests.length ?
-                        tests.map((test: test, i: number) => {
-                            return <Test key={i} test={test}/>
-                        })
-                        :
+                        <TestList tests={tests}/> :
                         <div>You have no saved assessments.</div>
                     }
                 </div>

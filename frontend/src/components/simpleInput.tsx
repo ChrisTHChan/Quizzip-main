@@ -4,7 +4,7 @@ interface props {
     onChange: any,
     placeholder: string,
     label?: string,
-    value: string | number,
+    value?: string | number,
     type?: string,
     extra_classes?: string
 }
