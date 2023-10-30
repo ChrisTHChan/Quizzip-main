@@ -12,6 +12,59 @@ const returnTestLibrary = async (sessionId: string, res: express.Response) => {
     })
 } 
 
+export const exportTestAnswersPDF = async (req: express.Request, res: express.Response) => {
+    try {
+        const testId = req.params.testId
+        const path = `./_temp-assessment-folder/assessment-answerKey-${testId}.pdf`
+
+        console.log('exporting test answers')
+
+        res.status(200).download(path, () => {
+            fs.unlinkSync(path)
+            console.log('');
+        });
+    } catch (error: any) {
+        console.log(error)
+        return res.status(400).end();
+    }
+}
+
+export const generateTestAnswersPDF = (req: express.Request, res: express.Response) => {
+    try {
+        const body = req.body
+
+        const doc = new PDFDocument();
+
+        doc.pipe(fs.createWriteStream(`./_temp-assessment-folder/assessment-answerKey-${body._id}.pdf`));
+
+        doc.fontSize(28).text(body.testLabel)
+        doc.moveDown()
+        body.test.forEach((question: question) => {
+            doc.fillColor('black').fontSize(14).text(question.question)
+            doc.moveDown()
+            if (question.choices!.length > 0) {
+                question.choices?.forEach((choice, i) => {
+                    doc.fontSize(12).text(`${i}) ${choice}`)
+                })
+                doc.moveDown()
+                doc.fillColor('green').fontSize(12).text(question.answer)
+            } else {
+                doc.fillColor('green').fontSize(12).text(question.answer);
+            }
+            doc.moveDown();
+        })
+
+        doc.end()
+
+        console.log('generating test answers')
+
+        res.status(200).end();
+    } catch (error: any) {
+        console.log(error)
+        return res.status(400).end();
+    }
+}
+
 export const exportTestPDF = async (req: express.Request, res: express.Response) => {
     try {
         const testId = req.params.testId
@@ -47,7 +100,7 @@ export const generateTestPDF = async (req: express.Request, res: express.Respons
                     doc.fontSize(12).text(`${i}) ${choice}`)
                 })
             } else {
-                doc.moveDown(4)
+                doc.moveDown(5)
             }
             doc.moveDown();
         })

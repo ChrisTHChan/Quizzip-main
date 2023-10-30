@@ -81,7 +81,7 @@ const Test = ({test}: props) => {
     }
 
     const exportTest = () => {
-        fetch(`http://localhost:9000/users/lib/create-pdf/${Cookies.get('QUIZZIP-AUTH')}`, {
+        fetch(`http://localhost:9000/users/lib/create-test-pdf/${Cookies.get('QUIZZIP-AUTH')}`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -89,7 +89,25 @@ const Test = ({test}: props) => {
             body: JSON.stringify(test)
         })
         .then(() => {
-            window.location.href = `http://localhost:9000/users/lib/export-pdf/${Cookies.get('QUIZZIP-AUTH')}/${_id}`;
+            window.location.href = `http://localhost:9000/users/lib/export-test-pdf/${Cookies.get('QUIZZIP-AUTH')}/${_id}`;
+            closeExportModal();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
+    const exportTestAnswers = () => {
+        fetch(`http://localhost:9000/users/lib/create-answers-pdf/${Cookies.get('QUIZZIP-AUTH')}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(test)
+        })
+        .then(() => {
+            window.location.href = `http://localhost:9000/users/lib/export-answers-pdf/${Cookies.get('QUIZZIP-AUTH')}/${_id}`;
+            closeExportModal();
         })
         .catch((err) => {
             console.log(err);
@@ -136,7 +154,7 @@ const Test = ({test}: props) => {
                 </p>
                 <div className="flex justify-center w-full"> 
                     <PrimaryButton extra_classes="mb-4 mr-4" onClick={exportTest}>Export Assessment</PrimaryButton>
-                    <SecondaryButton extra_classes="mb-4">Export Answer Key</SecondaryButton>
+                    <SecondaryButton extra_classes="mb-4" onClick={exportTestAnswers}>Export Answer Key</SecondaryButton>
                 </div>
             </Popup>
         </div>
