@@ -2,6 +2,7 @@ import express from 'express';
 import { getUserBySessionToken } from '../db/users';
 import PDFDocument from 'pdfkit';
 import fs from 'fs'
+import { question } from '../types'
 
 const returnTestLibrary = async (sessionId: string, res: express.Response) => {
     const testLibrary = await getUserBySessionToken(sessionId).select('testsLibrary')
@@ -13,7 +14,31 @@ const returnTestLibrary = async (sessionId: string, res: express.Response) => {
 
 export const ExportTestFromLibrary = async (req: express.Request, res: express.Response) => {
     const body = req.body
-    console.log(body.testLabel.split(' ').join('_'), body._id);
+
+    const doc = new PDFDocument();
+
+    doc.pipe(fs.createWriteStream(`./_temp-assessment-folder/${body.testLabel.split(' ').join('_')}-${body._id}.pdf`));
+
+    doc.fontSize(28).text(body.testLabel)
+    doc.moveDown()
+    body.test.forEach((question: question) => {
+        doc.fontSize(14).text(question.question)
+        doc.moveDown()
+        if (question.choices!.length > 0) {
+            question.choices?.forEach((choice, i) => {
+                doc.fontSize(12).text(`${i}) ${choice}`)
+            })
+        } else {
+            doc.moveDown(4)
+        }
+        doc.moveDown();
+    })
+
+    doc.end()
+    
+    console.log('getting ready to download')
+
+    res.status(200).download(`./_temp-assessment-folder/${body.testLabel.split(' ').join('_')}-${body._id}.pdf`);
 }
 
 export const deleteTestFromLibrary = async (req: express.Request, res: express.Response) => {
@@ -36,6 +61,8 @@ export const deleteTestFromLibrary = async (req: express.Request, res: express.R
         await user.save()
 
         returnTestLibrary(sessionId, res)
+
+        res.status(200).end();
 
     } catch (error: any) {
         console.log(error)
