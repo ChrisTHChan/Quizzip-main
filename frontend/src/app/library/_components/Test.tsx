@@ -58,7 +58,6 @@ const Test = ({test}: props) => {
     const openModal = () => setIsDeleteModalOpen(true)
 
     const deleteTest = () => {
-        closeModal()
         fetch(`http://localhost:9000/users/lib/${Cookies.get('QUIZZIP-AUTH')}`, {
             cache: 'no-cache',
             method: 'DELETE',
@@ -78,6 +77,23 @@ const Test = ({test}: props) => {
         })
     }
 
+    const exportTest = () => {
+        fetch(`http://localhost:9000/users/lib/export/${Cookies.get('QUIZZIP-AUTH')}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(test)
+        })
+        .then(res => res.json())
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
     const modalStyle = { borderRadius: '4px', backgroundColor: '#1F2937', border: "1px solid #1F2937" };
 
     return (
@@ -91,7 +107,7 @@ const Test = ({test}: props) => {
             </Accordion>
             <div className="min-w-[261px] flex flex-row-reverse md:flex-row mt-2 md:mt-0">
                 <button onClick={toggleAnswers} className="px-4 hover:underline text-sm font-semibold block">Answers</button>
-                <PrimaryButton extra_classes="mr-2 py-3 block">Export</PrimaryButton>
+                <PrimaryButton onClick={exportTest} extra_classes="mr-2 py-3 block">Export</PrimaryButton>
                 <SecondaryButton onClick={openModal} extra_classes="py-3 block mr-2 md:mr-0">Delete</SecondaryButton>
             </div>
             <Popup 

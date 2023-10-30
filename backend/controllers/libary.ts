@@ -1,5 +1,7 @@
 import express from 'express';
 import { getUserBySessionToken } from '../db/users';
+import PDFDocument from 'pdfkit';
+import fs from 'fs'
 
 const returnTestLibrary = async (sessionId: string, res: express.Response) => {
     const testLibrary = await getUserBySessionToken(sessionId).select('testsLibrary')
@@ -8,6 +10,11 @@ const returnTestLibrary = async (sessionId: string, res: express.Response) => {
         testLibrary: testLibrary
     })
 } 
+
+export const ExportTestFromLibrary = async (req: express.Request, res: express.Response) => {
+    const body = req.body
+    console.log(body.testLabel.split(' ').join('_'), body._id);
+}
 
 export const deleteTestFromLibrary = async (req: express.Request, res: express.Response) => {
     try {
