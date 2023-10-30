@@ -15,10 +15,14 @@ const returnTestLibrary = async (sessionId: string, res: express.Response) => {
 export const exportTestPDF = async (req: express.Request, res: express.Response) => {
     try {
         const testId = req.params.testId
+        const path = `./_temp-assessment-folder/assessment-${testId}.pdf`
 
         console.log('exporting test')
 
-        res.status(200).download(`./_temp-assessment-folder/assessment-${testId}.pdf`)
+        res.status(200).download(path, () => {
+            fs.unlinkSync(path)
+            console.log('');
+        });
     } catch (error: any) {
         console.log(error)
         return res.status(400).end();
