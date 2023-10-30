@@ -12,33 +12,52 @@ const returnTestLibrary = async (sessionId: string, res: express.Response) => {
     })
 } 
 
-export const ExportTestFromLibrary = async (req: express.Request, res: express.Response) => {
-    const body = req.body
+export const exportTestPDF = async (req: express.Request, res: express.Response) => {
+    try {
+        const testId = req.params.testId
 
-    const doc = new PDFDocument();
+        console.log('exporting test')
 
-    doc.pipe(fs.createWriteStream(`./_temp-assessment-folder/${body.testLabel.split(' ').join('_')}-${body._id}.pdf`));
+        res.status(200).download(`./_temp-assessment-folder/assessment-${testId}.pdf`)
+    } catch (error: any) {
+        console.log(error)
+        return res.status(400).end();
+    }
+}
 
-    doc.fontSize(28).text(body.testLabel)
-    doc.moveDown()
-    body.test.forEach((question: question) => {
-        doc.fontSize(14).text(question.question)
+export const generateTestPDF = async (req: express.Request, res: express.Response) => {
+    try {
+        const body = req.body
+
+        const doc = new PDFDocument();
+
+        doc.pipe(fs.createWriteStream(`./_temp-assessment-folder/assessment-${body._id}.pdf`));
+
+        doc.fontSize(28).text(body.testLabel)
         doc.moveDown()
-        if (question.choices!.length > 0) {
-            question.choices?.forEach((choice, i) => {
-                doc.fontSize(12).text(`${i}) ${choice}`)
-            })
-        } else {
-            doc.moveDown(4)
-        }
-        doc.moveDown();
-    })
+        body.test.forEach((question: question) => {
+            doc.fontSize(14).text(question.question)
+            doc.moveDown()
+            if (question.choices!.length > 0) {
+                question.choices?.forEach((choice, i) => {
+                    doc.fontSize(12).text(`${i}) ${choice}`)
+                })
+            } else {
+                doc.moveDown(4)
+            }
+            doc.moveDown();
+        })
 
-    doc.end()
-    
-    console.log('getting ready to download')
+        doc.end()
 
-    res.status(200).download(`./_temp-assessment-folder/${body.testLabel.split(' ').join('_')}-${body._id}.pdf`);
+        console.log('generating test')
+
+        res.status(200).end();
+
+    } catch (error: any) {
+        console.log(error)
+        return res.status(400).end()
+    }
 }
 
 export const deleteTestFromLibrary = async (req: express.Request, res: express.Response) => {
@@ -61,8 +80,6 @@ export const deleteTestFromLibrary = async (req: express.Request, res: express.R
         await user.save()
 
         returnTestLibrary(sessionId, res)
-
-        res.status(200).end();
 
     } catch (error: any) {
         console.log(error)

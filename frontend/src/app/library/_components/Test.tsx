@@ -78,16 +78,15 @@ const Test = ({test}: props) => {
     }
 
     const exportTest = () => {
-        fetch(`http://localhost:9000/users/lib/export/${Cookies.get('QUIZZIP-AUTH')}`, {
+        fetch(`http://localhost:9000/users/lib/create-pdf/${Cookies.get('QUIZZIP-AUTH')}`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(test)
         })
-        .then(res => res.json())
-        .then((res) => {
-            console.log(res);
+        .then(() => {
+            window.location.href = `http://localhost:9000/users/lib/export-pdf/${Cookies.get('QUIZZIP-AUTH')}/${_id}`;
         })
         .catch((err) => {
             console.log(err);
