@@ -37,6 +37,7 @@ const Test = ({test}: props) => {
 
     const [showAnswers, setShowAnswers] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
     //handlers
 
@@ -54,8 +55,10 @@ const Test = ({test}: props) => {
         </div>
     )
 
-    const closeModal = () => setIsDeleteModalOpen(false);
-    const openModal = () => setIsDeleteModalOpen(true)
+    const closeDeleteModal = () => setIsDeleteModalOpen(false);
+    const openDeleteModal = () => setIsDeleteModalOpen(true)
+    const closeExportModal = () => setIsExportModalOpen(false)
+    const openExportModal = () => setIsExportModalOpen(true);
 
     const deleteTest = () => {
         fetch(`http://localhost:9000/users/lib/${Cookies.get('QUIZZIP-AUTH')}`, {
@@ -106,13 +109,13 @@ const Test = ({test}: props) => {
             </Accordion>
             <div className="min-w-[261px] flex flex-row-reverse md:flex-row mt-2 md:mt-0">
                 <button onClick={toggleAnswers} className="px-4 hover:underline text-sm font-semibold block">Answers</button>
-                <PrimaryButton onClick={exportTest} extra_classes="mr-2 py-3 block">Export</PrimaryButton>
-                <SecondaryButton onClick={openModal} extra_classes="py-3 block mr-2 md:mr-0">Delete</SecondaryButton>
+                <PrimaryButton onClick={openExportModal} extra_classes="mr-2 py-3 block">Export</PrimaryButton>
+                <SecondaryButton onClick={openDeleteModal} extra_classes="py-3 block mr-2 md:mr-0">Delete</SecondaryButton>
             </div>
             <Popup 
                 open={isDeleteModalOpen} 
                 closeOnDocumentClick 
-                onClose={closeModal}
+                onClose={closeDeleteModal}
                 contentStyle={modalStyle}
             >
                 <p className="text-slate-200 text-center p-4 font-semibold">
@@ -120,6 +123,20 @@ const Test = ({test}: props) => {
                 </p>
                 <div className="flex justify-center w-full"> 
                     <PrimaryButton extra_classes="mb-4" onClick={deleteTest}>Delete Assessment</PrimaryButton>
+                </div>
+            </Popup>
+            <Popup 
+                open={isExportModalOpen} 
+                closeOnDocumentClick 
+                onClose={closeExportModal}
+                contentStyle={modalStyle}
+            >
+                <p className="text-slate-200 text-center p-4 font-semibold">
+                    Exporting assessment: "{testLabel}"
+                </p>
+                <div className="flex justify-center w-full"> 
+                    <PrimaryButton extra_classes="mb-4 mr-4" onClick={exportTest}>Export Assessment</PrimaryButton>
+                    <SecondaryButton extra_classes="mb-4">Export Answer Key</SecondaryButton>
                 </div>
             </Popup>
         </div>
