@@ -29,6 +29,7 @@
     "officeparser": "^3.3.0",
     "openai": "^4.12.1",
     "pdf-parse": "^1.1.1",
+    "pdfkit": "^0.13.0",
     "socket.io": "^4.7.2",
     "typescript": "^5.2.2",
     "youtube-transcript": "^1.0.6"
