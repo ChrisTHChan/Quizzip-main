@@ -34,7 +34,7 @@ export default function RootLayout({
             </Link>
             <div className="flex items-center">
               <Link className="mr-4 text-sm font-semibold hover:underline underline-offset-8" href="/contact">Contact</Link>
-              <Link className="mr-4 text-sm font-semibold hover:underline underline-offset-8" href="/pricing">Pricing</Link>
+              {/* <Link className="mr-4 text-sm font-semibold hover:underline underline-offset-8" href="/pricing">Pricing</Link> */}
               <HeaderProfile/>
             </div>
           </div>
