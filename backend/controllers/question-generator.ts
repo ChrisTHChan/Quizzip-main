@@ -68,8 +68,19 @@ export default async (req: express.Request, res: express.Response) => {
             if (mcNum > 0) {
                 for (let i = lastGeneratedType; i < lastGeneratedType + mcNum; i++) {
                     emitQuestionGenState(i, totalNumQuestions, clientSocketId);
-                    const questions = await generateQuestions('multiple choice', listOfTranscriptSlices[i], difficultyLevel);
-                    setupQuestionsReturn(questions)
+                    const p1 = generateQuestions('multiple choice', listOfTranscriptSlices[i], difficultyLevel)
+                    //p2 times out the request after 45 seconds since sometimes the AI just hangs
+                    const p2 = new Promise((resolve, reject) => {
+                        setTimeout(resolve, 45000, 'fail');
+                    });
+
+                    const response = await Promise.race([p1 , p2]);
+
+                    if (response === 'fail') {
+                        throw new Error('This question took too long to generate, please rerun the request.')
+                    } else {
+                        setupQuestionsReturn(response as string)
+                    }
                 }
 
                 lastGeneratedType += mcNum
@@ -78,8 +89,18 @@ export default async (req: express.Request, res: express.Response) => {
             if (saNum > 0) {
                 for (let i = lastGeneratedType; i < lastGeneratedType + saNum; i++) {
                     emitQuestionGenState(i, totalNumQuestions, clientSocketId);
-                    const questions = await generateQuestions('short answer', listOfTranscriptSlices[i], difficultyLevel);
-                    setupQuestionsReturn(questions)
+                    const p1 = generateQuestions('short answer', listOfTranscriptSlices[i], difficultyLevel)
+                    const p2 = new Promise((resolve, reject) => {
+                        setTimeout(resolve, 45000, 'fail');
+                    });
+
+                    const response = await Promise.race([p1 , p2]);
+
+                    if (response === 'fail') {
+                        throw new Error('This question took too long to generate, please rerun the request.')
+                    } else {
+                        setupQuestionsReturn(response as string)
+                    }
                 }
 
                 lastGeneratedType += saNum
@@ -88,8 +109,18 @@ export default async (req: express.Request, res: express.Response) => {
             if (tfNum > 0) {
                 for (let i = lastGeneratedType; i < lastGeneratedType + tfNum; i++) {
                     emitQuestionGenState(i, totalNumQuestions, clientSocketId);
-                    const questions = await generateQuestions('true or false', listOfTranscriptSlices[i], difficultyLevel);
-                    setupQuestionsReturn(questions)
+                    const p1 = generateQuestions('true or false', listOfTranscriptSlices[i], difficultyLevel)
+                    const p2 = new Promise((resolve, reject) => {
+                        setTimeout(resolve, 45000, 'fail');
+                    });
+
+                    const response = await Promise.race([p1 , p2]);
+
+                    if (response === 'fail') {
+                        throw new Error('This question took too long to generate, please rerun the request.')
+                    } else {
+                        setupQuestionsReturn(response as string)
+                    }
                 }
 
                 lastGeneratedType += tfNum
