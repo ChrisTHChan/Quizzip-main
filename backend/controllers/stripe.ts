@@ -4,7 +4,7 @@ export const handleStripeSubscription = (req: express.Request, res: express.Resp
     try {
 
         const { sessionId } = req.params
-        console.log('handling stripe sub', sessionId)
+        console.log('handling stripe sub')
 
         res.status(200).json({
             requestStatus: 'all good!'

@@ -17,8 +17,6 @@ export const exportTestAnswersPDF = async (req: express.Request, res: express.Re
         const testId = req.params.testId
         const path = `./_temp-assessment-folder/assessment-answerKey-${testId}.pdf`
 
-        console.log('exporting test answers')
-
         res.status(200).download(path, () => {
             fs.unlinkSync(path)
             console.log('');
@@ -55,9 +53,6 @@ export const generateTestAnswersPDF = (req: express.Request, res: express.Respon
         })
 
         doc.end()
-
-        console.log('generating test answers')
-
         res.status(200).end();
     } catch (error: any) {
         console.log(error)
@@ -69,8 +64,6 @@ export const exportTestPDF = async (req: express.Request, res: express.Response)
     try {
         const testId = req.params.testId
         const path = `./_temp-assessment-folder/assessment-${testId}.pdf`
-
-        console.log('exporting test')
 
         res.status(200).download(path, () => {
             fs.unlinkSync(path)
@@ -106,8 +99,6 @@ export const generateTestPDF = async (req: express.Request, res: express.Respons
         })
 
         doc.end()
-
-        console.log('generating test')
 
         res.status(200).end();
 

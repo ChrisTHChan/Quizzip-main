@@ -23,8 +23,6 @@ const handleStripeSubmit = async () => {
 
     const response = await res.json()
 
-    console.log(response.requestStatus);
-
     return response
 }
 
