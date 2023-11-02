@@ -35,9 +35,10 @@ server.listen(9000, () => {
 
 //setup mongodb connection
 let mongoUrl = process.env.MONGO_URL as string
-mongoose.connect(mongoUrl);
-mongoose.connection.on('error', (error:any) => {
-    console.log(error);
+mongoose.connect(mongoUrl).then(() => {
+    console.log("Connected to Database");
+}).catch((err) => {
+    console.log("Not Connected to Database ERROR! ", err);
 })
 
 //io websocket methods

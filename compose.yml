@@ -1,0 +1,9 @@
+services: 
+  front-end:
+    image: quizzip-frontend-docker-image:latest
+    ports: 
+      - "3000:3000"
+  back-end: 
+    image: quizzip-backend
+    ports:
+      - "9000:9000"

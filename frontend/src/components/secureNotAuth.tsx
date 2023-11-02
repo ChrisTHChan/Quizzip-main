@@ -13,7 +13,7 @@ const SecureNotAuth = (Component: any) => {
             if (auth === 'auth') {
                 return
             }
-        }, [])
+        }, [auth])
 
         if (auth === 'auth') {
             router.push('/')

@@ -137,7 +137,7 @@ const Test = ({test}: props) => {
                 contentStyle={modalStyle}
             >
                 <p className="text-slate-200 text-center p-4 font-semibold">
-                    Are you sure you want to delete the assessment "{testLabel}"?
+                    Are you sure you want to delete the assessment &quot;{testLabel}&quot;?
                 </p>
                 <div className="flex justify-center w-full"> 
                     <PrimaryButton extra_classes="mb-4" onClick={deleteTest}>Delete Assessment</PrimaryButton>
@@ -150,7 +150,7 @@ const Test = ({test}: props) => {
                 contentStyle={modalStyle}
             >
                 <p className="text-slate-200 text-center p-4 font-semibold">
-                    Exporting assessment: "{testLabel}"
+                    Exporting assessment: &quot;{testLabel}&quot;.
                 </p>
                 <div className="flex justify-center w-full"> 
                     <PrimaryButton extra_classes="mb-4 mr-4" onClick={exportTest}>Export Assessment</PrimaryButton>
