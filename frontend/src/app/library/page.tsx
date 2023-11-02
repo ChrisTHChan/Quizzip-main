@@ -14,7 +14,12 @@ const getLibraryData = async () => {
 
     //in docker environment, needs to be: `http://back-end:9000/users/lib/${token}`
     //in localhost environment, needs to be: `http://localhost:9000/users/lib/${token}`
-    const res = await fetch(`http://localhost:9000/users/lib/${token}`)
+    let res
+    if (process.env.NODE_ENV === 'development') {
+        res = await fetch(`http://localhost:9000/users/lib/${token}`)
+    } else {
+        res = await fetch(`http://back-end:9000/users/lib/${token}`)
+    }
 
     if (!res.ok) {
         throw new Error('Failed to fetch data')
