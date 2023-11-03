@@ -7,7 +7,9 @@ To start this app you need your own openAI api key, as well as a mongodb databas
 once you're in the app open two terminals, one for the frontend, one for the backend.
 
 cd frontend
+
 npm run dev
 
 cd backend
+
 npm run server
