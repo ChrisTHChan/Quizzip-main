@@ -13,7 +13,15 @@ import Cookies from 'js-cookie'
 
 const handleStripeSubmit = async () => {
 
-    const res = await fetch(`http://localhost:9000/stripe/handleSubscription/${Cookies.get('QUIZZIP-AUTH')}`, {
+    let fetchURL: string
+
+    if (process.env.NODE_ENV === 'development') {
+        fetchURL = 'localhost:9000'
+    } else {
+        fetchURL = 'yourdomain.com/api'
+    }
+
+    const res = await fetch(`http://${fetchURL}/stripe/handleSubscription/${Cookies.get('QUIZZIP-AUTH')}`, {
         method: 'POST'
     })
 

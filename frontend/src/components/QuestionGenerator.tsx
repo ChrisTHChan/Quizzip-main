@@ -22,6 +22,15 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import Cookies from 'js-cookie';
 
 const QuestionGenerator = () => {
+
+    let fetchURL: string
+
+    if (process.env.NODE_ENV === 'development') {
+        fetchURL = 'localhost:9000'
+    } else {
+        fetchURL = 'yourdomain.com/api'
+    }
+
     //zustand global state references ###########################################################################################################################################
     const { auth } = useAuthStore();
 
@@ -61,7 +70,7 @@ const QuestionGenerator = () => {
 
     //side effect handlers ##############################################################################################################################################
     useEffect(() => {
-        const socket = io('http://localhost:9000')
+        const socket = io(`http://${fetchURL}`)
 
         socket.on('connect', () => {
             setClientSocketId(socket.id);
@@ -175,7 +184,7 @@ const QuestionGenerator = () => {
         setRequestStatus('');
         setQuestions([]);
         
-        fetch('http://localhost:9000/api', {
+        fetch(`http://${fetchURL}/question-generator`, {
             method: 'POST',
             body: formData,
         })
@@ -205,7 +214,7 @@ const QuestionGenerator = () => {
             test: questions
         }
 
-        fetch(`http://localhost:9000/users/lib/save/${Cookies.get('QUIZZIP-AUTH')}`, {
+        fetch(`http://${fetchURL}/users/lib/save/${Cookies.get('QUIZZIP-AUTH')}`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

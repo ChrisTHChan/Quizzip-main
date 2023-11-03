@@ -7,6 +7,14 @@ import { validateEmail } from "@/util-functions/helper-functions"
 
 export default function SignInComponent() {
 
+  let fetchURL: string
+
+    if (process.env.NODE_ENV === 'development') {
+        fetchURL = 'localhost:9000'
+    } else {
+        fetchURL = 'yourdomain.com/api'
+    }
+
   //state
 
   const [inputState, setInputState] = useState({
@@ -38,7 +46,7 @@ export default function SignInComponent() {
 
       setSignInStatus('');
 
-      fetch('http://localhost:9000/auth/login', {
+      fetch(`http://${fetchURL}/auth/login`, {
           method: 'POST',
           body: formData,
           credentials: 'include',

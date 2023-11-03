@@ -12,6 +12,14 @@ import { useRouter } from 'next/navigation'
 
 const HeaderProfile = () => {
 
+    let fetchURL: string
+
+    if (process.env.NODE_ENV === 'development') {
+        fetchURL = 'localhost:9000'
+    } else {
+        fetchURL = 'yourdomain.com/api'
+    }
+
     const router = useRouter();
 
     const {auth, setAuthTrue, setAuthFalse} = useAuthStore();
@@ -36,7 +44,7 @@ const HeaderProfile = () => {
 
     const logout = () => {
 
-        fetch(`http://localhost:9000/auth/logout/${sessionId}`, {
+        fetch(`http://${fetchURL}/auth/logout/${sessionId}`, {
             method: 'POST',
             credentials: 'include',
         })
@@ -52,7 +60,7 @@ const HeaderProfile = () => {
 
     const checkUserSession = () => {
 
-        fetch(`http://localhost:9000/auth/checkUserSession/${sessionId}`, {
+        fetch(`http://${fetchURL}/auth/checkUserSession/${sessionId}`, {
             method: 'POST',
             credentials: 'include',
         })

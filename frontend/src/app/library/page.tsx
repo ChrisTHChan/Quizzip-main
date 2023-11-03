@@ -12,8 +12,6 @@ const getLibraryData = async () => {
     const nextCookies = cookies();
     const token = nextCookies.get('QUIZZIP-AUTH')!.value;
 
-    //in docker environment, needs to be: `http://back-end:9000/users/lib/${token}`
-    //in localhost environment, needs to be: `http://localhost:9000/users/lib/${token}`
     let res
     if (process.env.NODE_ENV === 'development') {
         res = await fetch(`http://localhost:9000/users/lib/${token}`)

@@ -7,6 +7,14 @@ import { useState } from "react";
 
 export default function Register() {
 
+    let fetchURL: string
+
+    if (process.env.NODE_ENV === 'development') {
+        fetchURL = 'localhost:9000'
+    } else {
+        fetchURL = 'yourdomain.com/api'
+    }
+
     //state
     const [inputState, setInputState] = useState({
         email: '',
@@ -39,7 +47,7 @@ export default function Register() {
 
             setRegistrationStatus('');
 
-            fetch('http://localhost:9000/auth/register', {
+            fetch(`http://${fetchURL}/auth/register`, {
                 method: 'POST',
                 body: formData,
             })
