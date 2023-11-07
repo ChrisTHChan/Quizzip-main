@@ -1,11 +1,11 @@
 services: 
   front-end:
-    image: quizzip-frontend:latest
+    image: ccth999/quizzip-frontend:latest
     # get rid of this on nginx
     ports: 
       - "3000:3000"
   back-end: 
-    image: quizzip-backend:latest
+    image: ccth999/quizzip-backend:latest
     # get rid of this on nginx
     ports:
       - "9000:9000"
