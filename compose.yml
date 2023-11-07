@@ -1,6 +1,6 @@
 services: 
   front-end:
-    image: quizzip-frontend-docker-image:latest
+    image: quizzip-frontend:latest
     # get rid of this on nginx
     ports: 
       - "3000:3000"
