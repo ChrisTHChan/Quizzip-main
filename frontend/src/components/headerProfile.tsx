@@ -44,7 +44,7 @@ const HeaderProfile = () => {
 
     const logout = () => {
 
-        fetch(`http://${fetchURL}/auth/logout/${sessionId}`, {
+        fetch(`https://${fetchURL}/auth/logout/${sessionId}`, {
             method: 'POST',
             credentials: 'include',
         })
@@ -60,7 +60,7 @@ const HeaderProfile = () => {
 
     const checkUserSession = () => {
 
-        fetch(`http://${fetchURL}/auth/checkUserSession/${sessionId}`, {
+        fetch(`https://${fetchURL}/auth/checkUserSession/${sessionId}`, {
             method: 'POST',
             credentials: 'include',
         })

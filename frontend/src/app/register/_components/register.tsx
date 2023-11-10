@@ -47,7 +47,7 @@ export default function Register() {
 
             setRegistrationStatus('');
 
-            fetch(`http://${fetchURL}/auth/register`, {
+            fetch(`https://${fetchURL}/auth/register`, {
                 method: 'POST',
                 body: formData,
             })

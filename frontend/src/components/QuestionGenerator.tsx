@@ -70,7 +70,7 @@ const QuestionGenerator = () => {
 
     //side effect handlers ##############################################################################################################################################
     useEffect(() => {
-        const socket = io(`http://${fetchURL}`)
+        const socket = io(`https://${fetchURL}`)
 
         socket.on('connect', () => {
             setClientSocketId(socket.id);
@@ -184,7 +184,7 @@ const QuestionGenerator = () => {
         setRequestStatus('');
         setQuestions([]);
         
-        fetch(`http://${fetchURL}/question-generator`, {
+        fetch(`https://${fetchURL}/question-generator`, {
             method: 'POST',
             body: formData,
         })
@@ -214,7 +214,7 @@ const QuestionGenerator = () => {
             test: questions
         }
 
-        fetch(`http://${fetchURL}/users/lib/save/${Cookies.get('QUIZZIP-AUTH')}`, {
+        fetch(`https://${fetchURL}/users/lib/save/${Cookies.get('QUIZZIP-AUTH')}`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

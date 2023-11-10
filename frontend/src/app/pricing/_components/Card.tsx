@@ -21,7 +21,7 @@ const handleStripeSubmit = async () => {
         fetchURL = 'quizzipio.com/api'
     }
 
-    const res = await fetch(`http://${fetchURL}/stripe/handleSubscription/${Cookies.get('QUIZZIP-AUTH')}`, {
+    const res = await fetch(`https://${fetchURL}/stripe/handleSubscription/${Cookies.get('QUIZZIP-AUTH')}`, {
         method: 'POST'
     })
 

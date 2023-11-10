@@ -46,7 +46,7 @@ export default function SignInComponent() {
 
       setSignInStatus('');
 
-      fetch(`http://${fetchURL}/auth/login`, {
+      fetch(`https://${fetchURL}/auth/login`, {
           method: 'POST',
           body: formData,
           credentials: 'include',
