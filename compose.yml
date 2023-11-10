@@ -1,13 +1,36 @@
 services: 
   front-end:
     image: ccth999/quizzip-frontend:latest
+    container_name: frontend
     # get rid of this on nginx
     ports: 
       - "3000:3000"
+    restart: unless-stopped
+    pull_policy: always
   back-end: 
     image: ccth999/quizzip-backend:latest
+    container_name: backend
     # get rid of this on nginx
     ports:
       - "9000:9000"
-# nginx:
-  # image: nginx:xxxx
+    restart: unless-stopped
+    pull_policy: always
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - URL=quizzipio.com
+      - VALIDATION=http
+      - SUBDOMAINS=www, #optional
+      - EMAIL=christsunhchan@gmail.com
+    volumes:
+      - /home/ubuntu/quizzip-nginx/config:/config
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
