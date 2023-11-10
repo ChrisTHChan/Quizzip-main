@@ -28,7 +28,7 @@ const QuestionGenerator = () => {
     if (process.env.NODE_ENV === 'development') {
         fetchURL = 'localhost:9000/api'
     } else {
-        fetchURL = 'quizzipio.com/api'
+        fetchURL = 'www.quizzipio.com/api'
     }
 
     //zustand global state references ###########################################################################################################################################
