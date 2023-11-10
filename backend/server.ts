@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 require('dotenv').config()
 import http from 'http';
 import {Server} from 'socket.io'
-import cors from 'cors'
+// import cors from 'cors'
 import compression from 'compression'
 import cookieParser from 'cookie-parser';
 
@@ -18,16 +18,17 @@ import router from './router'
 //server setup
 const app = express();
 const server = http.createServer(app)
-const io =  new Server(server, {
-    cors: {
-        origin: "http://localhost:3000",
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    }
-})
+// const io =  new Server(server, {
+//     cors: {
+//         origin: "http://localhost:3000",
+//         methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     }
+// })
+const io = new Server(server);
 app.use(fileUpload());
 app.use(compression());
 app.use(cookieParser());
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+// app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(express.json({limit: '1mb'}));
 server.listen(9000, () => {
     console.log('server is running')
