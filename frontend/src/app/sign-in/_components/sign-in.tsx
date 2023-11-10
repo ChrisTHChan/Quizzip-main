@@ -10,7 +10,7 @@ export default function SignInComponent() {
   let fetchURL: string
 
     if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'localhost:9000'
+        fetchURL = 'localhost:9000/api'
     } else {
         fetchURL = 'quizzipio.com/api'
     }
