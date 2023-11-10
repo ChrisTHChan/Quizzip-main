@@ -3,8 +3,8 @@ import { register, login, logout, checkUserSessionToken } from '../controllers/a
 import { isAuthenticated, isOwner } from '../middlewares';
 
 export default (router: express.Router) => {
-    router.post('/auth/register', register);
-    router.post('/auth/login', login)
-    router.post('/auth/logout/:sessionId', isAuthenticated, isOwner, logout);
-    router.post('/auth/checkUserSession/:sessionId', isAuthenticated, isOwner, checkUserSessionToken);
+    router.post('api/auth/register', register);
+    router.post('api/auth/login', login)
+    router.post('api/auth/logout/:sessionId', isAuthenticated, isOwner, logout);
+    router.post('api/auth/checkUserSession/:sessionId', isAuthenticated, isOwner, checkUserSessionToken);
 }

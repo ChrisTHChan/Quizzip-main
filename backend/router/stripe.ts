@@ -3,5 +3,5 @@ import { isAuthenticated, isOwner } from '../middlewares';
 import { handleStripeSubscription } from "../controllers/stripe";
 
 export default (router: express.Router) => {
-    router.post('/stripe/handleSubscription/:sessionId', isAuthenticated, isOwner, handleStripeSubscription)
+    router.post('api/stripe/handleSubscription/:sessionId', isAuthenticated, isOwner, handleStripeSubscription)
 }
