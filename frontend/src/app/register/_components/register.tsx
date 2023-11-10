@@ -47,6 +47,8 @@ export default function Register() {
 
             setRegistrationStatus('');
 
+            console.log('checking registration on frontend')
+
             fetch(`https://${fetchURL}/auth/register`, {
                 method: 'POST',
                 body: formData,

@@ -98,6 +98,9 @@ export const login = async (req: express.Request, res: express.Response) => {
 
 export const register = async (req: express.Request, res: express.Response) => {
     try {
+
+        console.log('checking registrationon on backend');
+
         const {email, password, username} = req.body
 
         if (!email || !password || !username) {
