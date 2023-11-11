@@ -24,7 +24,9 @@ const server = http.createServer(app)
 //         methods: ['GET', 'POST', 'PUT', 'DELETE'],
 //     }
 // })
-const io = new Server(server);
+const io = new Server(server, {
+    path: '/socket.io/',
+});
 app.use(fileUpload());
 app.use(compression());
 app.use(cookieParser());
