@@ -70,7 +70,9 @@ const QuestionGenerator = () => {
 
     //side effect handlers ##############################################################################################################################################
     useEffect(() => {
-        const socket = io(`https://${fetchURL}`)
+        const socket = io(`https://${fetchURL}`, {
+            transports: ['polling'],
+        })
 
         socket.on('connect', () => {
             setClientSocketId(socket.id);
