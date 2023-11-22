@@ -11,7 +11,7 @@ import HeaderProfile from '@/components/headerProfile';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Quizzip',
+  title: 'QuizzipIO',
   description: 'An online tool to help you create quizzes, tests, assignments, and more! Get hours of your day back.',
 }
 
@@ -30,7 +30,7 @@ export default function RootLayout({
               <div className="h-12 w-10">
                 <Image alt="a test" src={logo} className="object-contain h-full"/>
               </div>
-              <h1 className="font-extrabold text-3xl">Quizzip</h1>
+              <h1 className="font-extrabold text-3xl">Quizzip<span className="text-blue-500">IO</span></h1>
             </Link>
             <div className="flex items-center">
               <Link className="mr-4 text-sm font-semibold hover:underline underline-offset-8" href="/contact">Contact</Link>
