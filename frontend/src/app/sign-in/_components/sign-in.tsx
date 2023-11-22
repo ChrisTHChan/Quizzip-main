@@ -10,9 +10,9 @@ export default function SignInComponent() {
   let fetchURL: string
 
     if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'localhost:9000/api'
+        fetchURL = 'http://localhost:9000/api'
     } else {
-        fetchURL = 'quizzipio.com/api'
+        fetchURL = 'https://quizzipio.com/api'
     }
 
   //state
@@ -46,7 +46,7 @@ export default function SignInComponent() {
 
       setSignInStatus('');
 
-      fetch(`https://${fetchURL}/auth/login`, {
+      fetch(`${fetchURL}/auth/login`, {
           method: 'POST',
           body: formData,
           credentials: 'include',

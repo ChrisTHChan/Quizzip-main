@@ -16,12 +16,12 @@ const handleStripeSubmit = async () => {
     let fetchURL: string
 
     if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'localhost:9000/api'
+        fetchURL = 'http://localhost:9000/api'
     } else {
-        fetchURL = 'quizzipio.com/api'
+        fetchURL = 'https://quizzipio.com/api'
     }
 
-    const res = await fetch(`https://${fetchURL}/stripe/handleSubscription/${Cookies.get('QUIZZIP-AUTH')}`, {
+    const res = await fetch(`${fetchURL}/stripe/handleSubscription/${Cookies.get('QUIZZIP-AUTH')}`, {
         method: 'POST'
     })
 

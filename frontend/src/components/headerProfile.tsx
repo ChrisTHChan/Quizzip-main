@@ -15,9 +15,9 @@ const HeaderProfile = () => {
     let fetchURL: string
 
     if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'localhost:9000/api'
+        fetchURL = 'http://localhost:9000/api'
     } else {
-        fetchURL = 'quizzipio.com/api'
+        fetchURL = 'https://quizzipio.com/api'
     }
 
     const router = useRouter();
@@ -44,7 +44,7 @@ const HeaderProfile = () => {
 
     const logout = () => {
 
-        fetch(`https://${fetchURL}/auth/logout/${sessionId}`, {
+        fetch(`${fetchURL}/auth/logout/${sessionId}`, {
             method: 'POST',
             credentials: 'include',
         })
@@ -60,7 +60,7 @@ const HeaderProfile = () => {
 
     const checkUserSession = () => {
 
-        fetch(`https://${fetchURL}/auth/checkUserSession/${sessionId}`, {
+        fetch(`${fetchURL}/auth/checkUserSession/${sessionId}`, {
             method: 'POST',
             credentials: 'include',
         })

@@ -34,9 +34,9 @@ const Test = ({test}: props) => {
     let fetchURL: string
 
     if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'localhost:9000/api'
+        fetchURL = 'http://localhost:9000/api'
     } else {
-        fetchURL = 'quizzipio.com/api'
+        fetchURL = 'https://quizzipio.com/api'
     }
 
     const router = useRouter();
@@ -69,7 +69,7 @@ const Test = ({test}: props) => {
     const openExportModal = () => setIsExportModalOpen(true);
 
     const deleteTest = () => {
-        fetch(`https://${fetchURL}/users/lib/${Cookies.get('QUIZZIP-AUTH')}`, {
+        fetch(`${fetchURL}/users/lib/${Cookies.get('QUIZZIP-AUTH')}`, {
             cache: 'no-cache',
             method: 'DELETE',
             headers: {
@@ -89,7 +89,7 @@ const Test = ({test}: props) => {
     }
 
     const exportTest = () => {
-        fetch(`https://${fetchURL}/users/lib/create-test-pdf/${Cookies.get('QUIZZIP-AUTH')}`, {
+        fetch(`${fetchURL}/users/lib/create-test-pdf/${Cookies.get('QUIZZIP-AUTH')}`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -97,7 +97,7 @@ const Test = ({test}: props) => {
             body: JSON.stringify(test)
         })
         .then(() => {
-            window.location.href = `https://${fetchURL}/users/lib/export-test-pdf/${Cookies.get('QUIZZIP-AUTH')}/${_id}`;
+            window.location.href = `${fetchURL}/users/lib/export-test-pdf/${Cookies.get('QUIZZIP-AUTH')}/${_id}`;
             closeExportModal();
         })
         .catch((err) => {
@@ -106,7 +106,7 @@ const Test = ({test}: props) => {
     }
 
     const exportTestAnswers = () => {
-        fetch(`https://${fetchURL}/users/lib/create-answers-pdf/${Cookies.get('QUIZZIP-AUTH')}`, {
+        fetch(`${fetchURL}/users/lib/create-answers-pdf/${Cookies.get('QUIZZIP-AUTH')}`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -114,7 +114,7 @@ const Test = ({test}: props) => {
             body: JSON.stringify(test)
         })
         .then(() => {
-            window.location.href = `https://${fetchURL}/users/lib/export-answers-pdf/${Cookies.get('QUIZZIP-AUTH')}/${_id}`;
+            window.location.href = `${fetchURL}/users/lib/export-answers-pdf/${Cookies.get('QUIZZIP-AUTH')}/${_id}`;
             closeExportModal();
         })
         .catch((err) => {

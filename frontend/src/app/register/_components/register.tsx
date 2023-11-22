@@ -10,9 +10,9 @@ export default function Register() {
     let fetchURL: string
 
     if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'localhost:9000/api'
+        fetchURL = 'http://localhost:9000/api'
     } else {
-        fetchURL = 'quizzipio.com/api'
+        fetchURL = 'https://quizzipio.com/api'
     }
 
     //state
@@ -49,7 +49,7 @@ export default function Register() {
 
             console.log('checking registration on frontend')
 
-            fetch(`https://${fetchURL}/auth/register`, {
+            fetch(`${fetchURL}/auth/register`, {
                 method: 'POST',
                 body: formData,
             })
