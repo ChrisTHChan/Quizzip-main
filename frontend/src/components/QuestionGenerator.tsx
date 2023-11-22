@@ -26,9 +26,9 @@ const QuestionGenerator = () => {
     let fetchURL: string
 
     if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'http://localhost:9000/api'
+        fetchURL = 'http://localhost:9000'
     } else {
-        fetchURL = 'https://quizzipio.com/api'
+        fetchURL = 'https://quizzipio.com'
     }
 
     //zustand global state references ###########################################################################################################################################
@@ -70,11 +70,10 @@ const QuestionGenerator = () => {
 
     //side effect handlers ##############################################################################################################################################
     useEffect(() => {
-        const socket = io(`${fetchURL}`, {
-            transports: ['polling'],
-        })
+        const socket = io(`${fetchURL}`)
 
         socket.on('connect', () => {
+            console.log(socket.id)
             setClientSocketId(socket.id);
         })
 
@@ -186,7 +185,7 @@ const QuestionGenerator = () => {
         setRequestStatus('');
         setQuestions([]);
         
-        fetch(`${fetchURL}/question-generator`, {
+        fetch(`${fetchURL}/api/question-generator`, {
             method: 'POST',
             body: formData,
         })
@@ -216,7 +215,7 @@ const QuestionGenerator = () => {
             test: questions
         }
 
-        fetch(`${fetchURL}/users/lib/save/${Cookies.get('QUIZZIP-AUTH')}`, {
+        fetch(`${fetchURL}/api/users/lib/save/${Cookies.get('QUIZZIP-AUTH')}`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
