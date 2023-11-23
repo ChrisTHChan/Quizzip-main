@@ -1,16 +1,25 @@
-//not refreshing all the time when i hit this route????
+'use client'
 
-import { cookies } from 'next/headers';
+type test = {
+    testLabel: string, 
+    test: [
+        {
+            question: string,
+            choices?: string[],
+            answer: string,
+        }
+    ]
+    _id: string
+}
+
 import TestList from './_components/TestList';
-
-export const revalidate = 0
-export const dynamic = 'auto'
-export const fetchCache = 'force-no-store';
+import Cookies from 'js-cookie'
+import {useState, useEffect} from 'react'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const getLibraryData = async () => {
-
-    const nextCookies = cookies();
-    const token = nextCookies.get('QUIZZIP-AUTH')!.value;
+    const token = Cookies.get('QUIZZIP-AUTH')
 
     let res
     if (process.env.NODE_ENV === 'development') {
@@ -26,17 +35,29 @@ const getLibraryData = async () => {
     return res.json()
 }
 
-const Library = async () => {
+const Library = () => {
 
-    const data = await getLibraryData();
+    const [tests, setTests] = useState<test[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    const tests = data.testLibrary.testsLibrary;
+    const getData = async () => {
+        const data = await getLibraryData()
+        setTests(data.testLibrary.testsLibrary)
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        getData()
+    }, [])
 
     return (
-        <div className="flex justify-center items-center">  
+        <div className="flex justify-center items-center">
             <div className="container mx-4">
                 <div className="w-full">
                     {
+                        loading ? 
+                        <Skeleton count={10} className="w-1/3" baseColor="#0f172a" highlightColor="#334155"/>
+                        :
                         tests.length ?
                         <TestList tests={tests}/> :
                         <div>You have no saved assessments.</div>

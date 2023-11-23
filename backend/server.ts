@@ -35,12 +35,13 @@ app.use(cookieParser());
 //         cors: {
 //             origin: "http://localhost:3000",
 //             methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//         }
+//         },
+//         path: '/socket.io'
 //     })
 // } else {
-    // io = new Server(server, {
-    //     path: '/socket.io/',
-    // });
+//     io = new Server(server, {
+//         path: '/socket.io/',
+//     });
 // }
 
 const io = new Server(server, {
@@ -61,15 +62,6 @@ mongoose.connect(mongoUrl).then(() => {
 })
 
 //io websocket methods
-
-io.on('connection', () => {
-    console.log('connecting socket io server')
-})
-
-io.on("connect_error", (err) => {
-    console.log('socketio connection failed');
-    console.log(`connect_error due to ${err.message}`);
-  });
 
 // app.io = io; //do we really need this for req.app.io.emit in routes? we can just do io.emit from the io server.
 export const emitQuestionGenState = (i: number, totalNumQuestions: number, socketId: string) => {
