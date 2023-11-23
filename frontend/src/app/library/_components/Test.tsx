@@ -36,7 +36,7 @@ const Test = ({test}: props) => {
     if (process.env.NODE_ENV === 'development') {
         fetchURL = 'http://localhost:9000/api'
     } else {
-        fetchURL = 'https://quizzipio.com/api'
+        fetchURL = '/api'
     }
 
     const router = useRouter();

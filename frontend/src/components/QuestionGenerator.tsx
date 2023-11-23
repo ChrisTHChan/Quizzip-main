@@ -28,7 +28,7 @@ const QuestionGenerator = () => {
     if (process.env.NODE_ENV === 'development') {
         fetchURL = 'http://localhost:9000'
     } else {
-        fetchURL = 'https://quizzipio.com'
+        fetchURL = ''
     }
 
     //zustand global state references ###########################################################################################################################################
@@ -70,7 +70,7 @@ const QuestionGenerator = () => {
 
     //side effect handlers ##############################################################################################################################################
     useEffect(() => {
-        const socket = io(`${fetchURL}`)
+        const socket = io('/')
 
         socket.on('connect', () => {
             console.log(socket.id)

@@ -16,7 +16,7 @@ const getLibraryData = async () => {
     if (process.env.NODE_ENV === 'development') {
         res = await fetch(`http://localhost:9000/api/users/lib/${token}`)
     } else {
-        res = await fetch(`https://quizzipio.com/api/users/lib/${token}`)
+        res = await fetch(`/api/users/lib/${token}`)
     }
 
     if (!res.ok) {
