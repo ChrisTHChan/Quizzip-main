@@ -22,14 +22,12 @@ app.use(fileUpload());
 app.use(compression());
 app.use(cookieParser());
 
-console.log(app.settings.env)
-
 let io:Server
-if (app.settings.env === 'development') {
+if (process.env.NODE_ENV === 'development') {
 
     console.log('in development mode');
 
-    app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+    app.use(cors({credentials: true, origin: 'http://localhost:3000'}))
 
     io =  new Server(server, {
         cors: {
@@ -39,6 +37,9 @@ if (app.settings.env === 'development') {
         path: '/socket.io'
     })
 } else {
+
+    console.log('in production mode')
+
     io = new Server(server, {
         path: '/socket.io/',
     });

@@ -5,7 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon server.ts"
+    "server": "set NODE_ENV=development&& nodemon server.ts",
+    "build": "nodemon server.ts"
   },
   "keywords": [],
   "author": "",
