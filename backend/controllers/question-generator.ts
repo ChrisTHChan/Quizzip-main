@@ -33,7 +33,7 @@ export default async (req: express.Request, res: express.Response) => {
     }
 
     const timeout = new Promise((resolve, reject) => {
-        setTimeout(resolve, 60000, 'fail');
+        setTimeout(resolve, 90000, 'fail');
     });
 
     try {

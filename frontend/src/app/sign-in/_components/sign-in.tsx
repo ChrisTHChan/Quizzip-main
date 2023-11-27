@@ -2,18 +2,20 @@
 
 import SimpleInput from "@/components/simpleInput"
 import PrimaryButton from "@/components/primaryButton"
+import SecondaryButton from "@/components/secondaryButton"
 import {useState} from 'react'
 import { validateEmail } from "@/util-functions/helper-functions"
+import Link from 'next/link';
 
 export default function SignInComponent() {
 
   let fetchURL: string
 
-    if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'http://localhost:9000/api'
-    } else {
-        fetchURL = '/api'
-    }
+  if (process.env.NODE_ENV === 'development') {
+      fetchURL = 'http://localhost:9000/api'
+  } else {
+      fetchURL = '/api'
+  }
 
   //state
 
@@ -85,7 +87,8 @@ export default function SignInComponent() {
                         <form onSubmit={submitSignIn}>
                           <SimpleInput type="email" extra_classes="w-full" name="email" onChange={handleInputChange} placeholder="Enter Email" label="E-mail" value={inputState.email}/>
                           <SimpleInput type="password" extra_classes="w-full" name="password" onChange={handleInputChange} placeholder="Enter Password" label="Password" value={inputState.password}/>
-                          <PrimaryButton type="submit" extra_classes="mt-2 mb-2">Sign In</PrimaryButton>
+                          <PrimaryButton type="submit" extra_classes="mt-2 mb-2 mr-2">Sign In</PrimaryButton>
+                          <Link href='forgot-password'><SecondaryButton>Forgot my Password</SecondaryButton></Link>
                         </form>
                         <p className="text-xs mb-8">{signInStatus}</p> 
                     </div>
