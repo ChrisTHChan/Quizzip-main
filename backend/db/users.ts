@@ -15,12 +15,17 @@ testSchema.virtual('id').get(function() {
     return this._id;
 });
 
+const forgotPasswordSchema = new mongoose.Schema({
+    email: {type: String, required: true},
+    passcode: {type: Number, required: true},
+    createdAt: {type: Date, expires: '15m', default: Date.now, required: true}
+})
+
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true},
     email: {type: String, required: true},
     authentication: {
         password: {type: String, required: true, select: false},
-        forgotPasswordPasscode: {type: Number, select: false},
         salt: {type: String, select: false},
         sessionToken: {type: String , select: false},
     },
@@ -28,8 +33,27 @@ const UserSchema = new mongoose.Schema({
 })
 
 export const UserModel = mongoose.model('User', UserSchema)
+export const ForgotPasswordModel = mongoose.model('ForgotPasswordPasscode', forgotPasswordSchema)
 
-//actions to query users
+//forgotPassword db methods
+
+export const createForgotPasswordPasscode = (values: Record<string, any>) => {
+    return new ForgotPasswordModel(values).save().then(
+        (user: Record<string, any>) => {
+            user.toObject();
+        } 
+    )
+}
+
+//user db methods
+
+export const createUser = (values: Record<string, any>) => {
+    return new UserModel(values).save().then(
+        (user: Record<string, any>) => {
+            user.toObject();
+        } 
+    )
+}
 
 export const getUsers = () => {
     return UserModel.find()
@@ -47,14 +71,6 @@ export const getUserBySessionToken = (sessionToken: String) => {
 
 export const getUserById = (id: String) => {
     return UserModel.findOne({_id: id})
-}
-
-export const createUser = (values: Record<string, any>) => {
-    return new UserModel(values).save().then(
-        (user: Record<string, any>) => {
-            user.toObject();
-        } 
-    )
 }
 
 export const deleteUserById = (id: String) => {
