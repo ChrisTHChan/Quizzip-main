@@ -20,6 +20,7 @@ export default function Register() {
         email: '',
         username: '',
         password: '',
+        confirmPassword: '',
     })
     const [registrationStatus, setRegistrationStatus] = useState('')
 
@@ -36,8 +37,12 @@ export default function Register() {
         e.preventDefault();
 
         const emailValid = validateEmail(inputState.email)
+
+        const passwordsMatch = () => {
+            return inputState.password === inputState.confirmPassword
+        }
         
-        if (emailValid && inputState.email && inputState.username && inputState.password) {
+        if (passwordsMatch() && emailValid && inputState.email && inputState.username && inputState.password) {
 
             const formData = new FormData();
 
@@ -65,7 +70,7 @@ export default function Register() {
                 return
             })
         } else {
-            setRegistrationStatus('Please fill in all fields, and enter a proper email.')
+            setRegistrationStatus('Please make sure to fill in all fields, enter a proper email, and that your passwords match.')
             return
         }
     }
@@ -83,6 +88,7 @@ export default function Register() {
                                     <SimpleInput type="email" extra_classes="w-full" name="email" onChange={handleInputChange} placeholder="Enter Email" label="E-mail" value={inputState.email}/>
                                     <SimpleInput extra_classes="w-full" name="username" onChange={handleInputChange} placeholder="Enter Username" label="Username" value={inputState.username}/>
                                     <SimpleInput type="password" extra_classes="w-full" name="password" onChange={handleInputChange} placeholder="Enter Password" label="Password" value={inputState.password}/>
+                                    <SimpleInput type="password" extra_classes="w-full" name="confirmPassword" onChange={handleInputChange} placeholder="Confirm Password" label="Confirm Password" value={inputState.confirmPassword}/>
                                     <PrimaryButton type="submit" extra_classes="mt-2 mb-2">Register</PrimaryButton>
                                 </form>
                                 <p className="text-xs mb-8">{registrationStatus}</p> 

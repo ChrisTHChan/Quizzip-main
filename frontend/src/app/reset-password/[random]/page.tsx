@@ -18,6 +18,7 @@ const ForgotPassword = () => {
     const [inputState, setInputState] = useState({
         email: '',
         password: '',
+        confirmPassword: '',
     })
     const [callStatus, setCallStatus] = useState('')
 
@@ -75,6 +76,7 @@ const ForgotPassword = () => {
                                 <form onSubmit={submitChangePassword}>
                                     <SimpleInput type="email" extra_classes="w-full" name="email" onChange={handleInputChange} placeholder="Enter Email" label="E-mail" value={inputState.email}/>
                                     <SimpleInput type="password" extra_classes="w-full" name="password" onChange={handleInputChange} placeholder="Enter Password" label="Password" value={inputState.password}/>
+                                    <SimpleInput type="password" extra_classes="w-full" name="confirmPassword" onChange={handleInputChange} placeholder="Confirm Password" label="Confirm Password" value={inputState.confirmPassword}/>
                                     <PrimaryButton type="submit" extra_classes="mt-2 mb-2 mr-2">Change Password</PrimaryButton>
                                 </form>
                                 <p className="text-xs mb-8">{callStatus}</p> 
