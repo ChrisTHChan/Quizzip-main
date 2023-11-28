@@ -18,7 +18,8 @@ testSchema.virtual('id').get(function() {
 const forgotPasswordSchema = new mongoose.Schema({
     email: {type: String, required: true},
     passcode: {type: Number, required: true},
-    createdAt: {type: Date, expires: '15m', default: Date.now, required: true}
+    salt: {type: String, required: true},
+    createdAt: {type: Date, expires: '30m', default: Date.now, required: true}
 })
 
 const UserSchema = new mongoose.Schema({
@@ -45,6 +46,14 @@ export const createForgotPasswordPasscode = (values: Record<string, any>) => {
     )
 }
 
+export const getForgotPasswordObjectByEmail = (email: String) => {
+    return ForgotPasswordModel.findOne({'email': email})
+}
+
+export const deleteForgotPasswordObjectByEmail = (email: String) => {
+    return ForgotPasswordModel.findOneAndDelete({'email': email})
+}
+
 //user db methods
 
 export const createUser = (values: Record<string, any>) => {
@@ -64,9 +73,7 @@ export const getUserByEmail = (email: String) => {
 }
 
 export const getUserBySessionToken = (sessionToken: String) => {
-    return UserModel.findOne({
-        'authentication.sessionToken': sessionToken
-    })
+    return UserModel.findOne({'authentication.sessionToken': sessionToken})
 }
 
 export const getUserById = (id: String) => {

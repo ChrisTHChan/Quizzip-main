@@ -5,7 +5,7 @@ import PrimaryButton from "@/components/primaryButton"
 import {useState} from 'react'
 import { validateEmail } from "@/util-functions/helper-functions"
 
-const ForgotPassword = () => {
+const ResetPassword = ({ params }: { params: { hashedEmail: string } }) => {
 
     let fetchURL: string
 
@@ -17,6 +17,7 @@ const ForgotPassword = () => {
 
     const [inputState, setInputState] = useState({
         email: '',
+        passcodeNumber: '',
         password: '',
         confirmPassword: '',
     })
@@ -24,37 +25,45 @@ const ForgotPassword = () => {
 
     const submitChangePassword = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(inputState);
 
-        // const emailValid = validateEmail(inputState.email)
+        const hashedEmail = params.hashedEmail
 
-        // if (emailValid) {
-        //     const formData = new FormData();
+        const emailValid = validateEmail(inputState.email)
 
-        //     setCallStatus('')
+        const passwordsMatch = () => {
+            return inputState.password === inputState.confirmPassword
+        }
 
-        //     formData.append("email", inputState.email);
+        if (emailValid && passwordsMatch() && inputState.passcodeNumber && inputState.password) {
+            const formData = new FormData();
 
-        //     fetch(`${fetchURL}/auth/forgotPassword`, {
-        //         method: 'POST',
-        //         body: formData,
-        //     })
-        //     .then((res) => {
-        //         return res.json()
-        //     })
-        //     .then((res) => {
-        //         setCallStatus(res.callStatus);
-        //     })
-        //     .catch((err) => {
-        //         setCallStatus('Something went wrong, please try submitting again.');
-        //         console.log(err);
-        //         return
-        //     })
+            setCallStatus('')
 
-        // } else {
-        //     setCallStatus('Please enter a proper email.')
-        //     return
-        // }
+            formData.append("email", inputState.email);
+            formData.append("hashedEmail", hashedEmail);
+            formData.append("password", inputState.password);
+            formData.append("passcodeNumber", inputState.passcodeNumber);
+
+            fetch(`${fetchURL}/auth/validateAndResetPassword`, {
+                method: 'POST',
+                body: formData,
+            })
+            .then((res) => {
+                return res.json()
+            })
+            .then((res) => {
+                setCallStatus(res.callStatus);
+            })
+            .catch((err) => {
+                setCallStatus('Something went wrong, please try submitting again.');
+                console.log(err);
+                return
+            })
+
+        } else {
+            setCallStatus('Please make sure all fields are filled in, that your passwords match, and that your email is a proper email.')
+            return
+        }
     }
 
     const handleInputChange = (e:React.FormEvent<HTMLInputElement>) => {
@@ -75,6 +84,7 @@ const ForgotPassword = () => {
                             <div className="w-1/2">
                                 <form onSubmit={submitChangePassword}>
                                     <SimpleInput type="email" extra_classes="w-full" name="email" onChange={handleInputChange} placeholder="Enter Email" label="E-mail" value={inputState.email}/>
+                                    <SimpleInput type="password" extra_classes="w-full" name="passcodeNumber" onChange={handleInputChange} placeholder="Enter Passcode Number" label="Passcode Number" value={inputState.passcodeNumber}/>
                                     <SimpleInput type="password" extra_classes="w-full" name="password" onChange={handleInputChange} placeholder="Enter Password" label="Password" value={inputState.password}/>
                                     <SimpleInput type="password" extra_classes="w-full" name="confirmPassword" onChange={handleInputChange} placeholder="Confirm Password" label="Confirm Password" value={inputState.confirmPassword}/>
                                     <PrimaryButton type="submit" extra_classes="mt-2 mb-2 mr-2">Change Password</PrimaryButton>
@@ -89,4 +99,4 @@ const ForgotPassword = () => {
     )
 }
 
-export default ForgotPassword
+export default ResetPassword

@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, getUserByEmail, getUserBySessionToken, createForgotPasswordPasscode } from '../db/users';
+import { createUser, getUserByEmail, getUserBySessionToken, createForgotPasswordPasscode, getForgotPasswordObjectByEmail, deleteForgotPasswordObjectByEmail } from '../db/users';
 import { random, authentication } from '../helpers/auth-helpers';
 import { validateEmail } from '../helpers/helper-functions';
 import { sendEmail } from '../server';
@@ -23,8 +23,60 @@ export const checkUserSessionToken = async (req: express.Request, res: express.R
     }
 }
 
+export const validateAndResetPassword = async (req: express.Request, res: express.Response) => {
+    try {
+
+        const {email, hashedEmail, password, passcodeNumber} = req.body
+
+        const forgotPasswordObject = await getForgotPasswordObjectByEmail(email)
+
+        if (!forgotPasswordObject) {
+            throw new Error('This user doesn\'t exist.')
+        }
+
+        const expectedHashedEmail = authentication(forgotPasswordObject.salt, email)
+
+        if (expectedHashedEmail !== hashedEmail) {
+            throw new Error('The email is incorrect.')
+        }
+
+        if (parseInt(passcodeNumber) !== forgotPasswordObject.passcode) {
+            throw new Error('The passcode is incorrect.')
+        }
+
+        const user = await getUserByEmail(email);
+        const salt = random();
+        const newPasswordHash = authentication(salt, password)
+
+        user!.authentication!.salt = salt
+        user!.authentication!.password = newPasswordHash
+
+        await user!.save()
+
+        await deleteForgotPasswordObjectByEmail(email);
+
+        res.status(200).json({
+            callStatus: 'Password was reset successfully!'
+        })
+
+    } catch (error: any) {
+        console.log(error)
+        return res.status(400).json({
+            callStatus: `Password reset failed: ${error.message}`
+        });
+    }
+}
+
 export const sendForgotPasswordEmail = async (req: express.Request, res: express.Response) => {
     try {
+
+        let resetLink
+
+        if (process.env.NODE_ENV === 'development') {
+            resetLink = 'localhost:3000'
+        } else {
+            resetLink = 'quizzipio.com'
+        }
 
         const { email } = req.body;
 
@@ -40,8 +92,12 @@ export const sendForgotPasswordEmail = async (req: express.Request, res: express
 
         const oneTimePasscode = Math.floor(100000 + Math.random() * 900000)
 
+        const salt = random();
+        const hashedEmail = authentication(salt, email)
+
         await createForgotPasswordPasscode({
             email: email,
+            salt: salt,
             passcode: oneTimePasscode,
         })
 
@@ -49,7 +105,12 @@ export const sendForgotPasswordEmail = async (req: express.Request, res: express
             "from": "quizzipio@gmail.com",
             "to": email,
             "subject": "Password Reset Request",
-            "text": `hey there ${user.username}, we got a message saying you forgot your password. Please go to the following link and use the following passcode to reset your password.`
+            "text": `
+                hey there ${user.username}, we got a message saying you forgot your password. 
+                Please go to the following link and use the following passcode to reset your password.
+                Passcode: ${oneTimePasscode}.
+                Link: ${resetLink}/reset-password/${hashedEmail}
+            `
         })
 
         res.status(200).json({
