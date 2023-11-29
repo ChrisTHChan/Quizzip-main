@@ -28,13 +28,9 @@ export default async (req: express.Request, res: express.Response) => {
 
     const setupQuestionsReturn = (questions: string) => {
         const dataObject = JSON.parse(questions);
-        const question = dataObject[0]
+        const question = dataObject[0]  
         questionsList.push(question);
     }
-
-    const timeout = new Promise((resolve, reject) => {
-        setTimeout(resolve, 60000, 'fail');
-    });
 
     try {
         let transcript: string = '';
@@ -73,7 +69,9 @@ export default async (req: express.Request, res: express.Response) => {
                 for (let i = lastGeneratedType; i < lastGeneratedType + mcNum; i++) {
                     emitQuestionGenState(i, totalNumQuestions, clientSocketId);
                     const gen = generateQuestions('multiple choice', listOfTranscriptSlices[i], difficultyLevel)
-                    const response = await Promise.race([gen, timeout]);
+                    const response = await Promise.race([gen, new Promise((resolve, reject) => {
+                        setTimeout(resolve, 75000, 'fail');
+                    })]);
 
                     if (response === 'fail') {
                         throw new Error('This question took too long to generate, please rerun the request.')
@@ -89,7 +87,9 @@ export default async (req: express.Request, res: express.Response) => {
                 for (let i = lastGeneratedType; i < lastGeneratedType + saNum; i++) {
                     emitQuestionGenState(i, totalNumQuestions, clientSocketId);
                     const gen = generateQuestions('short answer', listOfTranscriptSlices[i], difficultyLevel)
-                    const response = await Promise.race([gen , timeout]);
+                    const response = await Promise.race([gen , new Promise((resolve, reject) => {
+                        setTimeout(resolve, 75000, 'fail');
+                    })]);
 
                     if (response === 'fail') {
                         throw new Error('This question took too long to generate, please rerun the request.')
@@ -105,7 +105,9 @@ export default async (req: express.Request, res: express.Response) => {
                 for (let i = lastGeneratedType; i < lastGeneratedType + tfNum; i++) {
                     emitQuestionGenState(i, totalNumQuestions, clientSocketId);
                     const gen = generateQuestions('true or false', listOfTranscriptSlices[i], difficultyLevel)
-                    const response = await Promise.race([gen, timeout]);
+                    const response = await Promise.race([gen, new Promise((resolve, reject) => {
+                        setTimeout(resolve, 75000, 'fail');
+                    })]);
 
                     if (response === 'fail') {
                         throw new Error('This question took too long to generate, please rerun the request.')
@@ -129,7 +131,7 @@ export default async (req: express.Request, res: express.Response) => {
         let errorString = ''
 
         if (error.message.includes('Unexpected token')) {
-            errorString = 'Something went wrong on our side... please try again.' 
+            errorString = 'Something went wrong on our side... We apologize, please try the request again.' 
         } else {
             errorString = error.message
         }

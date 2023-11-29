@@ -15,6 +15,13 @@ testSchema.virtual('id').get(function() {
     return this._id;
 });
 
+const forgotPasswordSchema = new mongoose.Schema({
+    email: {type: String, required: true},
+    passcode: {type: Number, required: true},
+    salt: {type: String, required: true},
+    expirationDate: {type: Date, expires: 0}
+})
+
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true},
     email: {type: String, required: true},
@@ -27,8 +34,35 @@ const UserSchema = new mongoose.Schema({
 })
 
 export const UserModel = mongoose.model('User', UserSchema)
+export const ForgotPasswordModel = mongoose.model('ForgotPasswordPasscode', forgotPasswordSchema)
 
-//actions to query users
+//forgotPassword db methods
+
+export const createForgotPasswordPasscode = (values: Record<string, any>) => {
+    return new ForgotPasswordModel(values).save().then(
+        (user: Record<string, any>) => {
+            user.toObject();
+        } 
+    )
+}
+
+export const getForgotPasswordObjectByEmail = (email: String) => {
+    return ForgotPasswordModel.findOne({'email': email})
+}
+
+export const deleteForgotPasswordObjectByEmail = (email: String) => {
+    return ForgotPasswordModel.findOneAndDelete({'email': email})
+}
+
+//user db methods
+
+export const createUser = (values: Record<string, any>) => {
+    return new UserModel(values).save().then(
+        (user: Record<string, any>) => {
+            user.toObject();
+        } 
+    )
+}
 
 export const getUsers = () => {
     return UserModel.find()
@@ -39,21 +73,11 @@ export const getUserByEmail = (email: String) => {
 }
 
 export const getUserBySessionToken = (sessionToken: String) => {
-    return UserModel.findOne({
-        'authentication.sessionToken': sessionToken
-    })
+    return UserModel.findOne({'authentication.sessionToken': sessionToken})
 }
 
 export const getUserById = (id: String) => {
     return UserModel.findOne({_id: id})
-}
-
-export const createUser = (values: Record<string, any>) => {
-    return new UserModel(values).save().then(
-        (user: Record<string, any>) => {
-            user.toObject();
-        } 
-    )
 }
 
 export const deleteUserById = (id: String) => {

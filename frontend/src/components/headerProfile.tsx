@@ -89,8 +89,8 @@ const HeaderProfile = () => {
     } else if (auth === 'not-auth') {
         authComponent = (
             <>
-                <Link href='register'><SecondaryButton extra_classes="px-4 mr-4 ">Register</SecondaryButton></Link>
-                <Link href='sign-in'><PrimaryButton extra_classes="px-4">Sign In</PrimaryButton></Link>
+                <Link href='/register'><SecondaryButton extra_classes="px-4 mr-4 ">Register</SecondaryButton></Link>
+                <Link href='/sign-in'><PrimaryButton extra_classes="px-4">Sign In</PrimaryButton></Link>
             </>
         )
     } else {
