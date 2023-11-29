@@ -19,7 +19,7 @@ const forgotPasswordSchema = new mongoose.Schema({
     email: {type: String, required: true},
     passcode: {type: Number, required: true},
     salt: {type: String, required: true},
-    createdAt: {type: Date, expires: '30m', default: Date.now, required: true}
+    expirationDate: {type: Date, expires: 0}
 })
 
 const UserSchema = new mongoose.Schema({

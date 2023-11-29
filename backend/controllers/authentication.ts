@@ -99,17 +99,23 @@ export const sendForgotPasswordEmail = async (req: express.Request, res: express
             email: email,
             salt: salt,
             passcode: oneTimePasscode,
+            expirationDate: Date.now() + (15 * 60 * 1000) //15 min
         })
 
         await sendEmail({
             "from": "quizzipio@gmail.com",
             "to": email,
             "subject": "Password Reset Request",
-            "text": `
-                hey there ${user.username}, we got a message saying you forgot your password. 
-                Please go to the following link and use the following passcode to reset your password.
-                Passcode: ${oneTimePasscode}.
-                Link: ${resetLink}/reset-password/${hashedEmail}
+            "html": `
+                <p>Hello there ${user.username}!</p>
+                <p>we got a message saying you forgot your password.</p>
+                <p>Please go to the following link and use the following temporary 6 digit passcode number to reset your password. The passcode will last 15 minutes.</p>
+                <ul>
+                    <li><i><strong>Passcode:</strong></i> ${oneTimePasscode}</li>
+                    <li><i><strong>Link:</strong></i> ${resetLink}/reset-password/${hashedEmail}</li>
+                </ul>
+                <p>The QuizzipIO Team</p>
+                <i><strong>This is an automatated message sent in response to a password reset request.</strong></i>
             `
         })
 
