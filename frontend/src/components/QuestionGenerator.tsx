@@ -304,7 +304,7 @@ const QuestionGenerator = () => {
     return (
         <div className="w-full px-4 flex flex-col lg:flex-row justify-between">
 
-            <div className="w-full lg:w-1/2 lg:pr-4 border-0 lg:border-r border-slate-800">
+            <div className="w-full lg:w-1/2 lg:pr-4 border-0">
 
                 <div className="relative w-full top-1.5">
                     {tabBarState === 'right' ? <button id="scrollLeft" onClick={scrollTabBar} className="absolute left-0 pl-2 pr-8 bg-gradient-to-r from-slate-900 via-slate-900 to-100%"> - </button> : null}

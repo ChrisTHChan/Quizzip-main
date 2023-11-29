@@ -37,6 +37,10 @@ const ForgotPassword = () => {
                 body: formData,
             })
             .then((res) => {
+                if (res.status === 200) {
+                    location.href = "/";
+                }
+
                 return res.json()
             })
             .then((res) => {

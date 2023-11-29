@@ -49,6 +49,10 @@ const ResetPassword = ({ params }: { params: { hashedEmail: string } }) => {
                 body: formData,
             })
             .then((res) => {
+                if (res.status === 200) {
+                    location.href = "/sign-in";
+                }
+
                 return res.json()
             })
             .then((res) => {
