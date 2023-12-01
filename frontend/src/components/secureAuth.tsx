@@ -10,13 +10,13 @@ const SecureNotAuth = (Component: any) => {
         const router = useRouter();
 
         useEffect(() => {
-            if (auth === 'auth') {
+            if (auth === 'not-auth') {
                 return
             }
         }, [auth])
 
-        if (auth === 'auth') {
-            router.push('/create')
+        if (auth === 'not-auth') {
+            router.push('/sign-in')
             return
         } else {
             return <Component {...props} />

@@ -1,15 +1,18 @@
-import QuestionGenerator from "@/components/QuestionGenerator"
+'use client'
+
+import SecureAuth from "@/components/secureAuth"
+import CreateComponent from "./_components/create"
+import useAuthStore from "@/store/store"
 
 const Create = () => {
-    return (
-        <>
-            <div className="flex justify-center items-center">
-                <div className="container">
-                    <QuestionGenerator/>
-                </div>
-            </div>
-        </>
-    )
+
+  const { auth } = useAuthStore();
+
+  if (auth === 'not-auth') {
+    return
+  } else if (auth === 'auth') {
+    return <CreateComponent/>
+  }
 }
 
-export default Create
+export default SecureAuth(Create);
