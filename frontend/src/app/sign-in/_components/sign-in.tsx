@@ -55,7 +55,7 @@ export default function SignInComponent() {
       })
       .then((res) => {
           if (res.status === 200) {
-            location.href = "/";
+            location.href = "/create";
           }
 
           return res.json()

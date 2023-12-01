@@ -82,8 +82,9 @@ const HeaderProfile = () => {
     if (auth === 'auth') {
         authComponent = (
             <>
-                <SecondaryButton onClick={logout} extra_classes="mt-2 mb-2 mr-4 px-4">Sign Out</SecondaryButton>
-                <PrimaryButton onClick={goToLib} extra_classes='px-4'>Library</PrimaryButton>
+                <button onClick={logout} className="mr-4 text-sm font-semibold hover:underline underline-offset-8">Sign Out</button>
+                <SecondaryButton onClick={goToLib} extra_classes="mt-2 mb-2 mr-4 px-4">Library</SecondaryButton>
+                <Link href='/create'><PrimaryButton extra_classes='px-4'>Create</PrimaryButton></Link>
             </>
         )
     } else if (auth === 'not-auth') {

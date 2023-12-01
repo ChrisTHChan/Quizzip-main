@@ -40,7 +40,12 @@ const QuestionGenerator = () => {
     //state ###############################################################################################################################################
     const [clientSocketId, setClientSocketId] = useState('')
     const [requestStatus, setRequestStatus] = useState('');
-    const [questions, setQuestions] = useState<question[]>([]);
+    const [questions, setQuestions] = useState<question[]>([
+        {
+            question: 'Is this a question?',
+            answer: 'Yes it is!'
+        }
+    ]);
     const [getQuestionsButtonState, setGetQuestionsButtonState] = useState({
         buttonText: 'Get Questions',
         buttonDisabled: false,

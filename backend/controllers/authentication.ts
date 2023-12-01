@@ -31,7 +31,7 @@ export const validateAndResetPassword = async (req: express.Request, res: expres
         const forgotPasswordObject = await getForgotPasswordObjectByEmail(email)
 
         if (!forgotPasswordObject) {
-            throw new Error('This user doesn\'t exist.')
+            throw new Error("You\'re passcode has expired.")
         }
 
         const expectedHashedEmail = authentication(forgotPasswordObject.salt, email)

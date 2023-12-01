@@ -12,7 +12,7 @@ type props = {
 const question = ({question, showAnswers}: props) => {
     return (
         <div className="last:mb-0 mb-3 bg-gray-800 rounded-lg p-4">
-            <p className="mb-2">{question.question}</p>
+            <p>{question.question}</p>
             {
                 question.choices
                 ?
