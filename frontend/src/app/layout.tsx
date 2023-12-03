@@ -3,9 +3,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Image from 'next/image';
 import logo from '../../public/images/logo.png';
-import PrimaryButton from '../components/primaryButton';
 import Link from 'next/link';
-import SecondaryButton from '../components/secondaryButton';
 import HeaderProfile from '@/components/headerProfile';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -23,9 +21,9 @@ export default function RootLayout({
   
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-slate-900 text-slate-200`}>
-        <header className="flex justify-center items-center">
-          <div className="container py-6 mx-4 border-b flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-16">
+      <body className={`${inter.className} bg-slate-900 text-neutral-300`}>
+        <header className="flex justify-center items-center border-b sm:mb-16">
+          <div className="container py-6 mx-4 flex flex-col sm:flex-row justify-between items-center">
             <Link href="/" className="flex gap-3 items-center mb-4 sm:mb-0">
               <div className="h-12 w-10">
                 <Image alt="a test" src={logo} className="object-contain h-full"/>
