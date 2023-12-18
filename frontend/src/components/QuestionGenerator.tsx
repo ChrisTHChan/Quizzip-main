@@ -307,8 +307,8 @@ const QuestionGenerator = () => {
             <div className="w-full lg:w-1/2 lg:pr-4 border-0">
 
                 <div className="relative w-full top-1.5">
-                    {tabBarState === 'right' ? <button id="scrollLeft" onClick={scrollTabBar} className="absolute left-0 pl-2 pr-8 bg-gradient-to-r from-slate-900 via-slate-900 to-100%"> &#8592; </button> : null}
-                    {tabBarState === 'left' ? <button id="scrollRight" onClick={scrollTabBar} className="absolute right-0 pr-2 pl-8 bg-gradient-to-r from-transparent via-slate-900 to-slate-900"> &#8594; </button> : null}
+                    {tabBarState === 'right' ? <button id="scrollLeft" onClick={scrollTabBar} className="absolute left-0 pl-2 pr-8 bg-gradient-to-r from-slate-900 via-slate-900 to-100% hover:font-bold hover:scale-125"> &#8592; </button> : null}
+                    {tabBarState === 'left' ? <button id="scrollRight" onClick={scrollTabBar} className="absolute right-0 pr-2 pl-8 bg-gradient-to-r from-transparent via-slate-900 to-slate-900 hover:font-bold hover:scale-125"> &#8594; </button> : null}
                 </div>
 
                 <div className="flex mb-4 overflow-x-scroll no-scrollbar" ref={tabBar}>
