@@ -68,10 +68,23 @@ export default function Home() {
               </div>
               <div className="w-full lg:w-1/2">
                 <h3 className="text-6xl font-extrabold mb-8">Assessments from<span className="text-blue-500"> any digital content.</span></h3>
-                {/* <p className="text-slate-400 mb-8">Use our AI-powered tools to create all sorts of assessments from your choice of educational content.</p> */}
                 <p className="mb-8 text-slate-300"><span className="font-semibold">Versatile.</span> From files like PDF's, Word Documents, and Powerpoints, to audio content like youtube videos, you can use any content source to create your assessments.</p>
                 <p className="mb-8 text-slate-300"><span className="font-semibold">Cuztomizable.</span> Adjust the length of your tests by changing the number of questions, the difficulty level, and the required answer detail.</p>
                 <Link className="inline-block mx-auto" href="/create"><PrimaryButton>Get Started</PrimaryButton></Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="px-6 md:px-0 mb-48 w-full">
+            <div className="w-full md:w-10/12 mx-auto flex flex-col lg:flex-row gap-4">
+              <div className="w-full lg:w-1/2">
+                <h3 className="text-6xl font-extrabold mb-8">Save tests and<span className="text-blue-500"> publish for use.</span></h3>
+                <p className="mb-8 text-slate-300"><span className="font-semibold">Record.</span> Save any generated assessments to your personal library for a historical record of all your tests for later use and re-use.</p>
+                <p className="mb-8 text-slate-300"><span className="font-semibold">Publish.</span> View, search, publish and delete assessments as needed. Export your tests to various file types for easy sharing and printing for your end users.</p>
+                <Link className="inline-block mx-auto" href="/create"><PrimaryButton>Get Started</PrimaryButton></Link>
+              </div>
+              <div className="w-full lg:w-1/2 rounded border-2 border-slate-700 px-4 pb-4">
+                <Image alt="quizzip create screen" src={ss2} className="object-contain h-full"/>
               </div>
             </div>
           </div>
