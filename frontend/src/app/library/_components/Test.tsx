@@ -58,8 +58,8 @@ const Test = ({test}: props) => {
 
     const initialContent = (
         <div className='hover:underline'>
-            <h2 className='text-xl font-semibold text-left'>{testLabel}</h2>
-            <p className="text-left text-sm">Assessment ID: {_id}</p>
+            <h2 className='text-xl font-semibold'>{testLabel}</h2>
+            <p className="text-sm">Assessment ID: {_id}</p>
         </div>
     )
 

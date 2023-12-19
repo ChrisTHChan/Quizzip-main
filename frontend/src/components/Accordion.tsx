@@ -18,7 +18,7 @@ const Accordion = ({extra_classes, initialContent, children}: props) => {
     
     return (
         <div className={extra_classes}>
-            <button className="w-full" onClick={toggleIsOpen}>
+            <button className="w-full text-left" onClick={toggleIsOpen}>
                 {initialContent}
             </button>
             {
