@@ -21,7 +21,7 @@ export default function RootLayout({
   
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-slate-900 text-neutral-300 leading-loose`}>
+      <body className={`${inter.className} bg-slate-900 text-neutral-300`}>
         <header className="flex justify-center items-center border-b sm:mb-16">
           <div className="container py-6 mx-4 flex flex-col sm:flex-row justify-between items-center">
             <Link href="/" className="flex gap-3 items-center mb-4 sm:mb-0">

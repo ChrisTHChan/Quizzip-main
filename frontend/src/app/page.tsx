@@ -68,8 +68,8 @@ export default function Home() {
               </div>
               <div className="w-full lg:w-1/2">
                 <h3 className="text-6xl font-extrabold mb-8">Assessments from<span className="text-blue-500"> any digital content.</span></h3>
-                <p className="mb-8 text-slate-300"><span className="font-semibold">Versatile.</span> From files like PDF's, Word Documents, and Powerpoints, to audio content like youtube videos, you can use any content source to create your assessments.</p>
-                <p className="mb-8 text-slate-300"><span className="font-semibold">Cuztomizable.</span> Adjust the length of your tests by changing the number of questions, the difficulty level, and the required answer detail.</p>
+                <p className="mb-8 text-slate-300 leading-loose"><span className="font-semibold">Versatile.</span> From files like PDF's, Word Documents, and Powerpoints, to audio content like youtube videos, you can use any content source to create your assessments.</p>
+                <p className="mb-8 text-slate-300 leading-loose"><span className="font-semibold">Cuztomizable.</span> Adjust the length of your tests by changing the number of questions, the difficulty level, and the required answer detail.</p>
                 <Link className="inline-block mx-auto" href="/create"><PrimaryButton>Get Started</PrimaryButton></Link>
               </div>
             </div>
@@ -79,12 +79,36 @@ export default function Home() {
             <div className="w-full md:w-10/12 mx-auto flex flex-col lg:flex-row gap-4">
               <div className="w-full lg:w-1/2">
                 <h3 className="text-6xl font-extrabold mb-8">Save tests and<span className="text-blue-500"> publish for use.</span></h3>
-                <p className="mb-8 text-slate-300"><span className="font-semibold">Record.</span> Save any generated assessments to your personal library for a historical record of all your tests for later use and re-use.</p>
-                <p className="mb-8 text-slate-300"><span className="font-semibold">Publish.</span> View, search, publish and delete assessments as needed. Export your tests to various file types for easy sharing and printing for your end users.</p>
+                <p className="mb-8 text-slate-300 leading-loose"><span className="font-semibold">Record.</span> Save any generated assessments to your personal library for a historical record of all your tests for later use and re-use.</p>
+                <p className="mb-8 text-slate-300 leading-loose"><span className="font-semibold">Publish.</span> View, search, publish and delete assessments as needed. Export your tests to various file types for easy sharing and printing for your end users.</p>
                 <Link className="inline-block mx-auto" href="/create"><PrimaryButton>Get Started</PrimaryButton></Link>
               </div>
               <div className="w-full lg:w-1/2 rounded border-2 border-slate-700 px-4 pb-4">
                 <Image alt="quizzip create screen" src={ss2} className="object-contain h-full"/>
+              </div>
+            </div>
+          </div>
+
+          <div className="px-6 md:px-0 mb-48 w-full">
+            <h3 className="text-6xl font-extrabold mb-16 text-center">See what <span className="text-blue-500">our users say.</span></h3>
+            <div className=" w-full md:w-10/12 mx-auto flex flex-col lg:flex-row divide-y-2 lg:divide-y-0 lg:divide-x-2 divide-slate-700">
+              <div className="lg:w-1/2 lg:mr-12 mb-8 lg:mb-0 text-slate-300">
+                <div className="flex flex-col h-full justify-between text-center">
+                  <p className="leading-loose mb-8">Making multiple-choice tests to see if my kids have read the given articles is something I dislike doing. QuizzipIO was excellent. It was as simple as uploading the article, creating questions, exporting them, reviewing the questions, and eliminating those that I didn't want to use. It was really simple!</p>
+                  <div>
+                    <p className="mb-2">- Melanie Esbert</p>
+                    <p className="font-bold">Parent & Tutor</p>
+                  </div>
+                </div>
+              </div>
+              <div className="pt-8 lg:pt-0 lg:w-1/2 lg:pl-12 text-slate-300">
+                <div className="flex flex-col h-full justify-between text-center">
+                  <p className="leading-loose mb-8">QuizzipIO has helped me as a classroom teacher by saving me hours of preparation time when creating questions for my students. The AI question generator provides me with a wide range of options, which I then manually choose the best ones for my kids based on how well they align with my curriculum.</p>
+                  <div>
+                    <p className="mb-2">- Gary Millsner</p>
+                    <p className="font-bold">Classroom Teacher</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
