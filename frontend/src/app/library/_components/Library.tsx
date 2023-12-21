@@ -17,15 +17,18 @@ import Cookies from 'js-cookie'
 import {useState, useEffect} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { getServerURL } from '@/util-functions/helper-functions';
 
 const getLibraryData = async () => {
     const token = Cookies.get('QUIZZIP-AUTH')
 
+    const fetchURL = getServerURL()
+
     let res
     if (process.env.NODE_ENV === 'development') {
-        res = await fetch(`http://localhost:9000/api/users/lib/${token}`)
+        res = await fetch(`${fetchURL}/users/lib/${token}`)
     } else {
-        res = await fetch(`/api/users/lib/${token}`)
+        res = await fetch(`${fetchURL}/users/lib/${token}`)
     }
 
     if (!res.ok) {

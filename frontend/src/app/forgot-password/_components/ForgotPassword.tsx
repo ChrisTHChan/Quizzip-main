@@ -4,16 +4,11 @@ import SimpleInput from "@/components/simpleInput"
 import PrimaryButton from "@/components/primaryButton"
 import {useState} from 'react'
 import { validateEmail } from "@/util-functions/helper-functions"
+import { getServerURL } from "@/util-functions/helper-functions"
 
 const ForgotPassword = () => {
 
-    let fetchURL: string
-
-    if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'http://localhost:9000/api'
-    } else {
-        fetchURL = '/api'
-    }
+    let fetchURL = getServerURL()
 
     const [inputState, setInputState] = useState({
         email: ''

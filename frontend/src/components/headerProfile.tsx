@@ -9,16 +9,11 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import useAuthStore from '@/store/store';
 import { useRouter } from 'next/navigation'
+import { getServerURL } from '@/util-functions/helper-functions';
 
 const HeaderProfile = () => {
 
-    let fetchURL: string
-
-    if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'http://localhost:9000/api'
-    } else {
-        fetchURL = '/api'
-    }
+    let fetchURL = getServerURL()
 
     const router = useRouter();
 

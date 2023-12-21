@@ -25,19 +25,14 @@ import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import { getServerURL } from "@/util-functions/helper-functions"
 
 export const revalidate = 0
 export const dynamic = 'auto'
 
 const Test = ({test}: props) => {
 
-    let fetchURL: string
-
-    if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'http://localhost:9000/api'
-    } else {
-        fetchURL = '/api'
-    }
+    let fetchURL = getServerURL()
 
     const router = useRouter();
 

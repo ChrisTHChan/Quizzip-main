@@ -4,16 +4,11 @@ import PrimaryButton from "@/components/primaryButton";
 import SimpleInput from "@/components/simpleInput"
 import { validateEmail } from "@/util-functions/helper-functions";
 import { useState } from "react";
+import { getServerURL } from "@/util-functions/helper-functions";
 
 export default function Register() {
 
-    let fetchURL: string
-
-    if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'http://localhost:9000/api'
-    } else {
-        fetchURL = '/api'
-    }
+    let fetchURL = getServerURL()
 
     //state
     const [inputState, setInputState] = useState({

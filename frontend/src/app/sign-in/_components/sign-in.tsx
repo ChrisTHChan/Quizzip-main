@@ -6,16 +6,11 @@ import SecondaryButton from "@/components/secondaryButton"
 import {useState} from 'react'
 import { validateEmail } from "@/util-functions/helper-functions"
 import Link from 'next/link';
+import { getServerURL } from "@/util-functions/helper-functions"
 
 export default function SignInComponent() {
 
-  let fetchURL: string
-
-  if (process.env.NODE_ENV === 'development') {
-      fetchURL = 'http://localhost:9000/api'
-  } else {
-      fetchURL = '/api'
-  }
+  let fetchURL = getServerURL()
 
   //state
 
