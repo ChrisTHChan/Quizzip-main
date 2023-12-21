@@ -15,7 +15,9 @@ export const checkUserSessionToken = async (req: express.Request, res: express.R
             throw new Error("No such user.") 
         }
 
-        return res.status(200).end();
+        console.log(user)
+
+        return res.status(200).json(user);
 
     } catch (error: any) {
         console.log(error)

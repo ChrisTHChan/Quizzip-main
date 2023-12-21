@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import {useState, useEffect} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import useAuthStore from '@/store/store';
+import { useAuthStore, useEmailStore } from '@/store/store';
 import { useRouter } from 'next/navigation'
 import { getServerURL } from '@/util-functions/helper-functions';
 
@@ -18,6 +18,8 @@ const HeaderProfile = () => {
     const router = useRouter();
 
     const {auth, setAuthTrue, setAuthFalse} = useAuthStore();
+
+    const {setUsername, setEmail} = useEmailStore()
     
     //state 
     const [sessionId] = useState(Cookies.get('QUIZZIP-AUTH'))
@@ -62,10 +64,15 @@ const HeaderProfile = () => {
         .then((res) => {
             if (res.status === 200) {
                 setAuthTrue()
+                return res.json()
             } else {
                 setAuthFalse()
             }
         })
+        .then((res) => {
+            setEmail(res.email)
+            setUsername(res.username)
+        }) 
         .catch((err) => {
             console.log(err);
             return

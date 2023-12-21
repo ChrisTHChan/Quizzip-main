@@ -2,7 +2,7 @@
 
 import SecureAuth from "@/components/secureAuth"
 import CreateComponent from "./_components/create"
-import useAuthStore from "@/store/store"
+import {useAuthStore} from "@/store/store"
 
 const Create = () => {
 

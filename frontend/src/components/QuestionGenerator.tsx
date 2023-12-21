@@ -16,7 +16,7 @@ import Question from './questionComponent'
 import io from 'socket.io-client'
 import PrimaryButton from './primaryButton';
 import SecondaryButton from './secondaryButton';
-import useAuthStore from '@/store/store';
+import {useAuthStore} from '@/store/store';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Cookies from 'js-cookie';

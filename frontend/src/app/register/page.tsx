@@ -2,7 +2,7 @@
 
 import SecureNotAuth from "@/components/secureNotAuth"
 import RegisterComponent from "./_components/register"
-import useAuthStore from "@/store/store"
+import {useAuthStore} from "@/store/store"
 
 const Register = () => {
 

@@ -2,7 +2,7 @@
 
 import SecureAuth from "@/components/secureAuth"
 import LibraryComponent from "./_components/Library"
-import useAuthStore from "@/store/store"
+import {useAuthStore} from "@/store/store"
 
 const Library = () => {
 

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from 'next/navigation'
-import useAuthStore from "@/store/store";
+import {useAuthStore} from "@/store/store";
 
 const SecureNotAuth = (Component: any) => {
     return function IsNotAuth(props: any) {
