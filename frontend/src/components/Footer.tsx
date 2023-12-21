@@ -10,10 +10,10 @@ const Footer = () => {
                         <Link href='/library' className="mr-8 hover:text-slate-200 mb-4 hover:underline underline-offset-4">My Library</Link>
                         <Link href='/contact' className="mr-8 hover:text-slate-200 mb-4 hover:underline underline-offset-4">Contact Us</Link>
                         <Link href='/pricing' className="mr-8 hover:text-slate-200 mb-4 hover:underline underline-offset-4">Pricing</Link>
-                        <Link href='/' className="mr-8 hover:text-slate-200 mb-4 hover:underline underline-offset-4">Privacy Policy</Link>
+                        <Link href='/privacy-policy' className="mr-8 hover:text-slate-200 mb-4 hover:underline underline-offset-4">Privacy Policy</Link>
                         <Link href='/fair-usage' className="mr-8 hover:text-slate-200 mb-4 hover:underline underline-offset-4">Terms of Fair Usage</Link>
-                        <Link href='/' className="mr-8 hover:text-slate-200 mb-4 hover:underline underline-offset-4">Terms of Service</Link>
-                        <Link href='/' className="mr-8 hover:text-slate-200 mb-4 hover:underline underline-offset-4">Refunds and Cancellations</Link>
+                        <Link href='/terms-service' className="mr-8 hover:text-slate-200 mb-4 hover:underline underline-offset-4">Terms of Service</Link>
+                        <Link href='/refunds-cancellations' className="mr-8 hover:text-slate-200 mb-4 hover:underline underline-offset-4">Refunds and Cancellations</Link>
                     </div>
                     <p className="text-center text-slate-500">&copy; 2023 QuizzipIO, All Rights Reserved</p>
                 </div>
