@@ -31,8 +31,8 @@ export default function RootLayout({
               <h1 className="font-extrabold text-3xl">Quizzip<span className="text-blue-500">IO</span></h1>
             </Link>
             <div className="flex items-center">
-              {/* <Link className="mr-4 text-sm font-semibold hover:underline underline-offset-8" href="/contact">Contact</Link> */}
-              {/* <Link className="mr-4 text-sm font-semibold hover:underline underline-offset-8" href="/pricing">Pricing</Link> */}
+              <Link className="mr-4 text-sm font-semibold hover:underline underline-offset-8" href="/contact">Contact</Link>
+              <Link className="mr-4 text-sm font-semibold hover:underline underline-offset-8" href="/pricing">Pricing</Link>
               <HeaderProfile/>
             </div>
           </div>
