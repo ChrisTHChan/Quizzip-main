@@ -15,8 +15,6 @@ export const checkUserSessionToken = async (req: express.Request, res: express.R
             throw new Error("No such user.") 
         }
 
-        console.log(user)
-
         return res.status(200).json(user);
 
     } catch (error: any) {
@@ -28,18 +26,76 @@ export const checkUserSessionToken = async (req: express.Request, res: express.R
 export const loggedInChangeEmail = async (req: express.Request, res: express.Response) => {
     try {
         
+        const {oldEmail, newEmail, password} = req.body
+
+        const user = await getUserByEmail(oldEmail).select('+authentication.salt +authentication.password +authentication.sessionToken')
+
+        if (!user) {
+            throw new Error("No such user.") 
+        }
+
+        const expectedHash = authentication(user.authentication!.salt as string, password)
+
+        if (user.authentication!.password !== expectedHash) {
+            throw new Error("The password is incorrect.") 
+        } 
+
+        user.email = newEmail;
+
+        await user.save();
+
+        res.status(200).json({
+            callStatus: `Email change successful!`
+        });
+
     } catch (error: any) {
         console.log(error)
-        return res.status(403).end()
+        return res.status(403).json({
+            callStatus: `Email change failed: ${error.message}`
+        });
     }
 }
 
 export const loggedInChangePassword = async (req: express.Request, res: express.Response) => {
     try {
 
+        const {email, oldPassword, newPassword} = req.body;
+
+        const user = await getUserByEmail(email).select('+authentication.salt +authentication.password +authentication.sessionToken')
+
+        if (!user) {
+            throw new Error("No such user.") 
+        }
+
+        const oldSalt = user?.authentication?.salt
+
+        const oldPasswordHash = authentication(oldSalt!, oldPassword)
+
+        if (oldPasswordHash !== user?.authentication?.password) {
+            throw new Error("Your old password is incorrect.") 
+        }
+
+        if (oldPassword === newPassword) {
+            throw new Error("We suggest using a different password from your old one.") 
+        }
+
+        const salt = random();
+        const newPasswordHash = authentication(salt, newPassword)
+
+        user!.authentication!.salt = salt
+        user!.authentication!.password = newPasswordHash
+
+        await user!.save()
+
+        res.status(200).json({
+            callStatus: 'Password change successful!'
+        })
+
     } catch (error: any) {
         console.log(error)
-        return res.status(403).end()
+        return res.status(403).json({
+            callStatus: `Password change failed: ${error.message}`
+        });
     }
 }
 
