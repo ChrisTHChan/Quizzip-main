@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import {useState, useEffect} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import { useAuthStore, useEmailStore } from '@/store/store';
+import { useAuthStore, useUserStore } from '@/store/store';
 import { useRouter } from 'next/navigation'
 import { getServerURL } from '@/util-functions/helper-functions';
 
@@ -19,7 +19,7 @@ const HeaderProfile = () => {
 
     const {auth, setAuthTrue, setAuthFalse} = useAuthStore();
 
-    const {setUsername, setEmail} = useEmailStore()
+    const {username, setUsername, setEmail} = useUserStore()
     
     //state 
     const [sessionId] = useState(Cookies.get('QUIZZIP-AUTH'))
@@ -86,7 +86,8 @@ const HeaderProfile = () => {
             <>
                 <button onClick={logout} className="mr-4 text-sm font-semibold hover:underline underline-offset-8">Sign Out</button>
                 <SecondaryButton onClick={goToLib} extra_classes="mt-2 mb-2 mr-4 px-4">Library</SecondaryButton>
-                <Link href='/create'><PrimaryButton extra_classes='px-4'>Create</PrimaryButton></Link>
+                <Link href='/create'><PrimaryButton extra_classes='px-4 mr-4'>Create</PrimaryButton></Link>
+                <Link className="rounded-full bg-slate-700 w-[40px] h-[40px] flex justify-center items-center font-bold" href="/user">{username[0]}</Link>
             </>
         )
     } else if (auth === 'not-auth') {

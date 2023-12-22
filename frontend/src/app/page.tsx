@@ -123,6 +123,7 @@ export default function Home() {
               <div className="lg:w-1/2">
                 <Accordion 
                   extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">hello world</div>}
+                  initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4">
                     <p>fjdklaj fdklajf dkla fjdkla jfdkla jfkdl;a jfkld;a jfkld;a jfdkla; jfldk afjkdl fkld;a jfklda fjdkl;aj fdkla;sj fklad;j fdkl;aj fdkl;a jfdkl; jfkdl;a fjdkla; jfdkl; jfdkl; ajfdkl;a jkldf;as</p>
@@ -132,6 +133,7 @@ export default function Home() {
               <div className="lg:w-1/2">
                 <Accordion 
                   extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">hello world</div>}
+                  initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4">
                     <p>fjdklaj fdklajf dkla fjdkla jfdkla jfkdl;a jfkld;a jfkld;a jfdkla; jfldk afjkdl fkld;a jfklda fjdkl;aj fdkla;sj fklad;j fdkl;aj fdkl;a jfdkl; jfkdl;a fjdkla; jfdkl; jfdkl; ajfdkl;a jkldf;as</p>
@@ -141,6 +143,7 @@ export default function Home() {
               <div className="lg:w-1/2">
                 <Accordion 
                   extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">hello world</div>}
+                  initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4">
                     <p>fjdklaj fdklajf dkla fjdkla jfdkla jfkdl;a jfkld;a jfkld;a jfdkla; jfldk afjkdl fkld;a jfklda fjdkl;aj fdkla;sj fklad;j fdkl;aj fdkl;a jfdkl; jfkdl;a fjdkla; jfdkl; jfdkl; ajfdkl;a jkldf;as</p>

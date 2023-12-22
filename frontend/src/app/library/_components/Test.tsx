@@ -52,7 +52,7 @@ const Test = ({test}: props) => {
     const questions = test.test
 
     const initialContent = (
-        <div className='hover:underline'>
+        <div className='hover:underline text-left w-full'>
             <h2 className='text-xl font-semibold'>{testLabel}</h2>
             <p className="text-sm">Assessment ID: {_id}</p>
         </div>
@@ -121,7 +121,7 @@ const Test = ({test}: props) => {
 
     return (
         <div className="mb-10 border-b-2 border-slate-700 pb-10 flex items-start justify-between gap-2 md:flex-row flex-col">
-            <Accordion initialContent={initialContent} extra_classes="grow">
+            <Accordion initialContent={initialContent} extra_classes="grow" initialContentClasses="w-full">
             {
                 questions.map((question, i: number) => {
                     return <div className="mt-4" key={i}><Question question={question} showAnswers={showAnswers}/></div>

@@ -19,7 +19,7 @@ export const useAuthStore = create<authStore>((set) => ({
     setAuthFalse: () => set({auth: 'not-auth'}),
 }))
 
-export const useEmailStore = create<userStore>((set) => ({
+export const useUserStore = create<userStore>((set) => ({
     username: '',
     email: '',
     setUsername: (user) => set({username: user}),

@@ -25,6 +25,24 @@ export const checkUserSessionToken = async (req: express.Request, res: express.R
     }
 }
 
+export const loggedInChangeEmail = async (req: express.Request, res: express.Response) => {
+    try {
+        
+    } catch (error: any) {
+        console.log(error)
+        return res.status(403).end()
+    }
+}
+
+export const loggedInChangePassword = async (req: express.Request, res: express.Response) => {
+    try {
+
+    } catch (error: any) {
+        console.log(error)
+        return res.status(403).end()
+    }
+}
+
 export const validateAndResetPassword = async (req: express.Request, res: express.Response) => {
     try {
 
