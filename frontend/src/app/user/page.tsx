@@ -32,6 +32,22 @@ const User = () => {
         });
     }
 
+    const logout = () => {
+
+        fetch(`${fetchURL}/auth/logout/${sessionId}`, {
+            method: 'POST',
+            credentials: 'include',
+        })
+        .then(() => {
+            location.href = "/sign-in";
+            return
+        })
+        .catch((err) => {
+            console.log(err);
+            return
+        })
+    }
+
     const submitChangePassword = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
@@ -136,6 +152,7 @@ const User = () => {
                                 </form>
                                 <p className="text-xs mb-8">{passwordCallStatus}</p>
                             </Accordion>
+                            <button onClick={logout} className="font-bold hover:underline underline-offset-8">Sign Out</button>
                         </div>
                     </div>
                 </div>

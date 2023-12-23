@@ -39,22 +39,6 @@ const HeaderProfile = () => {
         router.refresh();
     }
 
-    const logout = () => {
-
-        fetch(`${fetchURL}/auth/logout/${sessionId}`, {
-            method: 'POST',
-            credentials: 'include',
-        })
-        .then(() => {
-            location.href = "/sign-in";
-            return
-        })
-        .catch((err) => {
-            console.log(err);
-            return
-        })
-    }
-
     const checkUserSession = () => {
 
         fetch(`${fetchURL}/auth/checkUserSession/${sessionId}`, {
@@ -84,7 +68,6 @@ const HeaderProfile = () => {
     if (auth === 'auth') {
         authComponent = (
             <>
-                <button onClick={logout} className="mr-4 text-sm font-semibold hover:underline underline-offset-8">Sign Out</button>
                 <SecondaryButton onClick={goToLib} extra_classes="mt-2 mb-2 mr-4 px-4">Library</SecondaryButton>
                 <Link href='/create'><PrimaryButton extra_classes='px-4 mr-4'>Create</PrimaryButton></Link>
                 <Link className="rounded-full bg-slate-700 w-[40px] h-[40px] flex justify-center items-center font-bold" href="/user">{username[0]}</Link>
