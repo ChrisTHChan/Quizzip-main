@@ -64,9 +64,9 @@ export default function Home() {
             <div className="w-full md:w-10/12 mx-auto flex flex-col lg:flex-row gap-4">
               <div className="w-full lg:w-1/2 flex flex-wrap justify-start lg:justify-center h-full">
                 <Image alt="google chrome" src={chromeLogo} className="object-contain w-1/6 lg:w-1/3"/>
-                <Image alt="pdf" src={pdfLogo} className="object-contain w-1/6 lg:w-1/3"/>
-                <Image alt="powerpoint" src={pptLogo} className="object-contain w-1/6 lg:w-1/3"/>
-                <Image alt="word document" src={wordLogo} className="object-contain w-1/6 lg:w-1/3"/>
+                <Image alt="pdf" src={pdfLogo} className="object-contain w-1/6 lg:w-1/3"/>  
+                <Image alt="powerpoint" src={pptLogo} className="object-contain w-1/6 lg:w-1/3 p-2 sm:p-4 lg:p-6"/>
+                <Image alt="word document" src={wordLogo} className="object-contain w-1/6 lg:w-1/3 p-2  sm:p-4 lg:p-6"/>
                 <Image alt="youtube" src={youtubeLogo} className="object-contain w-1/6 lg:w-1/3"/>
               </div>
               <div className="w-full lg:w-1/2">
@@ -120,26 +120,6 @@ export default function Home() {
             <h3 className="text-6xl font-extrabold mb-8 text-center">Frequently asked <span className="text-blue-500">questions.</span></h3>
             <p className="text-sm text-slate-400 text-center mb-16">If you have any other questions, feel free to email us at <span className="underline underline-offset-2">quizzipio@gmail.com</span></p>
             <div className="w-full md:w-10/12 mx-auto flex flex-col lg:flex-row flex-wrap justify-between">
-              <div className="lg:w-1/2">
-                <Accordion 
-                  extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">hello world</div>}
-                  initialContentClasses='w-full text-left'
-                >
-                  <div className="text-sm text-slate-300 px-4 pb-4">
-                    <p>fjdklaj fdklajf dkla fjdkla jfdkla jfkdl;a jfkld;a jfkld;a jfdkla; jfldk afjkdl fkld;a jfklda fjdkl;aj fdkla;sj fklad;j fdkl;aj fdkl;a jfdkl; jfkdl;a fjdkla; jfdkl; jfdkl; ajfdkl;a jkldf;as</p>
-                  </div>
-                </Accordion>
-              </div>
-              <div className="lg:w-1/2">
-                <Accordion 
-                  extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">hello world</div>}
-                  initialContentClasses='w-full text-left'
-                >
-                  <div className="text-sm text-slate-300 px-4 pb-4">
-                    <p>fjdklaj fdklajf dkla fjdkla jfdkla jfkdl;a jfkld;a jfkld;a jfdkla; jfldk afjkdl fkld;a jfklda fjdkl;aj fdkla;sj fklad;j fdkl;aj fdkl;a jfdkl; jfkdl;a fjdkla; jfdkl; jfdkl; ajfdkl;a jkldf;as</p>
-                  </div>
-                </Accordion>
-              </div>
               <div className="lg:w-1/2">
                 <Accordion 
                   extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">hello world</div>}
