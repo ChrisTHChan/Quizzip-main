@@ -17,7 +17,7 @@ export default function RefundsAndCancellations() {
                 <p className="font-semibold">You have not shared your account login with others.</p>
               </div>
               <p className="text-center mb-4">How to Request a Refund: To initiate a refund, please contact our support team via our help center or via quizzipio@gmail.com. We will process your refund request promptly.</p>
-              <p className="text-center mb-4">Refund Processing: Once your refund is approved, we will issue a full refund of your purchase. The refund will be credited through the same payment method used for the purchase. In the event that we're unable to process a refund through your initial payment method, we'll arrange an alternative method with you. Refunds can take 5-10 business days to process.</p>
+              <p className="text-center mb-4">Refund Processing: Once your refund is approved, we will issue a full refund of your purchase. The refund will be credited through the same payment method used for the purchase. In the event that we&APOS;re unable to process a refund through your initial payment method, we&APOS;ll arrange an alternative method with you. Refunds can take 5-10 business days to process.</p>
               <p className="text-center mb-4">Abuse of Refund Policy: We monitor refund requests to identify any patterns that may suggest abuse of our refund policy. Quizgecko reserves the right to refuse a refund request if abuse is suspected.</p>
             </div>
           </div>

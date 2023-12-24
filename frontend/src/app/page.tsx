@@ -71,7 +71,7 @@ export default function Home() {
               </div>
               <div className="w-full lg:w-1/2">
                 <h3 className="text-6xl font-extrabold mb-8">Questions from<span className="text-blue-500"> any digital content.</span></h3>
-                <p className="mb-8 text-slate-300 leading-loose"><span className="font-semibold">Versatile.</span> From files like PDF's, Word Documents, and Powerpoints, to audio content like youtube videos, you can use any content source to create your assessments.</p>
+                <p className="mb-8 text-slate-300 leading-loose"><span className="font-semibold">Versatile.</span> From files like PDF&apos;s, Word Documents, and Powerpoints, to audio content like youtube videos, you can use any content source to create your assessments.</p>
                 <p className="mb-8 text-slate-300 leading-loose"><span className="font-semibold">Cuztomizable.</span> Adjust the length of your tests by changing the number of questions, the difficulty level, and the required answer detail.</p>
                 <Link className="inline-block mx-auto" href="/create"><PrimaryButton>Get Started</PrimaryButton></Link>
               </div>
@@ -97,7 +97,7 @@ export default function Home() {
             <div className=" w-full md:w-10/12 mx-auto flex flex-col lg:flex-row divide-y-2 lg:divide-y-0 divide-slate-700">
               <div className="lg:w-1/2 mb-8 lg:mb-0 text-slate-300 lg:border-r-[2px] lg:pr-12 border-slate-700">
                 <div className="flex flex-col h-full justify-between text-center">
-                  <p className="leading-loose mb-8">Making sure my kids have read the educational content is something I've had to spend hours on. QuizzipIO was excellent for knowledge checks. It was as simple as uploading an article, creating questions, exporting them, reviewing the questions, and eliminating those that I didn't want to use. It was really simple!</p>
+                  <p className="leading-loose mb-8">Making sure my kids have read the educational content is something I&apos;ve had to spend hours on. QuizzipIO was excellent for knowledge checks. It was as simple as uploading an article, creating questions, exporting them, reviewing the questions, and eliminating those that I didn&apos;t want to use. It was really simple!</p>
                   <div>
                     <p className="mb-2">- Melanie Esbert</p>
                     <p className="font-bold">Parent & Tutor</p>
@@ -126,7 +126,7 @@ export default function Home() {
                   initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4 leading-loose">
-                    <p className="mb-4">QuizzipIO's AI-powered question and answer generator works by first analyzing and extracting the key facts from any text. Then we use the same AI that powers ChatGPT to generate different types of questions and answers.</p>
+                    <p className="mb-4">QuizzipIO&apos;s AI-powered question and answer generator works by first analyzing and extracting the key facts from any text. Then we use the same AI that powers ChatGPT to generate different types of questions and answers.</p>
                     <p className="mb-4">Whether you have a piece of educational content, a webpage, a YouTube video, or even a PDF or Word file, QuizzipIO can transform it into a quiz or assessment.</p>
                     <p className="mb-4">To get started, simply input/upload your text or the URL to the content you want to turn into a quiz. QuizzipIO will then analyze the text and generate relevant questions for you.</p>
                   </div>
@@ -138,7 +138,7 @@ export default function Home() {
                   initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4 leading-loose">
-                    <p className="mb-4">QuizzipIO is perfect for generating quizzes, assessments, exams, and tests. Whether you are a teacher, student, or business, you'll find that the platform is flexible enough for all purposes.</p>
+                    <p className="mb-4">QuizzipIO is perfect for generating quizzes, assessments, exams, and tests. Whether you are a teacher, student, or business, you&apos;ll find that the platform is flexible enough for all purposes.</p>
                     <p className="mb-4">With our AI assessment tool, you can turn any text into a quiz. This means you can use it to create quizzes for studying, training, or evaluating knowledge. Teachers can use it to create quizzes for their students, while businesses can create quizzes for employee assessments.</p>
                     <p className="mb-4">The platform is also great for generating quick assessments or practice tests. You can use it to generate questions for sample exams, mock quizzes, or interactive study material to help you prepare for exams or improve your understanding of a subject.</p>
                     <p className='mb-4'>Whether you need to create quizzes for educational purposes, training programs, or marketing campaigns, Quizgecko has got you covered.</p>
@@ -151,8 +151,8 @@ export default function Home() {
                   initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4 leading-loose">
-                    <p className="mb-4">We recommend that you use a minimum of 500 words. More text will generally result in better questions. If you want to generate up to 12+ questions then you'll generally need over a thousand words. We recommend that you break very long pieces of text into topical categories. You can make a quiz with any number of total questions.</p>
-                    <p className="mb-4">Additionally, if you don't have a specific text to use, you can take advantage of our topic mode. Simply enter a general topic and our AI will search the web and find relevant content for you. This way, you can effortlessly generate quizzes without having to provide your own text.</p>
+                    <p className="mb-4">We recommend that you use a minimum of 500 words. More text will generally result in better questions. If you want to generate up to 12+ questions then you&apos;ll generally need over a thousand words. We recommend that you break very long pieces of text into topical categories. You can make a quiz with any number of total questions.</p>
+                    <p className="mb-4">Additionally, if you don&apos;t have a specific text to use, you can take advantage of our topic mode. Simply enter a general topic and our AI will search the web and find relevant content for you. This way, you can effortlessly generate quizzes without having to provide your own text.</p>
                   </div>
                 </Accordion>
               </div>
@@ -192,7 +192,7 @@ export default function Home() {
                   initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4 leading-loose">
-                    <p className="mb-4">If quality, accurate text is used, then it's rare for the AI to make factual errors. It's important to note though, that like humans, the AI can make mistakes and 100% accuracy cannot be guaranteed.</p>
+                    <p className="mb-4">If quality, accurate text is used, then it&apos;s rare for the AI to make factual errors. It&apos;s important to note though, that like humans, the AI can make mistakes and 100% accuracy cannot be guaranteed.</p>
                   </div>
                 </Accordion>
               </div>
