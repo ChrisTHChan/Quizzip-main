@@ -2,7 +2,7 @@
 
 import SecureNotAuth from "@/components/secureNotAuth"
 import ForgotPasswordComponent from "./_components/ForgotPassword"
-import useAuthStore from "@/store/store"
+import {useAuthStore} from "@/store/store"
 
 const Register = () => {
 

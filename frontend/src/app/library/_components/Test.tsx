@@ -25,19 +25,14 @@ import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import { getServerURL } from "@/util-functions/helper-functions"
 
 export const revalidate = 0
 export const dynamic = 'auto'
 
 const Test = ({test}: props) => {
 
-    let fetchURL: string
-
-    if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'http://localhost:9000/api'
-    } else {
-        fetchURL = '/api'
-    }
+    let fetchURL = getServerURL()
 
     const router = useRouter();
 
@@ -57,9 +52,9 @@ const Test = ({test}: props) => {
     const questions = test.test
 
     const initialContent = (
-        <div className='hover:underline'>
-            <h2 className='text-xl font-semibold text-left'>{testLabel}</h2>
-            <p className="text-left text-sm">Assessment ID: {_id}</p>
+        <div className='hover:underline text-left w-full'>
+            <h2 className='text-xl font-semibold'>{testLabel}</h2>
+            <p className="text-sm">Assessment ID: {_id}</p>
         </div>
     )
 
@@ -126,7 +121,7 @@ const Test = ({test}: props) => {
 
     return (
         <div className="mb-10 border-b-2 border-slate-700 pb-10 flex items-start justify-between gap-2 md:flex-row flex-col">
-            <Accordion initialContent={initialContent} extra_classes="grow">
+            <Accordion initialContent={initialContent} extra_classes="grow" initialContentClasses="w-full">
             {
                 questions.map((question, i: number) => {
                     return <div className="mt-4" key={i}><Question question={question} showAnswers={showAnswers}/></div>

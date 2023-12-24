@@ -10,16 +10,11 @@ type props = {
 
 import PrimaryButton from "../../../components/primaryButton"
 import Cookies from 'js-cookie'
+import { getServerURL } from "@/util-functions/helper-functions"
 
 const handleStripeSubmit = async () => {
 
-    let fetchURL: string
-
-    if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'http://localhost:9000/api'
-    } else {
-        fetchURL = '/api'
-    }
+    let fetchURL = getServerURL()
 
     const res = await fetch(`${fetchURL}/stripe/handleSubscription/${Cookies.get('QUIZZIP-AUTH')}`, {
         method: 'POST'

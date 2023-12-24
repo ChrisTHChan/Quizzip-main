@@ -4,16 +4,11 @@ import SimpleInput from "@/components/simpleInput"
 import PrimaryButton from "@/components/primaryButton"
 import {useState} from 'react'
 import { validateEmail } from "@/util-functions/helper-functions"
+import { getServerURL } from "@/util-functions/helper-functions"
 
 const ResetPassword = ({ params }: { params: { hashedEmail: string } }) => {
 
-    let fetchURL: string
-
-    if (process.env.NODE_ENV === 'development') {
-        fetchURL = 'http://localhost:9000/api'
-    } else {
-        fetchURL = '/api'
-    }
+    let fetchURL = getServerURL()
 
     const [inputState, setInputState] = useState({
         email: '',
@@ -83,7 +78,7 @@ const ResetPassword = ({ params }: { params: { hashedEmail: string } }) => {
                 <div className="container">
                     <div className="mb-16 container w-11/12 md:w-4/5 xl:w-6/12 mx-auto">
                     <h2 className="text-4xl md:text-6xl font-extrabold text-center mb-4">Change your <span className="text-blue-500">password here.</span></h2>
-                        <h3 className="text-center mb-4 text-slate-500">Use the one time passcode from your email to validate your password request change.</h3>
+                        <h3 className="text-center mb-4 text-slate-400">Use the one time passcode from your email to validate your password request change.</h3>
                         <div className="flex w-full justify-center">
                             <div className="w-1/2">
                                 <form onSubmit={submitChangePassword}>

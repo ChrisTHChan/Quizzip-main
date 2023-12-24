@@ -1,18 +1,18 @@
 'use client'
 
 import SecureAuth from "@/components/secureAuth"
-import LibraryComponent from "./_components/Library"
+import UserComponent from "./_components/user"
 import {useAuthStore} from "@/store/store"
 
-const Library = () => {
+const UserPage = () => {
 
   const { auth } = useAuthStore();
 
   if (auth === 'not-auth') {
     return
   } else if (auth === 'auth') {
-    return <LibraryComponent/>
+    return <UserComponent/>
   }
 }
 
-export default SecureAuth(Library);
+export default SecureAuth(UserPage);
