@@ -30,6 +30,12 @@ export const loggedInChangeEmail = async (req: express.Request, res: express.Res
 
         const user = await getUserByEmail(oldEmail).select('+authentication.salt +authentication.password +authentication.sessionToken')
 
+        const isNewEmailUsed = await getUserByEmail(newEmail)
+
+        if (isNewEmailUsed) {
+            throw new Error("Your new email is already being used by another user.") 
+        }
+
         if (!user) {
             throw new Error("No such user.") 
         }

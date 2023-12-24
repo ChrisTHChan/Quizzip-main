@@ -65,15 +65,13 @@ const User = () => {
                 body: formData,
             })
             .then((res) => {
+                if (res.status === 200) {
+                    window.location.reload()
+                }
                 return res.json()
             })
             .then((res) => {
                 setPasswordCallStatus(res.callStatus);
-                if (res.status === 200) {
-                    setTimeout(() => {
-                        window.location.reload()
-                    }, 1500)
-                }
             })
             .catch((err) => {
                 setPasswordCallStatus('Something went wrong, please try submitting again.');
@@ -110,13 +108,13 @@ const User = () => {
                 body: formData,
             })
             .then((res) => {
+                if (res.status === 200) { 
+                    window.location.reload()
+                }
                 return res.json()
             })
             .then((res) => {
                 setEmailCallStatus(res.callStatus);
-                if (res.status === 200) { 
-                    window.location.reload()
-                }
             })
             .catch((err) => {
                 setEmailCallStatus('Something went wrong, please try submitting again.');
