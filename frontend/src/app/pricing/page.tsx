@@ -1,4 +1,14 @@
+'use client'
+
+import { Elements } from "@stripe/react-stripe-js"
 import Card from "./_components/Card"
+import Footer from "@/components/Footer"
+import { loadStripe } from "@stripe/stripe-js"
+import PaymentForm from "./_components/PaymentForm"
+
+const stripePublishableKey:string = `${process.env.PUBLISHABLE_KEY}`
+
+const stripePromise = loadStripe(stripePublishableKey)
 
 export default function Pricing() {
 
@@ -6,7 +16,7 @@ export default function Pricing() {
       <>
         <div className="py-10 flex justify-center items-center">
           <div className="container">
-            <div className="mb-16 container w-11/12 md:w-4/5 xl:w-5/12 mx-auto">
+            <div className="mb-24 container w-11/12 md:w-4/5 xl:w-5/12 mx-auto">
               <h2 className="text-4xl md:text-6xl font-extrabold text-center mb-4">Upgrade your account and get <span className="text-blue-500">unlimited access.</span></h2>
               <h3 className="text-center mb-4 text-slate-500">Free users get <span className="font-extrabold">3 free generations a month</span>. Upgrade your account to a monthly subscription to get more generations and more features!</h3>
               <div className="flex gap-4 flex-col sm:flex-row">
@@ -25,8 +35,14 @@ export default function Pricing() {
                 />
               </div>
             </div>
+            <div className="mb-16 container w-11/12 md:w-4/5 xl:w-5/12 mx-auto">
+              <Elements stripe={stripePromise}>
+                <PaymentForm/>
+              </Elements>
+            </div>
           </div>
         </div>
+        <Footer/>
       </>
     )
   }

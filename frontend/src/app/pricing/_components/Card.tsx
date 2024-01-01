@@ -9,24 +9,9 @@ type props = {
 }
 
 import PrimaryButton from "../../../components/primaryButton"
-import Cookies from 'js-cookie'
-import { getServerURL } from "@/util-functions/helper-functions"
 
 const handleStripeSubmit = async () => {
-
-    let fetchURL = getServerURL()
-
-    const res = await fetch(`${fetchURL}/stripe/handleSubscription/${Cookies.get('QUIZZIP-AUTH')}`, {
-        method: 'POST'
-    })
-
-    if (!res.ok) {
-        throw new Error('Failed to fetch data')
-    }
-
-    const response = await res.json()
-
-    return response
+    console.log('hello world')
 }
 
 const Card = ({header, price, includeButton, listItems, headerClasses}: props) => {
