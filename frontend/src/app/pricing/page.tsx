@@ -6,7 +6,7 @@ import Footer from "@/components/Footer"
 import { loadStripe } from "@stripe/stripe-js"
 import PaymentForm from "./_components/PaymentForm"
 
-const stripePublishableKey:string = `${process.env.PUBLISHABLE_KEY}`
+const stripePublishableKey:string = `${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`
 
 const stripePromise = loadStripe(stripePublishableKey)
 
