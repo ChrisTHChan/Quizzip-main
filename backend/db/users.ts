@@ -22,6 +22,15 @@ const forgotPasswordSchema = new mongoose.Schema({
     expirationDate: {type: Date, expires: 0}
 })
 
+const UserTierSchema = new mongoose.Schema({
+    email: {type: String, required: true},
+    username: {type: String, required: true},
+    tier: {type: String, required: true },
+    generationsLeft: {type: Number, required: true},
+    createdAt: {type: Date, default: Date.now()},
+    expirationDate: {type: Date, expires: 0}
+})
+
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true},
     email: {type: String, required: true},
@@ -35,6 +44,25 @@ const UserSchema = new mongoose.Schema({
 
 export const UserModel = mongoose.model('User', UserSchema)
 export const ForgotPasswordModel = mongoose.model('ForgotPasswordPasscode', forgotPasswordSchema)
+export const UserTierModel = mongoose.model('UserTierObject', UserTierSchema)
+
+//userTierObject db methods
+
+export const createUserTierObject = (values: Record<string, any>) => {
+    return new UserTierModel(values).save().then(
+        (user: Record<string, any>) => {
+            user.toObject();
+        } 
+    )
+}
+
+export const getUserTierObject = (email: String, username: String) => {
+    return UserTierModel.findOne({'email': email, 'username': username})
+}
+
+export const deleteUserTierObject = (email: String, username: String) => {
+    return UserTierModel.findOneAndDelete({'email': email, 'username': username})
+}
 
 //forgotPassword db methods
 

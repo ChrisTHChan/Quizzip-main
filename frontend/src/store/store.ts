@@ -9,8 +9,14 @@ type authStore = {
 type userStore = {
     username: string,
     email: string,
+    tier: string,
+    generationsLeft: number,
+    expirationDate: number,
     setUsername: (user: string) => void,
-    setEmail: (email: string) => void
+    setEmail: (email: string) => void,
+    setTier: (tier: string) => void,
+    setGenerationsLeft: (number: number) => void,
+    setExpirationDate: (date: number) => void,
 }
 
 export const useAuthStore = create<authStore>((set) => ({
@@ -22,6 +28,12 @@ export const useAuthStore = create<authStore>((set) => ({
 export const useUserStore = create<userStore>((set) => ({
     username: '',
     email: '',
+    tier: '',
+    generationsLeft: 0,
+    expirationDate: Date.now(),
     setUsername: (user) => set({username: user}),
-    setEmail: (email) => set({email: email})
+    setEmail: (email) => set({email: email}),
+    setTier: (tier) => set({tier: tier}),
+    setGenerationsLeft: (no) => set({generationsLeft: no}),
+    setExpirationDate: (date) => set({expirationDate: date}),
 }))

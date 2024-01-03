@@ -1,7 +1,36 @@
 import express from 'express';
 import Stripe from 'stripe';
+import { createUserTierObject, getUserTierObject } from '../db/users';
 
 const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`)
+
+export const createAndSubtractUserTierObjeect = async (req: express.Request, res: express.Response) => {
+    try {
+
+        const {email, username} = req.body
+
+        const existingUserTierObject = await getUserTierObject(email, username)
+
+        if (!existingUserTierObject) {
+            await createUserTierObject({
+                email: email,
+                username: username,
+                tier: 'basic',
+                generationsLeft: 4,
+                expirationDate: Date.now() + (30 * 24 * 60 * 60 * 1000) //30d
+            })
+        } else {
+            existingUserTierObject.generationsLeft = existingUserTierObject.generationsLeft - 1
+            await existingUserTierObject.save();
+        }
+
+        res.status(200).end()
+    } catch {
+        res.status(500).json({
+            requestStatus: 'Something went wrong, please try again'
+        })
+    }
+}
 
 export const handleStripeSubscription = async (req: express.Request, res: express.Response) => {
     try {

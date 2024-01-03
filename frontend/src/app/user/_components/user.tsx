@@ -11,7 +11,7 @@ import Cookies from 'js-cookie';
 
 const User = () => {
 
-    const {email, username} = useUserStore()
+    const {email, username, tier, generationsLeft, expirationDate} = useUserStore()
     let fetchURL = getServerURL()
     const sessionId = Cookies.get('QUIZZIP-AUTH')
 
@@ -135,6 +135,9 @@ const User = () => {
                         <div className="w-full">
                             <p className="mb-4"><span className="font-bold">Logged In As:</span> {username}</p>
                             <p className="mb-4"><span className="font-bold">User Email:</span> {email}</p>
+                            <p className="mb-4"><span className="font-bold">User Tier:</span> {tier ? tier : 'Basic'}</p>
+                            <p className="mb-4"><span className="font-bold">Generations Left This Month:</span> {generationsLeft ? generationsLeft : 5}</p>
+                            <p className="mb-4"><span className="font-bold">Generations Reset on:</span> {expirationDate ? expirationDate : 'Create or subscribe to start your month!'}</p>
                             <Accordion 
                                 initialContent={<div className="mb-4 hover:underline underline-offset-2">Change Email &#11167;</div>}>
                                 <form className="mb-4" onSubmit={submitChangeEmail}>

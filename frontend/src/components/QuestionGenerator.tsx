@@ -16,7 +16,7 @@ import Question from './questionComponent'
 import io from 'socket.io-client'
 import PrimaryButton from './primaryButton';
 import SecondaryButton from './secondaryButton';
-import {useAuthStore} from '@/store/store';
+import {useAuthStore, useUserStore} from '@/store/store';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Cookies from 'js-cookie';
@@ -33,6 +33,7 @@ const QuestionGenerator = () => {
 
     //zustand global state references ###########################################################################################################################################
     const { auth } = useAuthStore();
+    const {email, username} = useUserStore();
 
     //refs ###########################################################################################################################################
     const tabBar = useRef<any>(null)
@@ -184,7 +185,7 @@ const QuestionGenerator = () => {
         setRequestStatus('');
         setQuestions([]);
         
-        fetch(`${fetchURL}api/question-generator`, {
+        fetch(`${fetchURL}api/question-generator/${Cookies.get('QUIZZIP-AUTH')}`, {
             method: 'POST',
             body: formData,
         })
@@ -193,8 +194,18 @@ const QuestionGenerator = () => {
             return res.json();
         })
         .then((res) => {
+            const formData = new FormData();
+
+            formData.append('email', email);
+            formData.append('username', username)
+
             setRequestStatus(res.requestStatus);
             setQuestions(res.questions);
+
+            fetch(`${fetchURL}api/stripe/createAndSubtractUserTierObject/${Cookies.get('QUIZZIP-AUTH')}`, {
+                method: 'POST',
+                body: formData,
+            })
         })
         .catch((err) => {
             console.log(err);
