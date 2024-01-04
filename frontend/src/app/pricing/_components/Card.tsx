@@ -5,16 +5,13 @@ type props = {
     price: number,
     includeButton: boolean,
     listItems: string[],
-    headerClasses?: string
+    headerClasses?: string,
+    buttonFunction?: any
 }
 
 import PrimaryButton from "../../../components/primaryButton"
 
-const handleStripeSubmit = async () => {
-    console.log('hello world')
-}
-
-const Card = ({header, price, includeButton, listItems, headerClasses}: props) => {
+const Card = ({header, price, includeButton, listItems, headerClasses, buttonFunction}: props) => {
 
     return (
         <>
@@ -26,7 +23,7 @@ const Card = ({header, price, includeButton, listItems, headerClasses}: props) =
                         return <li className="mb-1 list-disc ml-4" key={i}>{item}</li>
                     })}
                 </ul>
-                {includeButton ? <PrimaryButton onClick={handleStripeSubmit} extra_classes="mt-4">Choose this plan</PrimaryButton>: null}
+                {includeButton ? <a href="#paymentForm"><PrimaryButton onClick={buttonFunction} extra_classes="mt-4">Choose this plan</PrimaryButton></a>: null}
             </div>
         </>
     )

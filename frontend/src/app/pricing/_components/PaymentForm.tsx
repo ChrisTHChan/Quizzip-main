@@ -1,4 +1,6 @@
-
+type props = {
+    formOpen: boolean
+}
 
 'use client'
 
@@ -8,8 +10,9 @@ import {useUserStore, useAuthStore} from '@/store/store';
 import { StripeCardElement } from "@stripe/stripe-js";
 import Cookies from 'js-cookie';
 import { getServerURL } from "@/util-functions/helper-functions"
+import { useState } from "react";
 
-const PaymentForm = () => {
+const PaymentForm = ({formOpen}: props) => {
 
     const options = {
         style: {
@@ -41,6 +44,8 @@ const PaymentForm = () => {
     const stripe = useStripe();
     const elements = useElements();
 
+    const [requestStatus, setRequestStatus] = useState('')
+
     const handleFormSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
@@ -52,6 +57,9 @@ const PaymentForm = () => {
         }
 
         try {
+
+            setRequestStatus('Processing payment details... Please stay on the page, this will take a moment.')
+
             const paymentMethod = await stripe.createPaymentMethod({
                 type: "card",
                 card: elements.getElement('card') as StripeCardElement,
@@ -69,13 +77,23 @@ const PaymentForm = () => {
                 })
             });
 
-            if (!createStripePayment.ok) return alert('payment unsuccessful')
+            if (!createStripePayment.ok) {
+                setRequestStatus('Payment is unsuccessful.')
+                return
+            }
 
             const data = await createStripePayment.json()
 
+            setRequestStatus('Confirming payment details...')
+            
             const confirmation = await stripe.confirmCardPayment(data.clientSecret)
 
-            if (confirmation.error) return alert('payment unsuccessful')
+            if (confirmation.error) {
+                setRequestStatus('Payment is unsuccessful.')
+                return
+            }
+
+            setRequestStatus('Creating your subscription data... Please stay on the page...')
 
             const createSubscription = await fetch(`${fetchURL}/stripe/createSubscriptionUserTierObject/${sessionId}`, {
                 method: 'POST',
@@ -94,20 +112,21 @@ const PaymentForm = () => {
             setGenerationsLeft(createSubscriptionData.generationsLeft);
             setExpirationDate(createSubscriptionData.expirationDate);
 
-            alert('payment successful')
+            setRequestStatus('Subscription is successful! Please enjoy!')
         } catch (err:any) {
             console.log(err);
         }
     }
     
     return (
-        <>
-            <h3 className='text-xl font-semibold text-center mb-8'>Subscribe to QuizzipIO Premium 1 month:</h3>
+        <div className={formOpen ? '' : 'hidden'} id="paymentForm">
+            <h3 className='text-xl font-semibold text-center mb-8'>Sign up for QuizzipIO Monthly Subscription:</h3>
             <form onSubmit={handleFormSubmit}>
                 <CardElement className="mb-4 border-slate-500 border-2 rounded text-slate-200 p-2" options={options}/>
                 <PrimaryButton extra_classes="mt-2" type="submit">Subscribe</PrimaryButton>
+                <p className="text-xs mb-8 mt-2">{requestStatus}</p> 
             </form>
-        </>
+        </div>
     )
 }
 

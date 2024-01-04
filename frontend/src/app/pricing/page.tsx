@@ -5,12 +5,19 @@ import Card from "./_components/Card"
 import Footer from "@/components/Footer"
 import { loadStripe } from "@stripe/stripe-js"
 import PaymentForm from "./_components/PaymentForm"
+import { useState } from "react"
 
 const stripePublishableKey:string = `${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`
 
 const stripePromise = loadStripe(stripePublishableKey)
 
 export default function Pricing() {
+
+  const [formOpen, setFormOpen] = useState(false)
+
+  const setFormToOpen = () => {
+    setFormOpen(true)
+  }
 
     return (
       <>
@@ -32,12 +39,13 @@ export default function Pricing() {
                     price={4}
                     includeButton={true}
                     listItems={['Access to all sources of generation.', 'Up to 15 questions per question type.', 'Up to 30 assessment generations per month.', 'Large sized content sources and file uploads.', 'Quick and responsive customer support.', 'Virtual hugs from the Quizzip Team!']}
+                    buttonFunction={setFormToOpen}
                 />
               </div>
             </div>
             <div className="mb-16 container w-11/12 md:w-4/5 xl:w-5/12 mx-auto">
               <Elements stripe={stripePromise}>
-                <PaymentForm/>
+                <PaymentForm formOpen={formOpen}/>
               </Elements>
             </div>
           </div>

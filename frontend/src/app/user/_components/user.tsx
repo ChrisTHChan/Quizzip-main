@@ -138,7 +138,7 @@ const User = () => {
                             <p className="mb-4"><span className="font-bold">User Email:</span> {email}</p>
                             <p className="mb-4"><span className="font-bold">User Tier:</span> {tier ? tier : 'Basic'}</p>
                             <p className="mb-4">
-                                <span className="font-bold">Generations Left This Month: </span>
+                                <span className="font-bold">Generations Left: </span>
                                 {
                                     generationsLeft 
                                     ? 
@@ -147,7 +147,7 @@ const User = () => {
                                     returnFreeMonthlyGenerations()
                                 }
                              </p>
-                            <p className="mb-4"><span className="font-bold">Generations Reset on:</span> {expirationDate ? expirationDate : 'Create or subscribe to start your month!'}</p>
+                            <p className="mb-4"><span className="font-bold">Generations Reset on:</span> {expirationDate ? expirationDate : 'Create or subscribe to start a period.'}</p>
                             <Accordion 
                                 initialContent={<div className="mb-4 hover:underline underline-offset-2">Change Email &#11167;</div>}>
                                 <form className="mb-4" onSubmit={submitChangeEmail}>
