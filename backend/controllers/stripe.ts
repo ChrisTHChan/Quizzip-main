@@ -1,14 +1,14 @@
 import express from 'express';
 import Stripe from 'stripe';
 import { createUserTierObject, getUserTierObject, deleteUserTierObject } from '../db/users';
-import { returnFreeMonthlyGenerations, returnSubscriptionTierMonthlyGenerations } from '../helpers/helper-functions';
+import { returnFreeMonthlyGenerations, returnSubscriptionTierMonthlyGenerations, returnSubscriptionTierYearlyGenerations } from '../helpers/helper-functions';
 
 const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`)
 
 export const createSubscriptionUserTierObject = async (req: express.Request, res: express.Response) => {
     try {
 
-        const {email, username} = req.body
+        const {email, username, duration} = req.body
 
         const existingUserTierObject = await getUserTierObject(email, username)
 
@@ -16,12 +16,28 @@ export const createSubscriptionUserTierObject = async (req: express.Request, res
             await deleteUserTierObject(email, username)
         }
 
+        let generationsLeft
+        let expirationDate
+        let tier
+
+        if (duration === 'monthly') {
+            generationsLeft = returnSubscriptionTierMonthlyGenerations()
+            expirationDate = Date.now() + (30 * 24 * 60 * 60 * 1000) //~30d, fix this to be accurate with stripes determination of duration
+            tier = 'Monthly Subscription'
+        } else if (duration === 'yearly') {
+            generationsLeft = returnSubscriptionTierYearlyGenerations()
+            expirationDate = Date.now() + (12 * 30 * 24 * 60 * 60 * 1000) //~1y, fix this to be accurate with stripes determination of duration
+            tier = "Yearly Subscription"
+        } else {
+            throw new Error('something went wrong')
+        }
+
         await createUserTierObject({
             email: email,
             username: username,
-            tier: 'Monthly Subscription',
-            generationsLeft: returnSubscriptionTierMonthlyGenerations(),
-            expirationDate: Date.now() + (30 * 24 * 60 * 60 * 1000) //30d
+            tier: tier,
+            generationsLeft: generationsLeft,
+            expirationDate: expirationDate
         })
 
         const newUserTierObject = await getUserTierObject(email, username)
@@ -48,7 +64,7 @@ export const createAndSubtractBasicUserTierObjeect = async (req: express.Request
                 username: username,
                 tier: 'Basic',
                 generationsLeft: returnFreeMonthlyGenerations() - 1,
-                expirationDate: Date.now() + (30 * 24 * 60 * 60 * 1000) //30d
+                expirationDate: Date.now() + (30 * 24 * 60 * 60 * 1000) //~30d, fix this to be accurate with stripes determination of duration
             })
         } else {
             existingUserTierObject.generationsLeft = existingUserTierObject.generationsLeft - 1
@@ -66,7 +82,7 @@ export const createAndSubtractBasicUserTierObjeect = async (req: express.Request
 export const handleStripeSubscription = async (req: express.Request, res: express.Response) => {
     try {
 
-        const {username, email, paymentMethod} =  req.body
+        const {username, email, paymentMethod, productId} =  req.body
 
         const existingUserTierObject = await getUserTierObject(email, username)
 
@@ -86,8 +102,7 @@ export const handleStripeSubscription = async (req: express.Request, res: expres
         const subscription = await stripe.subscriptions.create({
             customer: customer.id,
             items: [{
-                //for now hardcoded product/price id
-                price: 'price_1OU306BlbVm0HEusaqXPp73Z'
+                price: productId
             }],
             payment_settings: {
                 payment_method_types: ['card'],

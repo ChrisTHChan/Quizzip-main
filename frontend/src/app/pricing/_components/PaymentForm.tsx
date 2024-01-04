@@ -1,5 +1,8 @@
 type props = {
-    formOpen: boolean
+    productId: string,
+    formTitle: string,
+    formOpen: boolean,
+    duration: string,
 }
 
 'use client'
@@ -12,7 +15,7 @@ import Cookies from 'js-cookie';
 import { getServerURL } from "@/util-functions/helper-functions"
 import { useState } from "react";
 
-const PaymentForm = ({formOpen}: props) => {
+const PaymentForm = ({productId, formTitle, formOpen, duration}: props) => {
 
     const options = {
         style: {
@@ -73,7 +76,8 @@ const PaymentForm = ({formOpen}: props) => {
                 body: JSON.stringify({
                     username,
                     email,
-                    paymentMethod: paymentMethod.paymentMethod?.id
+                    paymentMethod: paymentMethod.paymentMethod?.id,
+                    productId: productId,
                 })
             });
 
@@ -103,6 +107,7 @@ const PaymentForm = ({formOpen}: props) => {
                 body: JSON.stringify({
                     username,
                     email,
+                    duration
                 })
             })
 
@@ -120,7 +125,7 @@ const PaymentForm = ({formOpen}: props) => {
     
     return (
         <div className={formOpen ? '' : 'hidden'} id="paymentForm">
-            <h3 className='text-xl font-semibold text-center mb-8'>Sign up for QuizzipIO Monthly Subscription:</h3>
+            <h3 className='text-xl font-semibold text-center mb-8'>{formTitle}</h3>
             <form onSubmit={handleFormSubmit}>
                 <CardElement className="mb-4 border-slate-500 border-2 rounded text-slate-200 p-2" options={options}/>
                 <PrimaryButton extra_classes="mt-2" type="submit">Subscribe</PrimaryButton>

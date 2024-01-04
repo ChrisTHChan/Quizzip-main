@@ -96,3 +96,7 @@ export function returnFreeMonthlyGenerations() {
 export function returnSubscriptionTierMonthlyGenerations() {
     return 150
 }
+
+export function returnSubscriptionTierYearlyGenerations() {
+    return 1800
+}
