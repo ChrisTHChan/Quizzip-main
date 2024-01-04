@@ -35,7 +35,7 @@ const PaymentForm = () => {
     const sessionId = Cookies.get('QUIZZIP-AUTH')
     let fetchURL = getServerURL()
 
-    const { email, username } = useUserStore();
+    const { email, username, setTier, setGenerationsLeft, setExpirationDate } = useUserStore();
     const { auth } = useAuthStore()
     
     const stripe = useStripe();
@@ -57,7 +57,7 @@ const PaymentForm = () => {
                 card: elements.getElement('card') as StripeCardElement,
             })
 
-            const response = await fetch(`${fetchURL}/stripe/handleSubscription/${sessionId}`, {
+            const createStripePayment = await fetch(`${fetchURL}/stripe/handleSubscription/${sessionId}`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
@@ -69,17 +69,30 @@ const PaymentForm = () => {
                 })
             });
 
-            if (!response.ok) return alert('payment unsuccessful')
+            if (!createStripePayment.ok) return alert('payment unsuccessful')
 
-            const data = await response.json()
-
-            console.log(data)
+            const data = await createStripePayment.json()
 
             const confirmation = await stripe.confirmCardPayment(data.clientSecret)
 
-            console.log(confirmation)
-
             if (confirmation.error) return alert('payment unsuccessful')
+
+            const createSubscription = await fetch(`${fetchURL}/stripe/createSubscriptionUserTierObject/${sessionId}`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username,
+                    email,
+                })
+            })
+
+            const createSubscriptionData = await createSubscription.json()
+
+            setTier(createSubscriptionData.tier);
+            setGenerationsLeft(createSubscriptionData.generationsLeft);
+            setExpirationDate(createSubscriptionData.expirationDate);
 
             alert('payment successful')
         } catch (err:any) {
