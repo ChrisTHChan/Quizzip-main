@@ -33,7 +33,7 @@ const QuestionGenerator = () => {
 
     //zustand global state references ###########################################################################################################################################
     const { auth } = useAuthStore();
-    const {email, username} = useUserStore();
+    const {email, username, generationsLeft, setGenerationsLeft} = useUserStore();
 
     //refs ###########################################################################################################################################
     const tabBar = useRef<any>(null)
@@ -167,6 +167,8 @@ const QuestionGenerator = () => {
         formData.append("saNum", inputState.shortAnswerNumber);
         formData.append("tfNum", inputState.trueOrFalseNumber);
         formData.append("clientSocketId", clientSocketId);
+        formData.append('email', email);
+        formData.append('username', username);
         if (contentFormatState === 'youtubeURL') {
             formData.append("contentInput", inputState.youtubeUrl)
         } else if (contentFormatState === 'text') {
@@ -205,6 +207,8 @@ const QuestionGenerator = () => {
             fetch(`${fetchURL}api/stripe/createAndSubtractUserTierObject/${Cookies.get('QUIZZIP-AUTH')}`, {
                 method: 'POST',
                 body: formData,
+            }).then(() => {
+                setGenerationsLeft(generationsLeft - 1)
             })
         })
         .catch((err) => {
@@ -295,12 +299,21 @@ const QuestionGenerator = () => {
     }
 
     if (auth === 'auth') {
-        submitSection = (
-            <div className="flex flex-wrap mt-5">
-                <PrimaryButton extra_classes="mr-4 mb-2" onClick={getData} disabled={getQuestionsButtonState.buttonDisabled}>{getQuestionsButtonState.buttonText}</PrimaryButton>
-                <SecondaryButton extra_classes="mb-2" onClick={clearFormInput}>Clear All Parameters</SecondaryButton>
-            </div>
-        )
+        if (generationsLeft > 0) {
+            submitSection = (
+                <div className="flex flex-wrap mt-5">
+                    <PrimaryButton extra_classes="mr-4 mb-2" onClick={getData} disabled={getQuestionsButtonState.buttonDisabled}>{getQuestionsButtonState.buttonText}</PrimaryButton>
+                    <SecondaryButton extra_classes="mb-2" onClick={clearFormInput}>Clear All Parameters</SecondaryButton>
+                </div>
+            )
+        } else {
+            submitSection = (
+                <div className="flex flex-wrap mt-5">
+                    <PrimaryButton extra_classes="mr-4 mb-2" onClick={getData} disabled={true}>You have no generations left this month to use.</PrimaryButton>
+                    <SecondaryButton extra_classes="mb-2" onClick={clearFormInput}>Clear All Parameters</SecondaryButton>
+                </div>
+            )
+        }
     } else if (auth === 'not-auth') {
         submitSection = (
             <div className="flex flex-wrap mt-5">

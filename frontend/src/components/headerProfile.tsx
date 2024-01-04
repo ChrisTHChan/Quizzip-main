@@ -10,6 +10,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { useAuthStore, useUserStore } from '@/store/store';
 import { useRouter } from 'next/navigation'
 import { getServerURL } from '@/util-functions/helper-functions';
+import { returnFreeMonthlyGenerations } from '@/util-functions/helper-functions';
 
 const HeaderProfile = () => {
 
@@ -38,6 +39,11 @@ const HeaderProfile = () => {
         router.refresh();
     }
 
+    const goToUserPage = () => {
+        router.replace("/user");
+        router.refresh();
+    }
+
     const checkUserSession = () => {
 
         fetch(`${fetchURL}/auth/checkUserSession/${sessionId}`, {
@@ -56,7 +62,11 @@ const HeaderProfile = () => {
             setEmail(res.email)
             setUsername(res.username)
             setTier(res.tier)
-            setGenerationsLeft(res.generationsLeft)
+            if (!res.generationsLeft) {
+                setGenerationsLeft(returnFreeMonthlyGenerations())
+            } else {
+                setGenerationsLeft(res.generationsLeft)
+            }
             setExpirationDate(res.expirationDate)
         }) 
         .catch((err) => {
@@ -78,10 +88,10 @@ const HeaderProfile = () => {
                     <span className='sm:hidden block font-semibold hover:underline underline-offset-4'>Create Assessment</span>
                     <PrimaryButton extra_classes='px-4 mr-4 hidden sm:block'>Create</PrimaryButton>
                 </Link>
-                <Link className="font-semibold rounded-full sm:bg-slate-700 sm:w-[40px] sm:h-[40px] sm:flex sm:justify-center sm:items-center sm:font-bold hover:underline underline-offset-4 sm:hover:no-underline sm:hover:bg-slate-600 mb-2 sm:mb-0" href="/user">
+                <button onClick={goToUserPage} className="font-semibold rounded-full sm:bg-slate-700 sm:w-[40px] sm:h-[40px] sm:flex sm:justify-center sm:items-center sm:font-bold hover:underline underline-offset-4 sm:hover:no-underline sm:hover:bg-slate-600 mb-2 sm:mb-0">
                     <span className="hidden sm:block">{username[0]}</span>
                     <span className="block sm:hidden">User Account</span>
-                </Link>
+                </button>
             </>
         )
     } else if (auth === 'not-auth') {
