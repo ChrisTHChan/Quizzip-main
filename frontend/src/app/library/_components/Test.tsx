@@ -152,7 +152,7 @@ const Test = ({test}: props) => {
                 onClose={closeExportModal}
                 contentStyle={modalStyle}
             >
-                <p className="text-slate-200 text-center p-4 font-semibold">
+                <p className="text-neutral-300 text-center p-4 font-semibold">
                     Exporting assessment: &quot;{testLabel}&quot;.
                 </p>
                 <div className="flex justify-center w-full"> 

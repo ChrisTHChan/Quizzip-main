@@ -70,8 +70,6 @@ export const createSubscriptionUserTierObject = async (req: express.Request, res
         let tier: tier
         const existingGenerationsLeft:number = existingUserTierObject ? existingUserTierObject.generationsLeft : 5
 
-        console.log('step 1')
-
         if (durationString === 'monthly') {
             generationsLeft = returnSubscriptionTierMonthlyGenerations() + existingGenerationsLeft
             expirationDate = Date.now() + (30 * 24 * 60 * 60 * 1000) //~30d, fix this to be accurate with stripes determination of duration

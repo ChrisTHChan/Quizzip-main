@@ -9,6 +9,9 @@ import { useState } from "react"
 import Cookies from 'js-cookie';
 import { getServerURL } from "@/util-functions/helper-functions"
 import { useUserStore } from "@/store/store"
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import PrimaryButton from "@/components/primaryButton"
 
 const stripePublishableKey:string = `${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`
 
@@ -19,6 +22,13 @@ export default function Pricing() {
   const sessionId = Cookies.get('QUIZZIP-AUTH')
   let fetchURL = getServerURL()
   const {email, username, setGenerationsLeft, generationsLeft} = useUserStore()
+
+  const modalStyle = { borderRadius: '4px', backgroundColor: '#1F2937', border: "1px solid #1F2937" };
+  const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
+  const closeOfferModal = () => setIsOfferModalOpen(false);
+  const openOfferModal = () => {
+    setIsOfferModalOpen(true)
+  }
 
   const [formOpen, setFormOpen] = useState(false);
   const [formTitle, setFormTitle] = useState('');
@@ -58,6 +68,8 @@ export default function Pricing() {
       }
 
       setGenerationsLeft(generationsLeft + 20)
+
+      setIsOfferModalOpen(false)
 
       return alert('You\'ve successfully received the offer!')
 
@@ -99,8 +111,21 @@ export default function Pricing() {
               </div>
               <div className="w-3/4 mx-auto">
                 <p className="w-full text-neutral-300 font-semibold text-sm text-center">
-                  Enjoying QuizzipIO? Get 20 additional free generations on us, only once for your account. No credit card commitment required. <button onClick={getFreeGenerationsOnce} className="underline underline-offset-2">Click Here!</button>
+                  Enjoying QuizzipIO? Get 20 additional free generations on us, only once for your account. No credit card commitment required. <button onClick={openOfferModal} className="underline underline-offset-2">Click Here!</button>
                 </p>
+                <Popup
+                  open={isOfferModalOpen} 
+                  closeOnDocumentClick 
+                  onClose={closeOfferModal}
+                  contentStyle={modalStyle}
+                >
+                  <p className="text-neutral-300 text-center p-4 font-semibold">
+                      Are you sure you want to use this offer? You can only use it once.
+                  </p>
+                  <div className="flex justify-center w-full"> 
+                    <PrimaryButton extra_classes="mb-4 mr-4" onClick={getFreeGenerationsOnce}>Use Offer</PrimaryButton>
+                  </div>
+                </Popup>
               </div>
             </div>
             <div className="mb-16 container w-11/12 md:w-4/5 xl:w-5/12 mx-auto">
