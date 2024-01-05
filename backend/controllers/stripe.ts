@@ -3,6 +3,8 @@ import Stripe from 'stripe';
 import { createUserTierObject, getUserTierObject, deleteUserTierObject, getUserByEmail } from '../db/users';
 import { returnFreeMonthlyGenerations, returnSubscriptionTierMonthlyGenerations, returnSubscriptionTierYearlyGenerations } from '../helpers/helper-functions';
 
+type tier = 'Basic' | 'Monthly Subscription' | 'Yearly Subscription'
+
 const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`)
 
 export const createAndProvideFreeTrialGenerationsOnce = async (req: express.Request, res: express.Response) => {
@@ -61,20 +63,22 @@ export const createSubscriptionUserTierObject = async (req: express.Request, res
             await deleteUserTierObject(email, username)
         }
 
-        let generationsLeft
-        let expirationDate
-        let tier
-        const existingGenerationsLeft = existingUserTierObject ? existingUserTierObject.generationsLeft : 5
+        
+        const durationString: 'monthly' | 'yearly' = duration
+        let generationsLeft: number
+        let expirationDate:number
+        let tier: tier
+        const existingGenerationsLeft:number = existingUserTierObject ? existingUserTierObject.generationsLeft : 5
 
         console.log('step 1')
 
-        if (duration === 'monthly') {
+        if (durationString === 'monthly') {
             generationsLeft = returnSubscriptionTierMonthlyGenerations() + existingGenerationsLeft
             expirationDate = Date.now() + (30 * 24 * 60 * 60 * 1000) //~30d, fix this to be accurate with stripes determination of duration
             tier = 'Monthly Subscription'
 
             console.log('monthly fjdklajfdlafjdl;a')
-        } else if (duration === 'yearly') {
+        } else if (durationString === 'yearly') {
             generationsLeft = returnSubscriptionTierYearlyGenerations() + existingGenerationsLeft
             expirationDate = Date.now() + (12 * 30 * 24 * 60 * 60 * 1000) //~1y, fix this to be accurate with stripes determination of duration
             tier = "Yearly Subscription"
