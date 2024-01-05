@@ -111,7 +111,11 @@ const PaymentForm = ({productId, formTitle, formOpen, duration}: props) => {
                 })
             })
 
+            if (!createSubscription.ok) throw new Error('Payment failed. Try again later.')
+
             const createSubscriptionData = await createSubscription.json()
+
+            console.log(createSubscriptionData);
 
             setTier(createSubscriptionData.tier);
             setGenerationsLeft(createSubscriptionData.generationsLeft);
@@ -120,6 +124,7 @@ const PaymentForm = ({productId, formTitle, formOpen, duration}: props) => {
             setRequestStatus('Subscription is successful! Please enjoy!')
         } catch (err:any) {
             console.log(err);
+            setRequestStatus(err);
         }
     }
     
@@ -128,7 +133,7 @@ const PaymentForm = ({productId, formTitle, formOpen, duration}: props) => {
             <h3 className='text-xl font-semibold text-center mb-8'>{formTitle}</h3>
             <form onSubmit={handleFormSubmit}>
                 <CardElement className="mb-4 border-slate-500 border-2 rounded text-slate-200 p-2" options={options}/>
-                <PrimaryButton extra_classes="mt-2" type="submit">Subscribe</PrimaryButton>
+                <PrimaryButton extra_classes="mt-2" type="submit">Subscribe and Pay</PrimaryButton>
                 <p className="text-xs mb-8 mt-2">{requestStatus}</p> 
             </form>
         </div>

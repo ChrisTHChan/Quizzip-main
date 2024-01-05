@@ -1,9 +1,54 @@
 import express from 'express';
 import Stripe from 'stripe';
-import { createUserTierObject, getUserTierObject, deleteUserTierObject } from '../db/users';
+import { createUserTierObject, getUserTierObject, deleteUserTierObject, getUserByEmail } from '../db/users';
 import { returnFreeMonthlyGenerations, returnSubscriptionTierMonthlyGenerations, returnSubscriptionTierYearlyGenerations } from '../helpers/helper-functions';
 
 const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`)
+
+export const createAndProvideFreeTrialGenerationsOnce = async (req: express.Request, res: express.Response) => {
+    try {
+
+        const {email, username} = req.body
+
+        const user = await getUserByEmail(email);
+
+        const existingUserTierObject = await getUserTierObject(email, username)
+
+        if (!user) {
+            throw new Error('No such user.')
+        }
+
+        if (user?.freeTrialUsed) {
+            throw new Error('you have already used this offer.')
+        }
+
+        if (user) {
+            user.freeTrialUsed = true;
+        }
+
+        await user?.save()
+
+        if (!existingUserTierObject) {
+            await createUserTierObject({
+                email: email,
+                username: username,
+                tier: 'Basic',
+                generationsLeft: returnFreeMonthlyGenerations() + 20,
+                expirationDate: Date.now() + (30 * 24 * 60 * 60 * 1000) //~30d, fix this to be accurate with stripes determination of duration
+            })
+        } else {
+            existingUserTierObject.generationsLeft = existingUserTierObject.generationsLeft + 20
+            await existingUserTierObject.save();
+        }
+
+        res.status(200).end()
+    } catch (error: any) {
+        console.log(error)
+        return res.status(400).json({
+            requestStatus: `Failed to get free generations: ${error.message}`
+        });
+    }
+}
 
 export const createSubscriptionUserTierObject = async (req: express.Request, res: express.Response) => {
     try {
@@ -19,13 +64,18 @@ export const createSubscriptionUserTierObject = async (req: express.Request, res
         let generationsLeft
         let expirationDate
         let tier
+        const existingGenerationsLeft = existingUserTierObject ? existingUserTierObject.generationsLeft : 5
+
+        console.log('step 1')
 
         if (duration === 'monthly') {
-            generationsLeft = returnSubscriptionTierMonthlyGenerations()
+            generationsLeft = returnSubscriptionTierMonthlyGenerations() + existingGenerationsLeft
             expirationDate = Date.now() + (30 * 24 * 60 * 60 * 1000) //~30d, fix this to be accurate with stripes determination of duration
             tier = 'Monthly Subscription'
+
+            console.log('monthly fjdklajfdlafjdl;a')
         } else if (duration === 'yearly') {
-            generationsLeft = returnSubscriptionTierYearlyGenerations()
+            generationsLeft = returnSubscriptionTierYearlyGenerations() + existingGenerationsLeft
             expirationDate = Date.now() + (12 * 30 * 24 * 60 * 60 * 1000) //~1y, fix this to be accurate with stripes determination of duration
             tier = "Yearly Subscription"
         } else {
@@ -44,7 +94,10 @@ export const createSubscriptionUserTierObject = async (req: express.Request, res
 
         res.status(200).json(newUserTierObject);
 
-    } catch {
+    } catch (err) {
+
+        console.log(err)
+
         res.status(500).json({
             requestStatus: 'Something went wrong, please try again'
         })
@@ -72,7 +125,9 @@ export const createAndSubtractBasicUserTierObjeect = async (req: express.Request
         }
 
         res.status(200).end()
-    } catch {
+    } catch (err) {
+        console.log(err)
+
         res.status(500).json({
             requestStatus: 'Something went wrong, please try again'
         })
@@ -120,7 +175,9 @@ export const handleStripeSubscription = async (req: express.Request, res: expres
             clientSecret: payment_intent.client_secret,
         })
 
-    } catch {
+    } catch (err) {
+        console.log(err)
+
         res.status(500).json({
             requestStatus: 'Something went wrong, please try again'
         })
