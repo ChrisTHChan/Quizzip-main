@@ -40,9 +40,11 @@ export const checkUserSessionToken = async (req: express.Request, res: express.R
 export const loggedInChangeEmail = async (req: express.Request, res: express.Response) => {
     try {
         
-        const {oldEmail, newEmail, password} = req.body
+        const {oldEmail, newEmail, password, username} = req.body
 
         const user = await getUserByEmail(oldEmail).select('+authentication.salt +authentication.password +authentication.sessionToken')
+
+        const userTierObject = await getUserTierObject(oldEmail, username)
 
         const isNewEmailUsed = await getUserByEmail(newEmail)
 
@@ -63,6 +65,11 @@ export const loggedInChangeEmail = async (req: express.Request, res: express.Res
         user.email = newEmail;
 
         await user.save();
+
+        if (userTierObject) {
+            userTierObject!.email = newEmail;
+            await userTierObject.save();
+        }
 
         res.status(200).json({
             callStatus: `Email change successful!`

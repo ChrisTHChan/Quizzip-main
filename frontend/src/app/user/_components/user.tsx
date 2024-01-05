@@ -101,6 +101,7 @@ const User = () => {
             const formData = new FormData();
             
             formData.append("oldEmail", email);
+            formData.append('username', username)
             formData.append("newEmail", inputState.email);
             formData.append("password", inputState.password)
 

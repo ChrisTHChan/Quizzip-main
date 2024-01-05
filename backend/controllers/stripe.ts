@@ -1,9 +1,9 @@
+type tier = 'Basic' | 'Monthly Subscription' | 'Yearly Subscription'
+
 import express from 'express';
 import Stripe from 'stripe';
 import { createUserTierObject, getUserTierObject, deleteUserTierObject, getUserByEmail } from '../db/users';
 import { returnFreeMonthlyGenerations, returnSubscriptionTierMonthlyGenerations, returnSubscriptionTierYearlyGenerations } from '../helpers/helper-functions';
-
-type tier = 'Basic' | 'Monthly Subscription' | 'Yearly Subscription'
 
 const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`)
 
