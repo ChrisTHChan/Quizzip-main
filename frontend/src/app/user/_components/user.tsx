@@ -128,6 +128,27 @@ const User = () => {
         }
     }
 
+    const cancelSubscription = async () => {
+        try {
+            const subscriptionId = await fetch(`${fetchURL}/stripe/cancelSubscription/${sessionId}`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username,
+                    email,
+                })
+            })
+
+            window.location.reload();
+
+        } catch (err) {
+            console.log(err)
+            return alert(err)
+        }
+    }
+
     return (
         <>
             <div className="py-10 flex justify-center items-center">
@@ -149,7 +170,7 @@ const User = () => {
                                 }
                              </p>
                             <p className="mb-4"><span className="font-bold">Generations Reset on:</span> {expirationDate ? expirationDate : 'Create or subscribe to start a period.'}</p>
-                            {tier === 'Monthly Subscription' || tier === 'Yearly Subscription' ? <button className="font-bold hover:underline underline-offset-8 mb-4">Cancel Subscription</button> : null}
+                            {tier === 'Monthly Subscription' || tier === 'Yearly Subscription' ? <button onClick={cancelSubscription} className="font-bold hover:underline underline-offset-8 mb-4">Cancel Subscription</button> : null}
                             <Accordion 
                                 initialContent={<div className="mb-4 hover:underline underline-offset-2">Change Email &#11167;</div>}>
                                 <form className="mb-4" onSubmit={submitChangeEmail}>

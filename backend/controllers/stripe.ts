@@ -7,13 +7,29 @@ import { returnFreeMonthlyGenerations, returnSubscriptionTierMonthlyGenerations,
 
 const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`)
 
-export const handleSubscriptionCancellation = async (req: express.Request, res: express.Request) => {
+export const handleSubscriptionCancellation = async (req: express.Request, res: express.Response) => {
 
     console.log('handling subscription cancellation')
 
-    const { subscriptionId } = req.body
+    const { email, username } = req.body
 
-    // const deletedSubscription = await stripe.subscriptions.cancel(subscriptionId);
+    const userTierObject = await getUserTierObject(email, username);
+
+    if (!userTierObject) {
+        throw new Error('no user exists.')
+    }
+
+    const subscriptionId = userTierObject.subscriptionId as string
+
+    console.log(subscriptionId);
+
+    await stripe.subscriptions.cancel(subscriptionId);
+
+    await deleteUserTierObject(email, username)
+
+    res.status(200).json({
+        subscriptionId: subscriptionId
+    })
 }
 
 export const createSubscriptionUserTierObject = async (req: express.Request, res: express.Response) => {
