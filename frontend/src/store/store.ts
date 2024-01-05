@@ -9,12 +9,12 @@ type authStore = {
 type userStore = {
     username: string,
     email: string,
-    tier: string,
+    tier: 'Basic' | 'Monthly Subscription' | 'Yearly Subscription',
     generationsLeft: number,
     expirationDate: number,
     setUsername: (user: string) => void,
     setEmail: (email: string) => void,
-    setTier: (tier: string) => void,
+    setTier: (tier: 'Basic' | 'Monthly Subscription' | 'Yearly Subscription') => void,
     setGenerationsLeft: (number: number) => void,
     setExpirationDate: (date: number) => void,
 }
@@ -28,7 +28,7 @@ export const useAuthStore = create<authStore>((set) => ({
 export const useUserStore = create<userStore>((set) => ({
     username: '',
     email: '',
-    tier: '',
+    tier: 'Basic',
     generationsLeft: 0,
     expirationDate: Date.now(),
     setUsername: (user) => set({username: user}),

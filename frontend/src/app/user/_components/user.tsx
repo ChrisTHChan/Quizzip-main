@@ -148,6 +148,7 @@ const User = () => {
                                 }
                              </p>
                             <p className="mb-4"><span className="font-bold">Generations Reset on:</span> {expirationDate ? expirationDate : 'Create or subscribe to start a period.'}</p>
+                            {tier === 'Monthly Subscription' || tier === 'Yearly Subscription' ? <button className="font-bold hover:underline underline-offset-8 mb-4">Cancel Subscription</button> : null}
                             <Accordion 
                                 initialContent={<div className="mb-4 hover:underline underline-offset-2">Change Email &#11167;</div>}>
                                 <form className="mb-4" onSubmit={submitChangeEmail}>

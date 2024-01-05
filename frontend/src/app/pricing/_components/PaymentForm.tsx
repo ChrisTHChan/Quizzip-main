@@ -88,6 +88,8 @@ const PaymentForm = ({productId, formTitle, formOpen, duration}: props) => {
 
             const data = await createStripePayment.json()
 
+            console.log(data.subscriptionId, 'jkfjdla;fjadkl;');
+
             setRequestStatus('Confirming payment details...')
             
             const confirmation = await stripe.confirmCardPayment(data.clientSecret)
@@ -107,15 +109,14 @@ const PaymentForm = ({productId, formTitle, formOpen, duration}: props) => {
                 body: JSON.stringify({
                     username,
                     email,
-                    duration
+                    duration,
+                    subscriptionId: data.subscriptionId
                 })
             })
 
             if (!createSubscription.ok) throw new Error('Payment failed. Try again later.')
 
             const createSubscriptionData = await createSubscription.json()
-
-            console.log(createSubscriptionData);
 
             setTier(createSubscriptionData.tier);
             setGenerationsLeft(createSubscriptionData.generationsLeft);
