@@ -9,6 +9,8 @@ import { validateEmail } from "@/util-functions/helper-functions"
 import { getServerURL } from "@/util-functions/helper-functions"
 import Cookies from 'js-cookie';
 import { returnFreeMonthlyGenerations } from "@/util-functions/helper-functions"
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 const User = () => {
 
@@ -149,6 +151,13 @@ const User = () => {
         }
     }
 
+    const modalStyle = { borderRadius: '4px', backgroundColor: '#1F2937', border: "1px solid #1F2937" };
+    const [isCancellationModalOpen, setIsCancellationModalOpen] = useState(false);
+    const closeCancellationModal = () => setIsCancellationModalOpen(false);
+    const openCancellationModal = () => {
+        setIsCancellationModalOpen(true)
+    }
+
     return (
         <>
             <div className="py-10 flex justify-center items-center">
@@ -170,7 +179,20 @@ const User = () => {
                                 }
                              </p>
                             <p className="mb-4"><span className="font-bold">Generations Reset on:</span> {expirationDate ? expirationDate : 'Create or subscribe to start a period.'}</p>
-                            {tier === 'Monthly Subscription' || tier === 'Yearly Subscription' ? <button onClick={cancelSubscription} className="font-bold hover:underline underline-offset-8 mb-4">Cancel Subscription</button> : null}
+                            {tier === 'Monthly Subscription' || tier === 'Yearly Subscription' ? <button onClick={openCancellationModal} className="font-bold hover:underline underline-offset-8 mb-4">Cancel Subscription</button> : null}
+                            <Popup
+                            open={isCancellationModalOpen} 
+                            closeOnDocumentClick 
+                            onClose={closeCancellationModal}
+                            contentStyle={modalStyle}
+                            >
+                                <p className="text-neutral-300 text-center p-4 font-semibold">
+                                    Are you sure you want to cancel this subscription? You're preiod will reset, and you will lose all unused assessment subscription generations.
+                                </p>
+                                <div className="flex justify-center w-full"> 
+                                    <PrimaryButton extra_classes="mb-4 mr-4" onClick={cancelSubscription}>Cancel Subscription</PrimaryButton>
+                                </div>
+                            </Popup>
                             <Accordion 
                                 initialContent={<div className="mb-4 hover:underline underline-offset-2">Change Email &#11167;</div>}>
                                 <form className="mb-4" onSubmit={submitChangeEmail}>
