@@ -110,7 +110,8 @@ const PaymentForm = ({productId, formTitle, formOpen, duration}: props) => {
                     username,
                     email,
                     duration,
-                    subscriptionId: data.subscriptionId
+                    subscriptionId: data.subscriptionId,
+                    currentPeriodEnd: data.currentPeriodEnd
                 })
             })
 

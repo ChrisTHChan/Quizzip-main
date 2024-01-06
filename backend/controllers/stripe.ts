@@ -21,8 +21,6 @@ export const handleSubscriptionCancellation = async (req: express.Request, res: 
 
     const subscriptionId = userTierObject.subscriptionId as string
 
-    console.log(subscriptionId);
-
     await stripe.subscriptions.cancel(subscriptionId);
 
     await deleteUserTierObject(email, username)
@@ -35,7 +33,7 @@ export const handleSubscriptionCancellation = async (req: express.Request, res: 
 export const createSubscriptionUserTierObject = async (req: express.Request, res: express.Response) => {
     try {
 
-        const {email, username, duration, subscriptionId} = req.body
+        const {email, username, duration, subscriptionId, currentPeriodEnd} = req.body
 
         const existingUserTierObject = await getUserTierObject(email, username)
 
@@ -45,23 +43,18 @@ export const createSubscriptionUserTierObject = async (req: express.Request, res
 
         const durationString: 'monthly' | 'yearly' = duration
         let generationsLeft: number
-        let expirationDate:number
         let tier: tier
         const existingGenerationsLeft:number = existingUserTierObject ? existingUserTierObject.generationsLeft : 5
 
         if (durationString === 'monthly') {
             generationsLeft = returnSubscriptionTierMonthlyGenerations() + existingGenerationsLeft
-            expirationDate = Date.now() + (30 * 24 * 60 * 60 * 1000) //~30d, fix this to be accurate with stripes determination of duration
             tier = 'Monthly Subscription'
         } else if (durationString === 'yearly') {
             generationsLeft = returnSubscriptionTierYearlyGenerations() + existingGenerationsLeft
-            expirationDate = Date.now() + (12 * 30 * 24 * 60 * 60 * 1000) //~1y, fix this to be accurate with stripes determination of duration
             tier = "Yearly Subscription"
         } else {
             throw new Error('something went wrong')
         }
-
-        console.log(subscriptionId)
 
         await createUserTierObject({
             email: email,
@@ -69,7 +62,7 @@ export const createSubscriptionUserTierObject = async (req: express.Request, res
             tier: tier,
             subscriptionId: subscriptionId,
             generationsLeft: generationsLeft,
-            expirationDate: expirationDate
+            expirationDate: currentPeriodEnd * 1000
         })
 
         const newUserTierObject = await getUserTierObject(email, username)
@@ -123,9 +116,12 @@ export const handleStripeSubscription = async (req: express.Request, res: expres
         const invoice = subscription.latest_invoice as Stripe.Invoice
         const payment_intent = invoice.payment_intent as Stripe.PaymentIntent
 
+        console.log(subscription.current_period_end)
+
         res.status(200).json({
             message: "Subscription Successful",
             subscriptionId: subscription.id,
+            currentPeriodEnd: subscription.current_period_end,
             clientSecret: payment_intent.client_secret,
         })
 
