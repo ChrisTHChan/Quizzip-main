@@ -7,27 +7,64 @@ import { returnFreeMonthlyGenerations, returnSubscriptionTierMonthlyGenerations,
 
 const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`)
 
+export const webhook = (req: express.Request, res: express.Response) => {
+
+    try {
+
+        const { event } = req.body
+
+        console.log(req.body, event)
+
+        if (event?.type === 'invoice.paid') {
+
+            console.log('handling invoice paid with method here')
+
+        } else {
+            console.log(`Unhandled event type ${event.type}`);
+        }
+
+        res.status(200).end()
+
+    } catch (err) {
+
+        console.log(err)
+
+        res.status(500).json({
+            requestStatus: 'Something went wrong, please try again'
+        })
+    }
+}
+
 export const handleSubscriptionCancellation = async (req: express.Request, res: express.Response) => {
 
-    console.log('handling subscription cancellation')
+    try {
+        console.log('handling subscription cancellation')
 
-    const { email, username } = req.body
+        const { email, username } = req.body
 
-    const userTierObject = await getUserTierObject(email, username);
+        const userTierObject = await getUserTierObject(email, username);
 
-    if (!userTierObject) {
-        throw new Error('no user exists.')
+        if (!userTierObject) {
+            throw new Error('no user exists.')
+        }
+
+        const subscriptionId = userTierObject.subscriptionId as string
+
+        await stripe.subscriptions.cancel(subscriptionId);
+
+        await deleteUserTierObject(email, username)
+
+        res.status(200).json({
+            subscriptionId: subscriptionId
+        })
+    } catch (err) {
+
+        console.log(err)
+
+        res.status(500).json({
+            requestStatus: 'Something went wrong, please try again'
+        })
     }
-
-    const subscriptionId = userTierObject.subscriptionId as string
-
-    await stripe.subscriptions.cancel(subscriptionId);
-
-    await deleteUserTierObject(email, username)
-
-    res.status(200).json({
-        subscriptionId: subscriptionId
-    })
 }
 
 export const createSubscriptionUserTierObject = async (req: express.Request, res: express.Response) => {
