@@ -34,7 +34,7 @@ export default function Home() {
           </div>
 
           <div className="lg:mb-48 mb-20">
-            <p className="text-center mb-16 text-slate-400 text-lg font-semibold uppercase">Made for educators, businesses, and students everywhere.</p>
+            <p className="text-center mb-16 text-slate-400 md:text-lg font-semibold uppercase mx-4">Made for educators, businesses, and students everywhere.</p>
             <div className="w-full md:flex md:w-10/12 mx-auto mb-2 px-6 md:px-0 gap-16 justify-between">
               <div className="md:w-1/3 md:mb-0 mb-10 flex flex-col justify-between">
                 <div>
@@ -122,7 +122,7 @@ export default function Home() {
             <div className="w-full md:w-10/12 mx-auto flex flex-col lg:flex-row flex-wrap justify-between">
               <div className="lg:w-1/2">
                 <Accordion 
-                  extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">How does QuizzipIO work?</div>}
+                  extra_classes="border-2 border-slate-500 md:mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">How does QuizzipIO work?</div>}
                   initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4 leading-loose">
@@ -134,7 +134,7 @@ export default function Home() {
               </div>
               <div className="lg:w-1/2">
                 <Accordion 
-                  extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">What can I use QuizzipIO for?</div>}
+                  extra_classes="border-2 border-slate-500 md:mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">What can I use QuizzipIO for?</div>}
                   initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4 leading-loose">
@@ -147,7 +147,7 @@ export default function Home() {
               </div>
               <div className="lg:w-1/2">
                 <Accordion 
-                  extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">How much text should I add?</div>}
+                  extra_classes="border-2 border-slate-500 md:mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">How much text should I add?</div>}
                   initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4 leading-loose">
@@ -158,7 +158,7 @@ export default function Home() {
               </div>
               <div className="lg:w-1/2">
                 <Accordion 
-                  extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">How do I share my assessments?</div>}
+                  extra_classes="border-2 border-slate-500 md:mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">How do I share my assessments?</div>}
                   initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4 leading-loose">
@@ -168,7 +168,7 @@ export default function Home() {
               </div>
               <div className="lg:w-1/2">
                 <Accordion 
-                  extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">What text can I use to generate quiz or test questions??</div>}
+                  extra_classes="border-2 border-slate-500 md:mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">What text can I use to generate quiz or test questions??</div>}
                   initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4 leading-loose">
@@ -178,7 +178,7 @@ export default function Home() {
               </div>
               <div className="lg:w-1/2">
                 <Accordion 
-                  extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">How can I improve the quality of results?</div>}
+                  extra_classes="border-2 border-slate-500 md:mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">How can I improve the quality of results?</div>}
                   initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4 leading-loose">
@@ -188,7 +188,7 @@ export default function Home() {
               </div>
               <div className="lg:w-1/2">
                 <Accordion 
-                  extra_classes="border-2 border-slate-500 mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">Are the answers always correct?</div>}
+                  extra_classes="border-2 border-slate-500 md:mr-4 rounded-lg mb-4 hover:border-slate-300" initialContent={<div className="p-4 hover:underline underline-offset-4 font-bold text-lg">Are the answers always correct?</div>}
                   initialContentClasses='w-full text-left'
                 >
                   <div className="text-sm text-slate-300 px-4 pb-4 leading-loose">
