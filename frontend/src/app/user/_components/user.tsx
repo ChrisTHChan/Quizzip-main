@@ -189,7 +189,7 @@ const User = () => {
                             contentStyle={modalStyle}
                             >
                                 <p className="text-neutral-300 text-center p-4 font-semibold">
-                                    Are you sure you want to cancel this subscription? You're preiod will reset, and you will lose all unused assessment subscription generations.
+                                    Are you sure you want to cancel this subscription? You&apos;re preiod will reset, and you will lose all unused assessment subscription generations.
                                 </p>
                                 <div className="flex justify-center w-full"> 
                                     <PrimaryButton extra_classes="mb-4 mr-4" onClick={cancelSubscription}>Cancel Subscription</PrimaryButton>
