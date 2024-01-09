@@ -132,15 +132,15 @@ const User = () => {
 
     const cancelSubscription = async () => {
         try {
+
+            const formData = new FormData()
+
+            formData.append('username', username)
+            formData.append('email', email)
+
             const subscriptionId = await fetch(`${fetchURL}/stripe/cancelSubscription/${sessionId}`, {
                 method: 'PUT',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    username,
-                    email,
-                })
+                body: formData
             })
 
             window.location.reload();

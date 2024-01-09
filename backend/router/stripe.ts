@@ -8,5 +8,5 @@ export default (router: express.Router) => {
     router.post('/api/stripe/createSubscriptionUserTierObject/:sessionId', isAuthenticated, isOwner, createSubscriptionUserTierObject)
     router.put('/api/stripe/createAndProvideFreeTrialGenerationsOnce/:sessionId', isAuthenticated, isOwner, createAndProvideFreeTrialGenerationsOnce)
     router.put('/api/stripe/cancelSubscription/:sessionId', isAuthenticated, isOwner, handleSubscriptionCancellation)
-    router.post('/api/stripe/webhook/:sessionId', isAuthenticated, isOwner, webhook)
+    router.post('/api/stripe/webhook', express.raw({type: 'application/json'}), webhook)
 }

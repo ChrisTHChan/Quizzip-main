@@ -64,15 +64,15 @@ const Test = ({test}: props) => {
     const openExportModal = () => setIsExportModalOpen(true);
 
     const deleteTest = () => {
+
+        const formData = new FormData()
+
+        formData.append('testId', _id)
+
         fetch(`${fetchURL}/users/lib/${Cookies.get('QUIZZIP-AUTH')}`, {
             cache: 'no-cache',
             method: 'DELETE',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                testId: _id
-            })
+            body: formData
         })
         .then(res => res.json())
         .then((res) => {
@@ -84,6 +84,7 @@ const Test = ({test}: props) => {
     }
 
     const exportTest = () => {
+
         fetch(`${fetchURL}/users/lib/create-test-pdf/${Cookies.get('QUIZZIP-AUTH')}`, {
             method: 'POST',
             headers: {

@@ -46,7 +46,6 @@ if (process.env.NODE_ENV === 'development') {
     });
 }
 
-app.use(express.json({limit: '1mb'}));
 server.listen(9000, () => {
     console.log('server is running')
 })
@@ -98,3 +97,6 @@ export const emitQuestionGenState = (i: number, totalNumQuestions: number, socke
 
 //setup routes
 app.use('/', router())
+
+// if this is before your route setups stripe cant use the signature and fails
+app.use(express.json({limit: '1mb'}));

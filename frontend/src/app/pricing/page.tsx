@@ -52,15 +52,15 @@ export default function Pricing() {
   const getFreeGenerationsOnce = async () => {
 
     try {
+
+      const formData = new FormData()
+
+      formData.append('username', username)
+      formData.append('email', email)
+
       const getGenerations = await fetch(`${fetchURL}/stripe/createAndProvideFreeTrialGenerationsOnce/${sessionId}`, {
         method: 'PUT',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            username,
-            email,
-        })
+        body: formData
       })
 
       if (!getGenerations.ok) {

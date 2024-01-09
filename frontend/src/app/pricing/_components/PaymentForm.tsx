@@ -68,17 +68,15 @@ const PaymentForm = ({productId, formTitle, formOpen, duration}: props) => {
                 card: elements.getElement('card') as StripeCardElement,
             })
 
+            const formData = new FormData()
+            formData.append('username', username)
+            formData.append('email', email)
+            formData.append('paymentMethod', paymentMethod.paymentMethod!.id)
+            formData.append('productId', productId)
+
             const createStripePayment = await fetch(`${fetchURL}/stripe/handleSubscription/${sessionId}`, {
                 method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    username,
-                    email,
-                    paymentMethod: paymentMethod.paymentMethod?.id,
-                    productId: productId,
-                })
+                body: formData
             });
 
             if (!createStripePayment.ok) {
@@ -101,18 +99,17 @@ const PaymentForm = ({productId, formTitle, formOpen, duration}: props) => {
 
             setRequestStatus('Creating your subscription data... Please stay on the page...')
 
+            const formDataSecond = new FormData();
+
+            formDataSecond.append('username', username)
+            formDataSecond.append('email', email)
+            formDataSecond.append('duration', duration)
+            formDataSecond.append('subscriptionId', data.subscriptionId)
+            formDataSecond.append('currentPeriodEnd', data.currentPeriodEnd)
+
             const createSubscription = await fetch(`${fetchURL}/stripe/createSubscriptionUserTierObject/${sessionId}`, {
                 method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    username,
-                    email,
-                    duration,
-                    subscriptionId: data.subscriptionId,
-                    currentPeriodEnd: data.currentPeriodEnd
-                })
+                body: formDataSecond
             })
 
             if (!createSubscription.ok) throw new Error('Payment failed. Try again later.')

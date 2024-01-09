@@ -6,14 +6,27 @@ import { createUserTierObject, getUserTierObject, deleteUserTierObject, getUserB
 import { returnFreeMonthlyGenerations, returnSubscriptionTierMonthlyGenerations, returnSubscriptionTierYearlyGenerations } from '../helpers/helper-functions';
 
 const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`)
+const endpointSecret = process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET;
 
 export const webhook = (req: express.Request, res: express.Response) => {
 
     try {
 
-        const { event } = req.body
+        let event = req.body;
 
-        console.log(req.body, event)
+        if (endpointSecret) {
+            const signature = req.headers['stripe-signature'] as string;
+
+            event = stripe.webhooks.constructEvent(
+                req.body,
+                signature,
+                endpointSecret
+            );
+        }
+
+        console.log('webhook triggered');
+
+        // console.log(req.body, event)
 
         if (event?.type === 'invoice.paid') {
 
@@ -120,6 +133,8 @@ export const createSubscriptionUserTierObject = async (req: express.Request, res
 
 export const handleStripeSubscription = async (req: express.Request, res: express.Response) => {
     try {
+
+        console.log(req.body);
 
         const {username, email, paymentMethod, productId} =  req.body
 
