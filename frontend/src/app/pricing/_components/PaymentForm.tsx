@@ -2,7 +2,6 @@ type props = {
     productId: string,
     formTitle: string,
     formOpen: boolean,
-    duration: string,
 }
 
 'use client'
@@ -15,7 +14,7 @@ import Cookies from 'js-cookie';
 import { getServerURL } from "@/util-functions/helper-functions"
 import { useState } from "react";
 
-const PaymentForm = ({productId, formTitle, formOpen, duration}: props) => {
+const PaymentForm = ({productId, formTitle, formOpen}: props) => {
 
     const options = {
         style: {
@@ -86,8 +85,6 @@ const PaymentForm = ({productId, formTitle, formOpen, duration}: props) => {
 
             const data = await createStripePayment.json()
 
-            console.log(data.subscriptionId, 'jkfjdla;fjadkl;');
-
             setRequestStatus('Confirming payment details...')
             
             const confirmation = await stripe.confirmCardPayment(data.clientSecret)
@@ -97,30 +94,10 @@ const PaymentForm = ({productId, formTitle, formOpen, duration}: props) => {
                 return
             }
 
-            setRequestStatus('Creating your subscription data... Please stay on the page...')
-
-            const formDataSecond = new FormData();
-
-            formDataSecond.append('username', username)
-            formDataSecond.append('email', email)
-            formDataSecond.append('duration', duration)
-            formDataSecond.append('subscriptionId', data.subscriptionId)
-            formDataSecond.append('currentPeriodEnd', data.currentPeriodEnd)
-
-            const createSubscription = await fetch(`${fetchURL}/stripe/createSubscriptionUserTierObject/${sessionId}`, {
-                method: 'POST',
-                body: formDataSecond
-            })
-
-            if (!createSubscription.ok) throw new Error('Payment failed. Try again later.')
-
-            const createSubscriptionData = await createSubscription.json()
-
-            setTier(createSubscriptionData.tier);
-            setGenerationsLeft(createSubscriptionData.generationsLeft);
-            setExpirationDate(createSubscriptionData.expirationDate);
-
             setRequestStatus('Subscription is successful! Please enjoy!')
+
+            window.location.href = "/user"
+
         } catch (err:any) {
             console.log(err);
             setRequestStatus(err);

@@ -3,12 +3,12 @@ type tier = 'Basic' | 'Monthly Subscription' | 'Yearly Subscription'
 import express from 'express';
 import Stripe from 'stripe';
 import { createUserTierObject, getUserTierObject, deleteUserTierObject, getUserByEmail } from '../db/users';
-import { returnFreeMonthlyGenerations, returnSubscriptionTierMonthlyGenerations, returnSubscriptionTierYearlyGenerations } from '../helpers/helper-functions';
+import { returnFreeMonthlyGenerations, returnSubscriptionTierMonthlyGenerations, returnSubscriptionTierYearlyGenerations, returnMonthlySubscriptionPriceId, returnYearlySubscriptionPriceId } from '../helpers/helper-functions';
 
 const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`)
 const endpointSecret = process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET;
 
-export const webhook = (req: express.Request, res: express.Response) => {
+export const webhook = async (req: express.Request, res: express.Response) => {
 
     try {
 
@@ -24,13 +24,56 @@ export const webhook = (req: express.Request, res: express.Response) => {
             );
         }
 
-        console.log('webhook triggered');
-
-        // console.log(req.body, event)
-
         if (event?.type === 'invoice.paid') {
 
             console.log('handling invoice paid with method here')
+            
+            const session = event.data.object
+
+            const subscription: Stripe.Subscription = await stripe.subscriptions.retrieve(session.subscription)
+            const customerId = subscription.customer
+            const priceId = subscription.items.data[0].price.id
+            const subscriptionId = subscription.id
+            const currentPeriodEnd = subscription.current_period_end
+            const email = session.customer_email
+            const name = session.customer_name
+            let generationsLeft
+            let tier
+
+            console.log(subscription.collection_method);
+
+            const existingUserTierObject = await getUserTierObject(email, name)
+            const existingGenerationsLeft:number = existingUserTierObject ? existingUserTierObject.generationsLeft : 5
+
+            if (existingUserTierObject) {
+                await deleteUserTierObject(email, name)
+            }
+
+            if (priceId === returnMonthlySubscriptionPriceId()) {
+                tier = 'Monthly Subscription';
+                generationsLeft = returnSubscriptionTierMonthlyGenerations() + existingGenerationsLeft;
+            } else if (priceId === returnYearlySubscriptionPriceId()) {
+                tier = 'Yearly Subscription';
+                generationsLeft = returnSubscriptionTierYearlyGenerations() + existingGenerationsLeft;
+            } else {
+                throw new Error('something went wrong')
+            }
+
+            await createUserTierObject({
+                email: email,
+                username: name,
+                tier: tier,
+                subscriptionId: subscriptionId,
+                customerId: customerId,
+                generationsLeft: generationsLeft,
+                expirationDate: currentPeriodEnd * 1000
+            })
+
+            const newUserTierObject = await getUserTierObject(email, name)
+
+            console.log(newUserTierObject)
+
+            res.sendStatus(200).end();
 
         } else {
             console.log(`Unhandled event type ${event.type}`);
@@ -80,69 +123,14 @@ export const handleSubscriptionCancellation = async (req: express.Request, res: 
     }
 }
 
-export const createSubscriptionUserTierObject = async (req: express.Request, res: express.Response) => {
-    try {
-
-        const {email, username, duration, subscriptionId, currentPeriodEnd} = req.body
-
-        const existingUserTierObject = await getUserTierObject(email, username)
-
-        if (existingUserTierObject) {
-            await deleteUserTierObject(email, username)
-        }
-
-        const durationString: 'monthly' | 'yearly' = duration
-        let generationsLeft: number
-        let tier: tier
-        const existingGenerationsLeft:number = existingUserTierObject ? existingUserTierObject.generationsLeft : 5
-
-        if (durationString === 'monthly') {
-            generationsLeft = returnSubscriptionTierMonthlyGenerations() + existingGenerationsLeft
-            tier = 'Monthly Subscription'
-        } else if (durationString === 'yearly') {
-            generationsLeft = returnSubscriptionTierYearlyGenerations() + existingGenerationsLeft
-            tier = "Yearly Subscription"
-        } else {
-            throw new Error('something went wrong')
-        }
-
-        await createUserTierObject({
-            email: email,
-            username: username,
-            tier: tier,
-            subscriptionId: subscriptionId,
-            generationsLeft: generationsLeft,
-            expirationDate: currentPeriodEnd * 1000
-        })
-
-        const newUserTierObject = await getUserTierObject(email, username)
-
-        console.log(newUserTierObject)
-
-        res.status(200).json(newUserTierObject);
-
-    } catch (err) {
-
-        console.log(err)
-
-        res.status(500).json({
-            requestStatus: 'Something went wrong, please try again'
-        })
-    }
-}
-
 export const handleStripeSubscription = async (req: express.Request, res: express.Response) => {
     try {
-
-        console.log(req.body);
 
         const {username, email, paymentMethod, productId} =  req.body
 
         const existingUserTierObject = await getUserTierObject(email, username)
 
-        console.log('handling subscription');
-
-        if (existingUserTierObject && existingUserTierObject?.tier !== 'Basic') {
+        if (existingUserTierObject && existingUserTierObject.subscriptionId && existingUserTierObject.customerId) {
             throw new Error('You are already subscribed.')
         }
 
@@ -167,8 +155,6 @@ export const handleStripeSubscription = async (req: express.Request, res: expres
 
         const invoice = subscription.latest_invoice as Stripe.Invoice
         const payment_intent = invoice.payment_intent as Stripe.PaymentIntent
-
-        console.log(subscription.current_period_end)
 
         res.status(200).json({
             message: "Subscription Successful",

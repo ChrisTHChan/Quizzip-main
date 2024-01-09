@@ -33,20 +33,17 @@ export default function Pricing() {
   const [formOpen, setFormOpen] = useState(false);
   const [formTitle, setFormTitle] = useState('');
   const [productId, setProductId] = useState('')
-  const [duration, setDuration] = useState('')
 
   const setFormToOpenMonthly = () => {
     setFormOpen(true)
     setFormTitle('Sign up for QuizzipIO Monthly Subscription:')
     setProductId('price_1OR887BlbVm0HEusenlz9iIL')
-    setDuration('monthly')
   }
 
   const setFormToOpenYearly = () => {
     setFormOpen(true)
     setFormTitle('Sign up for QuizzipIO Yearly Subscription:')
     setProductId('price_1OR89hBlbVm0HEusveRZwr34')
-    setDuration('yearly')
   }
 
   const getFreeGenerationsOnce = async () => {
@@ -130,7 +127,7 @@ export default function Pricing() {
             </div>
             <div className="mb-16 container w-11/12 md:w-4/5 xl:w-5/12 mx-auto">
               <Elements stripe={stripePromise}>
-                <PaymentForm formOpen={formOpen} formTitle={formTitle} productId={productId} duration={duration}/>
+                <PaymentForm formOpen={formOpen} formTitle={formTitle} productId={productId}/>
               </Elements>
             </div>
           </div>

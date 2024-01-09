@@ -28,6 +28,7 @@ const UserTierSchema = new mongoose.Schema({
     tier: {type: String, required: true },
     generationsLeft: {type: Number, required: true},
     subscriptionId: {type: String},
+    customerId: {type:String},
     createdAt: {type: Date, default: Date.now()},
     expirationDate: {type: Date, expires: 0}
 })
