@@ -102,9 +102,17 @@ export function returnSubscriptionTierYearlyGenerations() {
 }
 
 export function returnMonthlySubscriptionPriceId() {
-    return 'price_1OR887BlbVm0HEusenlz9iIL'
+    if (process.env.NODE_ENV === 'development') { 
+        return 'price_1OR887BlbVm0HEusenlz9iIL'
+    } else {
+        return 'price_1OWnfbBlbVm0HEusMX3OlSDp'
+    }
 }
 
 export function returnYearlySubscriptionPriceId() {
-    return 'price_1OR89hBlbVm0HEusveRZwr34'
+    if (process.env.NODE_ENV === 'development') { 
+        return 'price_1OR89hBlbVm0HEusveRZwr34'
+    } else {
+        return 'price_1OWnh2BlbVm0HEus4AdrG0Id'
+    }
 }

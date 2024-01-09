@@ -13,7 +13,7 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import PrimaryButton from "@/components/primaryButton"
 
-const stripePublishableKey:string = `${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`
+const stripePublishableKey:string = process.env.NODE_ENV === 'development' ? `${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}` : `${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_LIVE}`
 
 const stripePromise = loadStripe(stripePublishableKey)
 
@@ -37,13 +37,21 @@ export default function Pricing() {
   const setFormToOpenMonthly = () => {
     setFormOpen(true)
     setFormTitle('Sign up for QuizzipIO Monthly Subscription:')
-    setProductId('price_1OR887BlbVm0HEusenlz9iIL')
+    if (process.env.NODE_ENV === 'development') {
+      setProductId('price_1OR887BlbVm0HEusenlz9iIL')
+    } else {
+      setProductId('price_1OWnfbBlbVm0HEusMX3OlSDp')
+    }
   }
 
   const setFormToOpenYearly = () => {
     setFormOpen(true)
     setFormTitle('Sign up for QuizzipIO Yearly Subscription:')
-    setProductId('price_1OR89hBlbVm0HEusveRZwr34')
+    if (process.env.NODE_ENV === 'development') {
+      setProductId('price_1OR89hBlbVm0HEusveRZwr34')
+    } else {
+      setProductId('price_1OWnh2BlbVm0HEus4AdrG0Id')
+    }
   }
 
   const getFreeGenerationsOnce = async () => {
@@ -64,7 +72,7 @@ export default function Pricing() {
         throw new Error('something went wrong')
       }
 
-      setGenerationsLeft(generationsLeft + 20)
+      setGenerationsLeft(generationsLeft + 45)
 
       setIsOfferModalOpen(false)
 
@@ -92,7 +100,7 @@ export default function Pricing() {
                 <Card
                     header="Premium Yearly Subscription"
                     headerClasses="text-blue-500"
-                    price={'84/year'}
+                    price={'72/year'}
                     includeButton={true}
                     listItems={['Access to all sources of generation.', 'Up to 15 questions per question type.', 'Up to 1800 assessment generations per year.', 'Large sized content sources and file uploads.', 'Quick and responsive customer support.', 'Billed per year, 70% off per month!', 'Virtual hugs from the Quizzip Team!']}
                     buttonFunction={setFormToOpenYearly}
@@ -100,7 +108,7 @@ export default function Pricing() {
                 <Card
                     header="Premium Monthly Subscription"
                     headerClasses="text-blue-500"
-                    price={'10/month'}
+                    price={'8/month'}
                     includeButton={true}
                     listItems={['Access to all sources of generation.', 'Up to 15 questions per question type.', 'Up to 150 assessment generations per month.', 'Large sized content sources and file uploads.', 'Quick and responsive customer support.', 'Billed per month.', 'Virtual hugs from the Quizzip Team!']}
                     buttonFunction={setFormToOpenMonthly}
@@ -108,7 +116,7 @@ export default function Pricing() {
               </div>
               <div className="w-3/4 mx-auto">
                 <p className="w-full text-neutral-300 font-semibold text-sm text-center">
-                  Enjoying QuizzipIO? Get 20 additional free generations on us, only once for your account. No credit card commitment required. <button onClick={openOfferModal} className="underline underline-offset-2">Click Here!</button>
+                  Enjoying QuizzipIO? Get 45 additional free generations on us, only once for your account. No credit card commitment required. <button onClick={openOfferModal} className="underline underline-offset-2">Click Here!</button>
                 </p>
                 <Popup
                   open={isOfferModalOpen} 

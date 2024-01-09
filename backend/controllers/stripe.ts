@@ -1,12 +1,18 @@
-type tier = 'Basic' | 'Monthly Subscription' | 'Yearly Subscription'
-
 import express from 'express';
 import Stripe from 'stripe';
 import { createUserTierObject, getUserTierObject, deleteUserTierObject, getUserByEmail } from '../db/users';
 import { returnFreeMonthlyGenerations, returnSubscriptionTierMonthlyGenerations, returnSubscriptionTierYearlyGenerations, returnMonthlySubscriptionPriceId, returnYearlySubscriptionPriceId } from '../helpers/helper-functions';
 
-const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`)
-const endpointSecret = process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET;
+let stripe: Stripe
+let endpointSecret:string | undefined
+
+if (process.env.NODE_ENV === 'development') {
+    stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`)
+    endpointSecret = process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET
+} else {
+    stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY_LIVE}`)
+    endpointSecret = process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET_LIVE
+}
 
 export const webhook = async (req: express.Request, res: express.Response) => {
 
@@ -200,7 +206,7 @@ export const createAndProvideFreeTrialGenerationsOnce = async (req: express.Requ
                 email: email,
                 username: username,
                 tier: 'Basic',
-                generationsLeft: returnFreeMonthlyGenerations() + 20,
+                generationsLeft: returnFreeMonthlyGenerations() + 45,
                 expirationDate: Date.now() + (30 * 24 * 60 * 60 * 1000) //~30d, fix this to be accurate with stripes determination of duration
             })
         } else {
