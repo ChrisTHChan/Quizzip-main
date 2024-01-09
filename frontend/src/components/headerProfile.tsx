@@ -20,7 +20,7 @@ const HeaderProfile = () => {
 
     const {auth, setAuthTrue, setAuthFalse} = useAuthStore();
 
-    const {username, setUsername, setEmail, setTier, setGenerationsLeft, setExpirationDate} = useUserStore()
+    const {username, setUsername, setEmail, setTier, setGenerationsLeft, setExpirationDate, setCustomerId, setSubscriptionId} = useUserStore()
 
     const sessionId = Cookies.get('QUIZZIP-AUTH')
 
@@ -62,6 +62,12 @@ const HeaderProfile = () => {
             setEmail(res.email)
             setUsername(res.username)
             setTier(res.tier)
+            if (res.subscriptionId) {
+                setSubscriptionId(res.subscriptionId)
+            }
+            if (res.customerId) {
+                setCustomerId(res.customerId)
+            }
             if (!res.generationsLeft) {
                 setGenerationsLeft(returnFreeMonthlyGenerations())
             } else {

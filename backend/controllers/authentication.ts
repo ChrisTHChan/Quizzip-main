@@ -26,7 +26,9 @@ export const checkUserSessionToken = async (req: express.Request, res: express.R
             username: user.username,
             tier: userTierObject?.tier,
             generationsLeft: userTierObject?.generationsLeft,
-            expirationDate: userTierObject?.expirationDate
+            expirationDate: userTierObject?.expirationDate,
+            customerId: userTierObject?.customerId,
+            subscriptionId: userTierObject?.subscriptionId
         }
 
         return res.status(200).json(returnObject);

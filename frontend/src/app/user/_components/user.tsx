@@ -14,7 +14,7 @@ import 'reactjs-popup/dist/index.css';
 
 const User = () => {
 
-    const {email, username, tier, generationsLeft, expirationDate} = useUserStore()
+    const {email, username, tier, generationsLeft, expirationDate, customerId, subscriptionId} = useUserStore()
     let fetchURL = getServerURL()
     const sessionId = Cookies.get('QUIZZIP-AUTH')
 
@@ -179,6 +179,8 @@ const User = () => {
                                 }
                              </p>
                             <p className="mb-4"><span className="font-bold">Generations Reset on:</span> {expirationDate ? expirationDate : 'Create or subscribe to start a period.'}</p>
+                            {customerId ? <p className="mb-4"><span className="font-bold">Customer ID:</span> {customerId}</p> : null}
+                            {subscriptionId ? <p className="mb-4"><span className="font-bold">Subscription ID:</span> {subscriptionId}</p> : null}
                             {tier === 'Monthly Subscription' || tier === 'Yearly Subscription' ? <button onClick={openCancellationModal} className="font-bold hover:underline underline-offset-8 mb-4">Cancel Subscription</button> : null}
                             <Popup
                             open={isCancellationModalOpen} 
