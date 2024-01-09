@@ -1,6 +1,7 @@
 import express from 'express';
 import { UploadedFile } from 'express-fileupload';
 import { splitString, fetchTranscript, generateQuestions } from '../helpers/helper-functions';
+import { getUserTierObject } from '../db/users';
 import officeParser from 'officeparser'
 import pdfParse from 'pdf-parse'
 import { emitQuestionGenState } from '../server';
@@ -19,6 +20,7 @@ export default async (req: express.Request, res: express.Response) => {
     const mcNum:number = parseInt(req.body.mcNum);
     const saNum:number = parseInt(req.body.saNum);
     const tfNum:number = parseInt(req.body.tfNum);
+    const {email, username} = req.body
     const clientSocketId = req.body.clientSocketId;
     let fileUploadBuffer!: Buffer;
     if (req.files) {
@@ -32,7 +34,14 @@ export default async (req: express.Request, res: express.Response) => {
         questionsList.push(question);
     }
 
+    const userTierObject = await getUserTierObject(email, username)
+
     try {
+
+        if (userTierObject && userTierObject!.generationsLeft <= 0) {
+            throw new Error('You don\'t have any generations left this month. Please subscribe to get more.')
+        }
+
         let transcript: string = '';
         if (inputType === 'youtubeURL') {
             transcript = await fetchTranscript(contentInput as string);

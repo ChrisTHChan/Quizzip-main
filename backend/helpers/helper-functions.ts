@@ -88,3 +88,23 @@ export const fetchTranscript = async (videoUrl: string) => {
 
    return transcriptString;
 }
+
+export function returnFreeMonthlyGenerations() {
+    return 5
+}
+
+export function returnSubscriptionTierMonthlyGenerations() {
+    return 150
+}
+
+export function returnSubscriptionTierYearlyGenerations() {
+    return 1800
+}
+
+export function returnMonthlySubscriptionPriceId() {
+    return 'price_1OR887BlbVm0HEusenlz9iIL'
+}
+
+export function returnYearlySubscriptionPriceId() {
+    return 'price_1OR89hBlbVm0HEusveRZwr34'
+}

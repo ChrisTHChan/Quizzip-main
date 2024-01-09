@@ -10,3 +10,7 @@ export function getServerURL() {
         return '/api'
     }
 }
+
+export function returnFreeMonthlyGenerations() {
+    return 5
+}

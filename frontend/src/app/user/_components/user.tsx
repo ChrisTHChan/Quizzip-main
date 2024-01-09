@@ -8,10 +8,13 @@ import { useState } from "react"
 import { validateEmail } from "@/util-functions/helper-functions"
 import { getServerURL } from "@/util-functions/helper-functions"
 import Cookies from 'js-cookie';
+import { returnFreeMonthlyGenerations } from "@/util-functions/helper-functions"
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 const User = () => {
 
-    const {email, username} = useUserStore()
+    const {email, username, tier, generationsLeft, expirationDate, customerId, subscriptionId} = useUserStore()
     let fetchURL = getServerURL()
     const sessionId = Cookies.get('QUIZZIP-AUTH')
 
@@ -100,6 +103,7 @@ const User = () => {
             const formData = new FormData();
             
             formData.append("oldEmail", email);
+            formData.append('username', username)
             formData.append("newEmail", inputState.email);
             formData.append("password", inputState.password)
 
@@ -126,6 +130,34 @@ const User = () => {
         }
     }
 
+    const cancelSubscription = async () => {
+        try {
+
+            const formData = new FormData()
+
+            formData.append('username', username)
+            formData.append('email', email)
+
+            const subscriptionId = await fetch(`${fetchURL}/stripe/cancelSubscription/${sessionId}`, {
+                method: 'PUT',
+                body: formData
+            })
+
+            window.location.reload();
+
+        } catch (err) {
+            console.log(err)
+            return alert(err)
+        }
+    }
+
+    const modalStyle = { borderRadius: '4px', backgroundColor: '#1F2937', border: "1px solid #1F2937" };
+    const [isCancellationModalOpen, setIsCancellationModalOpen] = useState(false);
+    const closeCancellationModal = () => setIsCancellationModalOpen(false);
+    const openCancellationModal = () => {
+        setIsCancellationModalOpen(true)
+    }
+
     return (
         <>
             <div className="py-10 flex justify-center items-center">
@@ -135,6 +167,34 @@ const User = () => {
                         <div className="w-full">
                             <p className="mb-4"><span className="font-bold">Logged In As:</span> {username}</p>
                             <p className="mb-4"><span className="font-bold">User Email:</span> {email}</p>
+                            <p className="mb-4"><span className="font-bold">User Tier:</span> {tier ? tier : 'Basic'}</p>
+                            <p className="mb-4">
+                                <span className="font-bold">Generations Left: </span>
+                                {
+                                    generationsLeft 
+                                    ? 
+                                    generationsLeft > 0 ? generationsLeft : 0
+                                    : 
+                                    returnFreeMonthlyGenerations()
+                                }
+                             </p>
+                            <p className="mb-4"><span className="font-bold">Generations Reset on:</span> {expirationDate ? expirationDate : 'Create or subscribe to start a period.'}</p>
+                            {customerId ? <p className="mb-4"><span className="font-bold">Customer ID:</span> {customerId}</p> : null}
+                            {subscriptionId ? <p className="mb-4"><span className="font-bold">Subscription ID:</span> {subscriptionId}</p> : null}
+                            {tier === 'Monthly Subscription' || tier === 'Yearly Subscription' ? <button onClick={openCancellationModal} className="font-bold hover:underline underline-offset-8 mb-4">Cancel Subscription</button> : null}
+                            <Popup
+                            open={isCancellationModalOpen} 
+                            closeOnDocumentClick 
+                            onClose={closeCancellationModal}
+                            contentStyle={modalStyle}
+                            >
+                                <p className="text-neutral-300 text-center p-4 font-semibold">
+                                    Are you sure you want to cancel this subscription? You're preiod will reset, and you will lose all unused assessment subscription generations.
+                                </p>
+                                <div className="flex justify-center w-full"> 
+                                    <PrimaryButton extra_classes="mb-4 mr-4" onClick={cancelSubscription}>Cancel Subscription</PrimaryButton>
+                                </div>
+                            </Popup>
                             <Accordion 
                                 initialContent={<div className="mb-4 hover:underline underline-offset-2">Change Email &#11167;</div>}>
                                 <form className="mb-4" onSubmit={submitChangeEmail}>

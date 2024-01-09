@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, getUserByEmail, getUserBySessionToken, createForgotPasswordPasscode, getForgotPasswordObjectByEmail, deleteForgotPasswordObjectByEmail } from '../db/users';
+import { createUser, getUserByEmail, getUserBySessionToken, createForgotPasswordPasscode, getForgotPasswordObjectByEmail, deleteForgotPasswordObjectByEmail, getUserTierObject } from '../db/users';
 import { random, authentication } from '../helpers/auth-helpers';
 import { validateEmail } from '../helpers/helper-functions';
 import { sendEmail } from '../server';
@@ -12,10 +12,26 @@ export const checkUserSessionToken = async (req: express.Request, res: express.R
         const user = await getUserBySessionToken(sessionId);
 
         if (!user) {
+            throw new Error('no user found...?')
+        }
+        
+        const userTierObject = await getUserTierObject(user.email, user.username)
+
+        if (!user) {
             throw new Error("No such user.") 
         }
 
-        return res.status(200).json(user);
+        const returnObject = {
+            email: user.email,
+            username: user.username,
+            tier: userTierObject?.tier,
+            generationsLeft: userTierObject?.generationsLeft,
+            expirationDate: userTierObject?.expirationDate,
+            customerId: userTierObject?.customerId,
+            subscriptionId: userTierObject?.subscriptionId
+        }
+
+        return res.status(200).json(returnObject);
 
     } catch (error: any) {
         console.log(error)
@@ -26,9 +42,11 @@ export const checkUserSessionToken = async (req: express.Request, res: express.R
 export const loggedInChangeEmail = async (req: express.Request, res: express.Response) => {
     try {
         
-        const {oldEmail, newEmail, password} = req.body
+        const {oldEmail, newEmail, password, username} = req.body
 
         const user = await getUserByEmail(oldEmail).select('+authentication.salt +authentication.password +authentication.sessionToken')
+
+        const userTierObject = await getUserTierObject(oldEmail, username)
 
         const isNewEmailUsed = await getUserByEmail(newEmail)
 
@@ -49,6 +67,11 @@ export const loggedInChangeEmail = async (req: express.Request, res: express.Res
         user.email = newEmail;
 
         await user.save();
+
+        if (userTierObject) {
+            userTierObject!.email = newEmail;
+            await userTierObject.save();
+        }
 
         res.status(200).json({
             callStatus: `Email change successful!`
