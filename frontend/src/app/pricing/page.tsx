@@ -8,7 +8,7 @@ import PaymentForm from "./_components/PaymentForm"
 import { useState } from "react"
 import Cookies from 'js-cookie';
 import { getServerURL } from "@/util-functions/helper-functions"
-import { useUserStore } from "@/store/store"
+import { useUserStore, useAuthStore } from "@/store/store"
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import PrimaryButton from "@/components/primaryButton"
@@ -22,6 +22,7 @@ export default function Pricing() {
   const sessionId = Cookies.get('QUIZZIP-AUTH')
   let fetchURL = getServerURL()
   const {email, username, setGenerationsLeft, generationsLeft} = useUserStore()
+  const {auth} = useAuthStore()
 
   const modalStyle = { borderRadius: '4px', backgroundColor: '#1F2937', border: "1px solid #1F2937" };
   const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
@@ -101,7 +102,7 @@ export default function Pricing() {
                     header="Premium Yearly Subscription"
                     headerClasses="text-blue-500"
                     price={'72/year'}
-                    includeButton={true}
+                    includeButton={auth === 'auth' ? true : false}
                     listItems={['Access to all sources of generation.', 'Up to 15 questions per question type.', 'Up to 1800 assessment generations per year.', 'Large sized content sources and file uploads.', 'Quick and responsive customer support.', 'Billed per year, 70% off per month!', 'Virtual hugs from the Quizzip Team!']}
                     buttonFunction={setFormToOpenYearly}
                 />
@@ -109,14 +110,14 @@ export default function Pricing() {
                     header="Premium Monthly Subscription"
                     headerClasses="text-blue-500"
                     price={'8/month'}
-                    includeButton={true}
+                    includeButton={auth === 'auth' ? true : false}
                     listItems={['Access to all sources of generation.', 'Up to 15 questions per question type.', 'Up to 150 assessment generations per month.', 'Large sized content sources and file uploads.', 'Quick and responsive customer support.', 'Billed per month.', 'Virtual hugs from the Quizzip Team!']}
                     buttonFunction={setFormToOpenMonthly}
                 />
               </div>
               <div className="w-3/4 mx-auto">
                 <p className="w-full text-neutral-300 font-semibold text-sm text-center">
-                  Enjoying QuizzipIO? Get 45 additional free generations on us, only once for your account. No credit card commitment required. <button onClick={openOfferModal} className="underline underline-offset-2">Click Here!</button>
+                  Enjoying QuizzipIO? Get 45 additional free generations on us, only once for your account. No credit card commitment required. {auth === 'auth' ? <button onClick={openOfferModal} className="underline underline-offset-2">Click Here!</button> : null}
                 </p>
                 <Popup
                   open={isOfferModalOpen} 
