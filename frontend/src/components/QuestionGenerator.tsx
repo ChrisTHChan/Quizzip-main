@@ -50,7 +50,7 @@ const QuestionGenerator = () => {
         status: false,
         text: '',
     })
-    const [tabBarState, setTabBarState] = useState<'right' | 'left'>('left')
+    // const [tabBarState, setTabBarState] = useState<'right' | 'left'>('left')
     const [contentFormatState, setContentFormatState] = useState<contentFormatState>('youtubeURL')
     const [fileUpload, setFileUpload] = useState<null | File>(null)
     const [inputState, setInputState] = useState({
@@ -88,8 +88,8 @@ const QuestionGenerator = () => {
 
     //functions and handlers ##############################################################################################################################################
 
-    const handleContentFormatState = (e:React.MouseEvent<HTMLButtonElement>) => {
-        const value = (e.target as HTMLButtonElement).value as contentFormatState
+    const handleContentFormatState = (e:React.ChangeEvent<HTMLSelectElement>) => {
+        const value = (e.target as HTMLSelectElement).value as contentFormatState
         setContentFormatState(value)
     };
 
@@ -118,19 +118,19 @@ const QuestionGenerator = () => {
         });
     };
 
-    const scrollTabBar = (e:React.MouseEvent<HTMLButtonElement>) => {
-        if ((e.target as HTMLInputElement).id === 'scrollRight') {
-            tabBar.current.scrollLeft += 1000;
-            if (tabBar.current.scrollLeft > 0) {
-                setTabBarState('right');
-            } 
-        } else {
-            tabBar.current.scrollLeft -= 1000;
-            if (tabBar.current.scrollLeft === 0) {
-                setTabBarState('left');
-            } 
-        }
-    }
+    // const scrollTabBar = (e:React.MouseEvent<HTMLButtonElement>) => {
+    //     if ((e.target as HTMLInputElement).id === 'scrollRight') {
+    //         tabBar.current.scrollLeft += 1000;
+    //         if (tabBar.current.scrollLeft > 0) {
+    //             setTabBarState('right');
+    //         } 
+    //     } else {
+    //         tabBar.current.scrollLeft -= 1000;
+    //         if (tabBar.current.scrollLeft === 0) {
+    //             setTabBarState('left');
+    //         } 
+    //     }
+    // }
 
     const clearInputState = () => {
         setInputState({
@@ -330,18 +330,18 @@ const QuestionGenerator = () => {
 
             <div className="w-full lg:w-1/2 lg:pr-4 border-0">
 
-                <div className="relative w-full top-1.5">
+                {/* <div className="relative w-full top-1.5">
                     {tabBarState === 'right' ? <button id="scrollLeft" onClick={scrollTabBar} className="absolute left-0 pl-2 pr-8 bg-gradient-to-r from-slate-900 via-slate-900 to-100% hover:font-bold hover:scale-125"> &#8592; </button> : null}
                     {tabBarState === 'left' ? <button id="scrollRight" onClick={scrollTabBar} className="absolute right-0 pr-2 pl-8 bg-gradient-to-r from-transparent via-slate-900 to-slate-900 hover:font-bold hover:scale-125"> &#8594; </button> : null}
-                </div>
+                </div> */}
 
-                <div className="flex mb-4 overflow-x-scroll no-scrollbar" ref={tabBar}>
-                    <button value="youtubeURL" onClick={handleContentFormatState} className={`whitespace-nowrap border-b ${contentFormatState === 'youtubeURL' ? 'font-bold' : ''} border-slate-500 p-2 block text-sm hover:font-bold`}>Use Youtube URL</button>
-                    <button value="text" onClick={handleContentFormatState} className={`whitespace-nowrap border-b ${contentFormatState === 'text' ? 'font-bold' : ''} border-slate-500 p-2 block text-sm hover:font-bold`}>Use Text Content</button>
-                    <button value="pdf" onClick={handleContentFormatState} className={`whitespace-nowrap border-b ${contentFormatState === 'pdf' ? 'font-bold' : ''} border-slate-500 p-2 block text-sm hover:font-bold`}>Upload PDF File</button>
-                    <button value="doc" onClick={handleContentFormatState} className={`whitespace-nowrap border-b ${contentFormatState === 'doc' ? 'font-bold' : ''} border-slate-500 p-2 block text-sm hover:font-bold`}>Upload Word Document File</button>
-                    <button value="ppt" onClick={handleContentFormatState} className={`whitespace-nowrap border-b ${contentFormatState === 'ppt' ? 'font-bold' : ''} border-slate-500 p-2 block text-sm hover:font-bold`}>Upload Powerpoint Document File</button>
-                </div>
+                <select onChange={handleContentFormatState} className="w-full bg-slate-900 pt-2 pb-2 border-b text-sm mb-4 border-slate-500">
+                    <option value="youtubeURL" >Use Youtube URL</option>
+                    <option value="text">Use Text Content</option>
+                    <option value="pdf">Upload PDF File</option>
+                    <option value="doc">Upload Word Document File</option>
+                    <option value="ppt">Upload Powerpoint Document File</option>
+                </select>
 
                 {contentInput}
 
